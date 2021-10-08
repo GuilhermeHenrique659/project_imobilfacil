@@ -1,8 +1,20 @@
 from flask import Flask, request, redirect, render_template, session, flash
-from usuario import Usuario
+from models import Usuario, imovel
+from dao import imovelDao
+from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 app.secret_key='LP2'
+
+app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_DB'] = 'projeto_db'
+app.config['MYSQL_PORT'] = 3306
+db = MySQL(app)
+Imovel_Dao = imovelDao(db)
+
+
 
 usuario1 = Usuario('guilherme','Guilherme Henrique','naomecha')
 usuario2 = Usuario('teste','Teste1','123456')
@@ -16,6 +28,34 @@ def index():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         return redirect('/login?proxima=''')
     return render_template('lista.html', corretores=lista_user)
+
+
+#criar_imovel
+@app.route('/novo_imovel')
+def novo_imovel():
+    if 'usuario_logado' not in session or session['usuario_logado']==None:
+        return redirect('/login?proxima=novo_imovel')
+    return render_template('novo_imovel.html')
+
+@app.route('/criar_imovel', methods=['POST'])
+def criar_imovel():
+    sigla = request.form['sigla']
+    tipo =  request.form['tipo']
+    finalidade = request.form['finalidade']
+    bairro = request.form['bairro']
+    quadra = request.form['quadra']
+    lote = request.form['lote']
+    valor = request.form['valor']
+    status = request.form['status']
+    porcentagem = request.form['porcentagem']
+    honorarios = request.form['honorarios']
+    proprietario = request.form['proprietario']
+    Imovel = imovel(sigla,tipo,finalidade,bairro,quadra,lote,valor,status,porcentagem,honorarios,proprietario)
+    Imovel_Dao.salvar(Imovel)
+    return redirect('/')
+
+
+#login, autenticar, logout#
 
 @app.route('/login')
 def login():

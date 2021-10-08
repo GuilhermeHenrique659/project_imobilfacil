@@ -1,0 +1,52 @@
+{% extends "template.html" %}
+{% block conteudo %}
+<form action="/criar_imovel" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label for="sigla">Sigla</label>
+            <input type="text" id="sigla" name="sigla" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <input type="text" id="tipo" name="tipo" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="finalidade">Finalidade</label>
+            <input type="text" id="finalidade" name="finalidade" class="form-control">
+          </div>
+        <div class="form-group">
+            <label for="bairro">Bairro</label>
+            <input type="text" id="bairro" name="bairro" class="form-control">
+          </div>
+                  <div class="form-group">
+            <label for="quadra">Quadra</label>
+            <input type="text" id="quadra" name="quadra" class="form-control">
+          </div>
+                  <div class="form-group">
+            <label for="lote">Lote</label>
+            <input type="text" id="lote" name="lote" class="form-control">
+          </div>
+        <div class="form-group">
+            <label for="valor">Valor</label>
+            <input type="text" id="valor" name="valor" class="form-control">
+          </div>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <input type="text" id="status" name="status" class="form-control">
+          </div>
+        <div class="form-group">
+            <label for="porcentagem">Porcentagem</label>
+            <input type="text" id="porcentagem" name="porcentagem" class="form-control">
+          </div>
+        <div class="form-group">
+            <label for="honorarios">Honorarios</label>
+            <input type="text" id="honorarios" name="honorarios" class="form-control">
+          </div>
+        <div class="form-group">
+            <label for="proprietario">Proprietario</label>
+            <input type="text" id="proprietario" name="proprietario" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
+    </fieldset>
+</form>
+{% endblock %}
