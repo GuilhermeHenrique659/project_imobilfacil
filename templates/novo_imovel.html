@@ -27,8 +27,16 @@
             <input type="text" id="lote" name="lote" class="form-control">
           </div>
         <div class="form-group">
+            <label for="area">Àrea</label>
+            <input type="text" id="area" name="area" class="form-control">
+          </div>
+        <div class="form-group">
+             <span class="form-group-text">Detalhes do imóvel </span>
+            <textarea class="form-control" aria-label="With textarea" id="detalhes" name="detalhes"></textarea>
+        </div>
+        <div class="form-group">
             <label for="valor">Valor</label>
-            <input type="text" id="valor" name="valor" class="form-control">
+            <input type="number" id="valor" name="valor" class="form-control" step="0.01">
           </div>
         <div class="form-group">
             <label for="status">Status</label>
@@ -36,15 +44,15 @@
           </div>
         <div class="form-group">
             <label for="porcentagem">Porcentagem</label>
-            <input type="text" id="porcentagem" name="porcentagem" class="form-control">
-          </div>
-        <div class="form-group">
-            <label for="honorarios">Honorarios</label>
-            <input type="text" id="honorarios" name="honorarios" class="form-control">
+            <input type="number" id="porcentagem" name="porcentagem" class="form-control" step="0.1">
           </div>
         <div class="form-group">
             <label for="proprietario">Proprietario</label>
             <input type="text" id="proprietario" name="proprietario" class="form-control">
+          </div>
+                <div class="form-group">
+            <label for="corretor">Corretor</label>
+            <input type="text" id="corretor" name="corretor" class="form-control">
           </div>
           <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
     </fieldset>
