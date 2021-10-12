@@ -39,7 +39,6 @@ class imovelDao:
 
 def traduz_imob(imoveis):
     def cria_imob_lista(tupla):
-        print(len(tupla))
         return imovel(tupla[3],tupla[4],tupla[5],tupla[6],tupla[7], tupla[8],tupla[9],tupla[10], tupla[11],tupla[13],tupla[14],
                       tupla[2], tupla[1], tupla[0], tupla[12],tupla[15])
     return list(map(cria_imob_lista, imoveis))

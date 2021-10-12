@@ -50,9 +50,9 @@ def criar_imovel():
     lote = request.form['lote']
     area = request.form['area']
     descriacao = request.form['detalhes']
-    valor = request.form['valor']
+    valor = float(request.form['valor'])
     status = request.form['status']
-    porcentagem = request.form['porcentagem']
+    porcentagem = float(request.form['porcentagem'])
     proprietario = request.form['proprietario']
     corretor = request.form['corretor']
     Imovel = imovel(sigla,tipo,finalidade,bairro,quadra,lote,area,descriacao,valor,status,porcentagem,proprietario,corretor)

@@ -26,16 +26,14 @@ class imovel:
         self._honorarios = honorarios
         self._proprietario_id = proprietario_id
         self._corretor_id = corretor_id
-
         #banheiro
         #quarto
         #garagem
 
     def get_honorarios(self):
-        self._honorarios = self._porcentagem
+        self._honorarios = (self._valor_imovel * self._porcentagem)
         return self._honorarios
 
     def get_imovel_venda(self):
-        self._valor_venda = self._valor_imovel
-        print(self._valor_venda)
+        self._valor_venda = (self._valor_imovel+self.get_honorarios())
         return self._valor_venda
