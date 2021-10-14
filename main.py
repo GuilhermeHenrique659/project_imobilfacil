@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash
-from models import Usuario, imovel
-from dao import imovelDao
+from models import Usuario, imovel, Proprietario
+from dao import imovelDao, cad_proprietario_dao
 from flask_mysqldb import MySQL
 import hashlib
 
@@ -13,7 +13,9 @@ app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'projeto_db'
 app.config['MYSQL_PORT'] = 3306
 db = MySQL(app)
+
 Imovel_Dao = imovelDao(db)
+Proprietario_dao = cad_proprietario_dao(db)
 
 
 
@@ -50,15 +52,35 @@ def criar_imovel():
     lote = request.form['lote']
     area = request.form['area']
     descriacao = request.form['detalhes']
-    valor = float(request.form['valor'])
+    valor = request.form['valor']
     status = request.form['status']
-    porcentagem = float(request.form['porcentagem'])
+    porcentagem = request.form['porcentagem']
     proprietario = request.form['proprietario']
     corretor = request.form['corretor']
     Imovel = imovel(sigla,tipo,finalidade,bairro,quadra,lote,area,descriacao,valor,status,porcentagem,proprietario,corretor)
     Imovel_Dao.salvar(Imovel)
     return redirect('/')
 
+
+#Criar Proprietario
+@app.route('/Proprietario')
+def rota_proprietario():
+    if 'usuario_logado' not in session or session['usuario_logado']==None:
+        return redirect('/login?proxima=novo_proprietario.html')
+    return render_template('novo_proprietario.html')
+
+
+@app.route('/cad_prop', methods=['POST'])
+def criar_proprietario():
+    nome = request.form['nome']
+    cpf = request.form['cpf']
+    rg = request.form['rg']
+    endereco = request.form['endereco']
+    telefone = request.form['telefone']
+    email  = request.form['email']
+    proprietario = Proprietario(nome,cpf,rg,endereco,telefone,email)
+    Proprietario_dao.salvar(proprietario)
+    return redirect('/')
 
 #login, autenticar, logout#
 

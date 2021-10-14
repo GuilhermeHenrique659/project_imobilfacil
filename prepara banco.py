@@ -5,9 +5,9 @@ conn = MySQLdb.connect(user='root', passwd='root', host='127.0.0.1', port=3306, 
 # Descomente se quiser desfazer o banco...
 '''conn.cursor().execute("DROP DATABASE `jogoteca`;")
 conn.commit()'''
-conn.cursor().execute("SET NAMES utf8;")
+'''conn.cursor().execute("SET NAMES utf8;")
 conn.cursor().execute("DROP DATABASE `Projeto_DB`;")
-conn.commit()
+conn.commit()'''
 conn.cursor().execute("CREATE DATABASE `Projeto_DB`;")
 conn.commit()
 
@@ -18,9 +18,9 @@ criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
     `EMAIL` VARCHAR(45) NULL,
     `NOME` VARCHAR(45) NULL,
     `NOME DA IMOBIL` VARCHAR(45) NULL,
-    `CRECI` CHAR(7) NULL,
-    `CELULAR` CHAR(11) NULL,
-    `CPF` CHAR(11) NULL,
+    `CRECI` CHAR(15) NULL,
+    `CELULAR` CHAR(25) NULL,
+    `CPF` CHAR(25) NULL,
     `ENDERECO` VARCHAR(45) NULL,
     `SENHA` VARCHAR(75) NULL,
     PRIMARY KEY (`ID_CORR`),
@@ -34,10 +34,10 @@ conn.commit()
 criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
         `ID_PROP` INT NOT NULL AUTO_INCREMENT,
         `NOME` VARCHAR(45) NOT NULL,
-        `CPF` CHAR(11) NOT NULL,
+        `CPF` CHAR(25) NOT NULL,
         `RG` VARCHAR(20) NOT NULL,
         `ENDERECO` VARCHAR(45) NOT NULL,
-        `TELEFONE` CHAR(11) NOT NULL,
+        `TELEFONE` CHAR(25) NOT NULL,
         `EMAIL` VARCHAR(45) NOT NULL,
         PRIMARY KEY (`ID_PROP`),
         UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC)
