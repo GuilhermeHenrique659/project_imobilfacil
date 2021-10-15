@@ -31,7 +31,8 @@ def index():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         return redirect('/login?proxima=''')
     lista_imob = Imovel_Dao.listar()
-    return render_template('lista.html', corretores=lista_user, imoveis=lista_imob)
+    lista_prop = Proprietario_dao.listar()
+    return render_template('lista.html', corretores=lista_user, imoveis=lista_imob, proprietarios=lista_prop)
 
 
 #criar_imovel
@@ -39,8 +40,8 @@ def index():
 def novo_imovel():
     if 'usuario_logado' not in session or session['usuario_logado']==None:
         return redirect('/login?proxima=novo_imovel')
-
-    return render_template('novo_imovel.html')
+    lista_prop = Proprietario_dao.listar()
+    return render_template('novo_imovel.html', proprietarios=lista_prop)
 
 @app.route('/criar_imovel', methods=['POST'])
 def criar_imovel():

@@ -9,8 +9,8 @@ class Usuario:
         return self._senha
 
 class imovel:
-    def  __init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao, valor_imovel, status, porcentagem, proprietario_id=None, corretor_id=None, id=None, valor_venda=None,honorarios =None):
-        self._id = id
+    def __init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao, valor_imovel, status, porcentagem, proprietario_id=None, corretor_id=None, imob_id=None, valor_venda=None,honorarios =None):
+        self._id = imob_id
         self._sigla = sigla
         self._tipo= tipo
         self._finalidade = finalidade
@@ -37,7 +37,6 @@ class imovel:
 
     def get_imovel_venda(self):
         self._valor_venda = self._valor_imovel
-        print(self._valor_venda)
         return self._valor_venda
 
 class Proprietario:

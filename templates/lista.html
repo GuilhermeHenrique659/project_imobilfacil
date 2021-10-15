@@ -35,6 +35,7 @@
                     <th>sigla</th>
                     <th>tipo</th>
                     <th>bairro</th>
+                    <th>quadra</th>
                     <th>lote</th>
                     <th>proprietario</th>
                     <th>telefone</th>
@@ -44,13 +45,18 @@
             <tbody>
                 {% for imovel in imoveis %}
                     <tr>
-                        <td>{{ imovel._id }}</td>
+                        <td>{{ imovel._id}}</td>
                         <td>{{ imovel._sigla }}</td>
                         <td>{{ imovel._tipo }}</td>
                         <td>{{ imovel._bairro}}</td>
+                        <td>{{ imovel._quadra}}</td>
                         <td>{{ imovel._lote }}</td>
-                        <td>proprietario_coming_sun</td>
-                        <td>telefone_prop_coming_sun</td>
+                        {% for proprietario in proprietarios %}
+                            {% if imovel._proprietario_id == proprietario._id%}
+                                <td>{{ proprietario._nome}}</td>
+                                <td>{{ proprietario._telefone}}</td>
+                            {% endif %}
+                        {% endfor %}
                         <td>{{ imovel._status }}</td>
                     </tr>
                 {% endfor %}
@@ -64,14 +70,20 @@
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th>E-mail</th>
                 </tr>
             </thead>
             <tbody>
-                {% for corretor in corretores %}
-                    <tr>
-                        <td>{{ corretor._id }}</td>
-                        <td>{{ corretor._nome }}</td>
-                    </tr>
+                {% for proprietario in proprietarios %}
+                <tr>
+                    <td>{{ proprietario._id }}</td>
+                    <td>{{ proprietario._nome }}</td>
+                    <td>{{ proprietario._cpf }}</td>
+                    <td>{{ proprietario._telefone }}</td>
+                    <td>{{ proprietario._email }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>

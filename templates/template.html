@@ -41,7 +41,7 @@
     <div class="bg-dark p-4">
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/">Home</a>
+          <a class="navbar-brand" href="{{url_for('index')}}">Home</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -51,10 +51,10 @@
                 <a class="nav-link active" aria-current="page" href="#">Cadastro de corretor</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="/novo_imovel">Cadastro de imovel</a>
+                <a class="nav-link active" href="{{url_for('novo_imovel')}}">Cadastro de imovel</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="/Proprietario">Cadastro de proprietario</a>
+                <a class="nav-link active" href="{{url_for('rota_proprietario')}}">Cadastro de proprietario</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="#">Financeiro</a>

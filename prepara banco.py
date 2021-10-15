@@ -3,8 +3,6 @@ print('Conectando...')
 conn = MySQLdb.connect(user='root', passwd='root', host='127.0.0.1', port=3306, charset='utf8')
 
 # Descomente se quiser desfazer o banco...
-'''conn.cursor().execute("DROP DATABASE `jogoteca`;")
-conn.commit()'''
 '''conn.cursor().execute("SET NAMES utf8;")
 conn.cursor().execute("DROP DATABASE `Projeto_DB`;")
 conn.commit()'''

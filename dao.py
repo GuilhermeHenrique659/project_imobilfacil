@@ -1,5 +1,6 @@
 from models import imovel,Proprietario
 
+#imoveis
 SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, SINGLA, TIPO, FINALIDADE, BAIRRO, QUADRA, LOTE, AREA, DETALHES,' \
                   ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS)' \
                   ' values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s)'
@@ -20,7 +21,10 @@ SQL_CRIA_PROPRIETARIO = 'INSERT into proprietarios (NOME, CPF, RG, ENDERECO, TEL
 
 SQL_ATUALIZA_PROPRIETARIO = 'UPDATE proprietarios SET NOME=%s, CPF=%s, RG=%s, ENDERECO=%s, TELEFONE=%s, EMAIL=%s  where ID_PROP=%s'
 
+SQL_BUSCAR_LISTA_PROP = 'SELECT ID_PROP, NOME, CPF, RG, ENDERECO,TELEFONE,EMAIL from proprietarios'
 
+
+#proprietarios
 class cad_proprietario_dao:
     def __init__(self, db):
         self.__db=db
@@ -36,6 +40,18 @@ class cad_proprietario_dao:
 
         self.__db.connection.commit()
         return Proprietario
+
+    def listar(self):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_BUSCAR_LISTA_PROP)
+        proprietarios = traduz_prop(cursor.fetchall())
+        return proprietarios
+
+def traduz_prop(proprietarios):
+    def cria_prop_lista(tupla):
+        return Proprietario(tupla[1], tupla[2],tupla[3], tupla[4],tupla[5], tupla[6], id=tupla[0])
+    return list(map(cria_prop_lista, proprietarios))
+#imovel/
 
 class imovelDao:
     def __init__(self, db):
@@ -64,7 +80,6 @@ class imovelDao:
 
 def traduz_imob(imoveis):
     def cria_imob_lista(tupla):
-        print(len(tupla))
         return imovel(tupla[3],tupla[4],tupla[5],tupla[6],tupla[7], tupla[8],tupla[9],tupla[10], tupla[11],tupla[13],tupla[14],
-                      tupla[2], tupla[1], tupla[0], tupla[12],tupla[15])
+                      proprietario_id=tupla[2], corretor_id=tupla[1], imob_id=tupla[0], valor_venda=tupla[12],honorarios=tupla[15])
     return list(map(cria_imob_lista, imoveis))

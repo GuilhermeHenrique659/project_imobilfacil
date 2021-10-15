@@ -1,60 +1,133 @@
 {% extends "template.html" %}
 {% block conteudo %}
-<form action="/criar_imovel" method="post">
+  <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+  <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
+  <script>
+   $(document).ready(function (){
+      $('#valor').mask('000.000.000,00');
+      $('#porcentagem').mask('0.000');
+  });
+  </script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul id="messages" class="list-unstyled">
+                {% for message in messages %}
+                    <li class="alert alert-success">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+<h1>Cadastro de imoveis</h1>
+<br>
+<form class="row g-3" action="/criar_imovel" method="post">
     <fieldset>
-        <div class="form-group">
+    <nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-link active" id="nav-corretor-tab" data-bs-toggle="tab" href="#nav-corretor" role="tab" aria-controls="nav-corretor" aria-selected="true">Cadastro do Imovel</a>
+    <a class="nav-link" id="nav-imovel-tab" data-bs-toggle="tab" href="#nav-imovel" role="tab" aria-controls="nav-imovel" aria-selected="false">Descrição Imovel</a>
+    <a class="nav-link" id="nav-prop-tab" data-bs-toggle="tab" href="#nav-prop" role="tab" aria-controls="nav-prop" aria-selected="false">Proprietario e Corretor</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
+      <br>
+    <div class="form-group">
             <label for="sigla">Sigla</label>
             <input type="text" id="sigla" name="sigla" class="form-control">
           </div>
+      <br>
           <div class="form-group">
             <label for="tipo">Tipo</label>
             <input type="text" id="tipo" name="tipo" class="form-control">
           </div>
+      <br>
           <div class="form-group">
             <label for="finalidade">Finalidade</label>
             <input type="text" id="finalidade" name="finalidade" class="form-control">
           </div>
+      <br>
         <div class="form-group">
             <label for="bairro">Bairro</label>
             <input type="text" id="bairro" name="bairro" class="form-control">
           </div>
-                  <div class="form-group">
+      <br>
+        <div class="form-group">
             <label for="quadra">Quadra</label>
             <input type="text" id="quadra" name="quadra" class="form-control">
           </div>
-                  <div class="form-group">
+      <br>
+        <div class="form-group">
             <label for="lote">Lote</label>
             <input type="text" id="lote" name="lote" class="form-control">
           </div>
+  </div>
+  <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
+      <br>
         <div class="form-group">
             <label for="area">Àrea</label>
             <input type="text" id="area" name="area" class="form-control">
           </div>
+      <br>
         <div class="form-group">
              <span class="form-group-text">Detalhes do imóvel </span>
             <textarea class="form-control" aria-label="With textarea" id="detalhes" name="detalhes"></textarea>
         </div>
+      <br>
         <div class="form-group">
             <label for="valor">Valor</label>
-            <input type="number" id="valor" name="valor" class="form-control" step="0.01">
+            <input type="text" id="valor" name="valor" class="form-control">
           </div>
+      <br>
         <div class="form-group">
             <label for="status">Status</label>
             <input type="text" id="status" name="status" class="form-control">
           </div>
+      <br>
         <div class="form-group">
             <label for="porcentagem">Porcentagem</label>
-            <input type="number" id="porcentagem" name="porcentagem" class="form-control" step="0.1">
+            <input type="text" id="porcentagem" name="porcentagem" class="form-control">
           </div>
-        <div class="form-group">
+  </div>
+  <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
+      <br>
+        <div class="mb-3">
             <label for="proprietario">Proprietario</label>
-            <input type="text" id="proprietario" name="proprietario" class="form-control">
+            <select class="form-select" name="proprietario" id="proprietario">
+                    <option selected>Selecione o proprietario</option>
+                    {% for proprietario in proprietarios %}
+                        <option value="{{ proprietario._id }}">{{ proprietario._nome }}</option>
+                    {% endfor %}
+            </select>
           </div>
-                <div class="form-group">
+      <br>
+        <div class="mb-3">
             <label for="corretor">Corretor</label>
-            <input type="text" id="corretor" name="corretor" class="form-control">
-          </div>
-          <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
+            <select class="form-select" name="corretor" id="corretor">
+                <option selected>Selecione o Corretor</option>
+                {% for proprietario in proprietarios %}
+                        <option value="{{ proprietario._id }}">{{ proprietario._nome }}</option>
+                {% endfor %}
+            </select>
+
+        </div>
+    <script>
+        $(document).ready(function() {
+            $('#corretor').select2();
+        });
+    </script>
+        <script>
+        $(document).ready(function() {
+            $('#proprietario').select2();
+        });
+    </script>
+  </div>
+</div>
+        <br>
+          <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
     </fieldset>
 </form>
+
 {% endblock %}
