@@ -2,7 +2,6 @@ from flask import Flask, request, redirect, render_template, session, flash
 from models import Usuario, imovel, Proprietario, Corretores
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao
 from flask_mysqldb import MySQL
-import hashlib
 
 app = Flask(__name__)
 app.secret_key='LP2'
@@ -61,9 +60,16 @@ def criar_imovel():
     proprietario = request.form['proprietario']
     corretor = request.form['corretor']
     Imovel = imovel(sigla,tipo,finalidade,bairro,quadra,lote,area,descriacao,valor,status,porcentagem,proprietario,corretor)
+    print(type(Imovel.get_percentagem()))
+    print(Imovel.get_percentagem())
+    print(type(Imovel.get_valor_imovel()))
+    print(Imovel.get_valor_imovel())
+    print(type(Imovel.get_honorarios()))
+    print(Imovel.get_honorarios())
+    print(type(Imovel.get_valor_venda()))
+    print(Imovel.get_valor_venda())
     Imovel_Dao.salvar(Imovel)
     return redirect('/')
-
 
 #Criar Proprietario
 @app.route('/Proprietario')

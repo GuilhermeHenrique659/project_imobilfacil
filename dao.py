@@ -74,7 +74,7 @@ class cad_corretor_dao:
             cursor._id = cursor.lastrowid
 
         self.__db.connection.commit()
-        return Corretores
+        return corretor
 
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -97,13 +97,14 @@ class imovelDao:
 
         if (imovel._id):
             cursor.execute(SQL_ATUALIZA_IMOVEIS,( imovel._sigla, imovel._tipo, imovel._finalidade,
-                                                imovel._bairro, imovel._quadra,imovel._lote,imovel.get_imovel_venda(),imovel._status,
-                                                imovel._porcentagem, imovel.get_honorarios(), imovel._proprietario_id ) )
+                                                imovel._bairro, imovel._quadra,imovel._lote,imovel.get_area(),imovel._descricao,
+                                                imovel.get_valor_imovel(),imovel.get_valor_venda(),imovel._status,
+                                                imovel.get_percentagem(), imovel.get_honorarios(), imovel._proprietario_id ) )
         else:
             cursor.execute(SQL_CRIA_IMOVEL,( imovel._corretor_id ,imovel._proprietario_id,imovel._sigla, imovel._tipo, imovel._finalidade,
-                                            imovel._bairro, imovel._quadra,imovel._lote, imovel._area,
-                                            imovel._descricao, imovel._valor_imovel, imovel.get_imovel_venda(), imovel._status,
-                                            imovel._porcentagem, imovel.get_honorarios()) )
+                                            imovel._bairro, imovel._quadra,imovel._lote, imovel.get_area(),
+                                            imovel._descricao, imovel.get_valor_imovel(), imovel.get_valor_venda(), imovel._status,
+                                            imovel.get_percentagem(), imovel.get_honorarios()) )
         self.__db.connection.commit()
         return imovel
 

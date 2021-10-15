@@ -27,17 +27,25 @@ class imovel:
         self._proprietario_id = proprietario_id
         self._corretor_id = corretor_id
 
-        #banheiro
-        #quarto
-        #garagem
+    def get_area(self):
+        self._area = self._area.replace('m','')
+        return float(self._area)
+
+    def get_percentagem(self):
+        self._porcentagem = self._porcentagem.replace('%','')
+        return float(self._porcentagem)
+
+    def get_valor_imovel(self):
+        self._valor_imovel = self._valor_imovel.replace('.','')
+        return float(self._valor_imovel)
 
     def get_honorarios(self):
-        self._honorarios = self._porcentagem
-        return self._honorarios
+        self._honorarios = (self.get_percentagem() * self.get_valor_imovel())/100
+        return float(self._honorarios)
 
-    def get_imovel_venda(self):
-        self._valor_venda = self._valor_imovel
-        return self._valor_venda
+    def get_valor_venda(self):
+        self._valor_venda = (self.get_valor_imovel() + ((self.get_percentagem() * self.get_valor_imovel())/100))
+        return float(self._valor_venda)
 
 class Proprietario:
     def __init__(self, nome, cpf, rg, endereco, telefone, email, id = None ):
