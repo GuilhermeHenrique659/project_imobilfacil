@@ -60,14 +60,6 @@ def criar_imovel():
     proprietario = request.form['proprietario']
     corretor = request.form['corretor']
     Imovel = imovel(sigla,tipo,finalidade,bairro,quadra,lote,area,descriacao,valor,status,porcentagem,proprietario,corretor)
-    print(type(Imovel.get_percentagem()))
-    print(Imovel.get_percentagem())
-    print(type(Imovel.get_valor_imovel()))
-    print(Imovel.get_valor_imovel())
-    print(type(Imovel.get_honorarios()))
-    print(Imovel.get_honorarios())
-    print(type(Imovel.get_valor_venda()))
-    print(Imovel.get_valor_venda())
     Imovel_Dao.salvar(Imovel)
     return redirect('/')
 
