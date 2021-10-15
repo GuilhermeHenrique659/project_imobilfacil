@@ -15,13 +15,21 @@
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>Imobiliária</th>
+                    <th>CRECI</th>
+                    <th>CPF</th>
+                    <th>Celular</th>
                 </tr>
             </thead>
             <tbody>
                 {% for corretor in corretores %}
                     <tr>
-                        <td>{{ corretor._id }}</td>
+                        <td>{{ corretor._id_corr }}</td>
                         <td>{{ corretor._nome }}</td>
+                        <td>{{ corretor._imobil }}</td>
+                        <td>{{ corretor._creci }}</td>
+                        <td>{{ corretor._cpf }}</td>
+                        <td>{{ corretor._celular }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

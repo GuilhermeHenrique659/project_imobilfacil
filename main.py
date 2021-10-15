@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash
-from models import Usuario, imovel, Proprietario
-from dao import imovelDao, cad_proprietario_dao
+from models import Usuario, imovel, Proprietario, Corretores
+from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao
 from flask_mysqldb import MySQL
 import hashlib
 
@@ -16,7 +16,7 @@ db = MySQL(app)
 
 Imovel_Dao = imovelDao(db)
 Proprietario_dao = cad_proprietario_dao(db)
-
+Corretores_dao = cad_corretor_dao(db)
 
 
 usuario1 = Usuario('guilherme','Guilherme Henrique','naomecha')
@@ -32,7 +32,8 @@ def index():
         return redirect('/login?proxima=''')
     lista_imob = Imovel_Dao.listar()
     lista_prop = Proprietario_dao.listar()
-    return render_template('lista.html', corretores=lista_user, imoveis=lista_imob, proprietarios=lista_prop)
+    lista_corr = Corretores_dao.listar()
+    return render_template('lista.html', corretores=lista_corr, imoveis=lista_imob, proprietarios=lista_prop)
 
 
 #criar_imovel
@@ -41,7 +42,8 @@ def novo_imovel():
     if 'usuario_logado' not in session or session['usuario_logado']==None:
         return redirect('/login?proxima=novo_imovel')
     lista_prop = Proprietario_dao.listar()
-    return render_template('novo_imovel.html', proprietarios=lista_prop)
+    lista_corr = Corretores_dao.listar()
+    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr)
 
 @app.route('/criar_imovel', methods=['POST'])
 def criar_imovel():
@@ -82,6 +84,31 @@ def criar_proprietario():
     proprietario = Proprietario(nome,cpf,rg,endereco,telefone,email)
     Proprietario_dao.salvar(proprietario)
     return redirect('/')
+
+#corretor
+@app.route('/Corretor')
+def rota_corretor():
+    if 'usuario_logado' not in session or session['usuario_logado']==None:
+        return redirect('/login?proxima=novo_proprietario.html')
+    return render_template('novo_corretor.html')
+
+
+@app.route('/cad_corretor', methods=['POST'])
+def criar_Corretor():
+    usuario = request.form['usuario_corr']
+    email = request.form['email_corr']
+    nome = request.form['nome_corr']
+    imobil = request.form['imobil_corr']
+    creci = request.form['creci_corr']
+    celular = request.form['celular_corr']
+    cpf = request.form['cpf_corr']
+    endereco = request.form['endereco_corr']
+    senha = request.form['senha_corr']
+
+    corretor = Corretores(usuario,email,nome,imobil,creci,celular,cpf,endereco,senha)
+    Corretores_dao.salvar(corretor)
+    return redirect('/')
+
 
 #login, autenticar, logout#
 

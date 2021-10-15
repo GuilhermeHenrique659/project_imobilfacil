@@ -49,5 +49,16 @@ class Proprietario:
         self._telefone = telefone
         self._email = email
 
-
+class Corretores:
+    def __init__(self, usuario, email, nome, imobil, creci, celular, cpf, endereco, senha, id_corr=None):
+        self._id_corr = id_corr
+        self._usuario = usuario
+        self._email = email
+        self._nome = nome
+        self._imobil = imobil
+        self._creci = creci
+        self._celular = celular
+        self._cpf = cpf
+        self._endereco =endereco
+        self._senha = senha
 
