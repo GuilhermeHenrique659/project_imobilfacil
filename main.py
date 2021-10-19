@@ -13,18 +13,12 @@ app.config['MYSQL_DB'] = 'projeto_db'
 app.config['MYSQL_PORT'] = 3306
 db = MySQL(app)
 
+#DAO
 Imovel_Dao = imovelDao(db)
 Proprietario_dao = cad_proprietario_dao(db)
 Corretores_dao = cad_corretor_dao(db)
 
-
-usuario1 = Usuario('guilherme','Guilherme Henrique','naomecha')
-usuario2 = Usuario('teste','Teste1','123456')
-
-usuarios = {usuario1._id:usuario1 , usuario2._id:usuario2}
-
-lista_user=[usuario1,usuario2]
-
+#index
 @app.route('/')
 def index():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
@@ -102,7 +96,6 @@ def criar_Corretor():
     cpf = request.form['cpf_corr']
     endereco = request.form['endereco_corr']
     senha = request.form['senha_corr']
-
     corretor = Corretores(usuario,email,nome,imobil,creci,celular,cpf,endereco,senha)
     Corretores_dao.salvar(corretor)
     return redirect('/')
@@ -119,10 +112,9 @@ def login():
 
 @app.route('/autenticar', methods=['POST'])
 def autenticar():
-    if request.form['usuario'] in usuarios:
-        usuario = usuarios[request.form['usuario']]
-        print(usuario._senha, usuario._id, usuario._nome)
-        if usuario.get_senha() == request.form['senha']:
+    usuario = Corretores_dao.buscar_por_id(request.form['usuario'])
+    if usuario:
+        if usuario._senha == request.form['senha']:
             session['usuario_logado']=request.form['usuario']
             flash(request.form['usuario'] + ' logou com sucesso!')
             proxima_pagina = request.form['proxima']

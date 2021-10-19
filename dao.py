@@ -1,6 +1,6 @@
 from models import imovel,Proprietario, Corretores
 
-#imoveis
+#Sql da tabela imoveis
 SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, SINGLA, TIPO, FINALIDADE, BAIRRO, QUADRA, LOTE, AREA, DETALHES,' \
                   ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS)' \
                   ' values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s)'
@@ -14,7 +14,7 @@ SQL_BUSCA_LISTA_IMOB = 'SELECT ID_IMOB, ID_CORR, ID_PROP, SINGLA, TIPO, FINALIDA
                   ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS from imoveis'
 
 
-
+#Sql da tabela propeitarios
 #SQL_DELETA_PROPRIETARIO = 'delete from proprietarios where ID_PROP = %s'
 
 SQL_CRIA_PROPRIETARIO = 'INSERT into proprietarios (NOME, CPF, RG, ENDERECO, TELEFONE, EMAIL) values (%s,%s,%s,%s,%s,%s)'
@@ -23,12 +23,14 @@ SQL_ATUALIZA_PROPRIETARIO = 'UPDATE proprietarios SET NOME=%s, CPF=%s, RG=%s, EN
 
 SQL_BUSCAR_LISTA_PROP = 'SELECT ID_PROP, NOME, CPF, RG, ENDERECO,TELEFONE,EMAIL from proprietarios'
 
-#corretores
+#Sql da tabela corretores
 SQL_CRIA_CORRETORES = 'INSERT into corretores (USUARIO,EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)'
 
 SQL_ATUALIZA_CORRETORES = 'UPDATE corretores SET USUARIO=%s,EMAIL=%s,NOME=%s,IMOBIL=%s,CRECI=%s,CELULAR=%s,CPF=%s,ENDERECO=%s,SENHA=%s  where ID_CORR=%s'
 
 SQL_BUSCA_LISTA_CORRETORES = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA from corretores'
+
+SQL_BUSCA_CORR_ID = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA from corretores where USUARIO=%s'
 
 
 #proprietarios
@@ -75,13 +77,25 @@ class cad_corretor_dao:
 
         self.__db.connection.commit()
         return corretor
-
+    # faz lista de corretores para mostrar no index
     def listar(self):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_LISTA_CORRETORES)
         corretores = traduz_corr(cursor.fetchall())
         return corretores
 
+    # busca um unico corretor pelo usuario no login
+    def buscar_por_id(self,usuario):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_BUSCA_CORR_ID, (usuario,))
+        dados = cursor.fetchone()
+        usuario = traduz_usuario(dados) if dados else None
+        return usuario
+#cria objeto usuario
+def traduz_usuario(tupla):
+    return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9], id_corr=tupla[0])
+
+#tranforma dodos do bd em uma lista de objetos
 def traduz_corr(corretores):
     def cria_corr(tupla):
         return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9], id_corr=tupla[0])

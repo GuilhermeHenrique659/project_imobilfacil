@@ -5,11 +5,8 @@ class Usuario:
         self._nome = nome
         self._senha = senha
 
-    def get_senha(self):
-        return self._senha
-
 class imovel:
-    def __init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao, valor_imovel, status, porcentagem, proprietario_id=None, corretor_id=None, imob_id=None, valor_venda=None,honorarios =None):
+    def __init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao, valor_imovel, status, porcentagem, proprietario_id=None, corretor_id=None, imob_id=None, valor_venda=None,honorarios=None):
         self._id = imob_id
         self._sigla = sigla
         self._tipo= tipo
