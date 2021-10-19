@@ -1,11 +1,13 @@
 import MySQLdb
+import bcrypt
+
 print('Conectando...')
 conn = MySQLdb.connect(user='root', passwd='root', host='127.0.0.1', port=3306, charset='utf8')
 
 # Descomente se quiser desfazer o banco...
-'''conn.cursor().execute("SET NAMES utf8;")
+conn.cursor().execute("SET NAMES utf8;")
 conn.cursor().execute("DROP DATABASE `Projeto_DB`;")
-conn.commit()'''
+conn.commit()
 conn.cursor().execute("CREATE DATABASE `Projeto_DB`;")
 conn.commit()
 
@@ -20,7 +22,7 @@ criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
     `CELULAR` CHAR(25) NULL,
     `CPF` CHAR(25) NULL,
     `ENDERECO` VARCHAR(45) NULL,
-    `SENHA` VARCHAR(75) NULL,
+    `SENHA` VARCHAR(128) NULL,
     PRIMARY KEY (`ID_CORR`),
     UNIQUE INDEX `USUARIO_UNIQUE` (`USUARIO` ASC),
     UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC),
@@ -69,7 +71,9 @@ conn.commit()
 
 # inserindo usuarios
 cursor = conn.cursor()
-cursor.execute('INSERT INTO Projeto_DB.CORRETORES ( USUARIO, NOME, EMAIL, SENHA ) VALUES ( %s, %s, %s, %s)', ('guilherme','Guilherme Henrique','teste@gmail.com','123456') )
+senha = '123456'
+senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
+cursor.execute('INSERT INTO Projeto_DB.CORRETORES ( USUARIO, NOME, EMAIL, SENHA ) VALUES ( %s, %s, %s, %s)', ('guilherme','Guilherme Henrique','teste@gmail.com',senha) )
 
 cursor.executemany(
       'INSERT INTO Projeto_DB.PROPRIETARIOS ( NOME, CPF, RG, ENDERECO, TELEFONE, EMAIL) VALUES ( %s, %s, %s, %s, %s, %s)',

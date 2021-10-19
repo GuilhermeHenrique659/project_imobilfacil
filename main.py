@@ -1,7 +1,9 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from models import Usuario, imovel, Proprietario, Corretores
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao
+import bcrypt
 from flask_mysqldb import MySQL
+
 
 app = Flask(__name__)
 app.secret_key='LP2'
@@ -41,7 +43,7 @@ def novo_imovel():
 @app.route('/criar_imovel', methods=['POST'])
 def criar_imovel():
     sigla = request.form['sigla']
-    tipo =  request.form['tipo']
+    tipo = request.form['tipo']
     finalidade = request.form['finalidade']
     bairro = request.form['bairro']
     quadra = request.form['quadra']
@@ -72,7 +74,7 @@ def criar_proprietario():
     rg = request.form['rg']
     endereco = request.form['endereco']
     telefone = request.form['telefone']
-    email  = request.form['email']
+    email = request.form['email']
     proprietario = Proprietario(nome,cpf,rg,endereco,telefone,email)
     Proprietario_dao.salvar(proprietario)
     return redirect('/')
@@ -96,6 +98,7 @@ def criar_Corretor():
     cpf = request.form['cpf_corr']
     endereco = request.form['endereco_corr']
     senha = request.form['senha_corr']
+    senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
     corretor = Corretores(usuario,email,nome,imobil,creci,celular,cpf,endereco,senha)
     Corretores_dao.salvar(corretor)
     return redirect('/')
@@ -114,7 +117,7 @@ def login():
 def autenticar():
     usuario = Corretores_dao.buscar_por_id(request.form['usuario'])
     if usuario:
-        if usuario._senha == request.form['senha']:
+        if bcrypt.hashpw(request.form['senha'].encode(), usuario._senha.encode()) == usuario._senha.encode():
             session['usuario_logado']=request.form['usuario']
             flash(request.form['usuario'] + ' logou com sucesso!')
             proxima_pagina = request.form['proxima']

@@ -95,24 +95,23 @@
   <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
       <br>
         <div class="mb-3">
-            <label for="proprietario">Proprietario</label>
             <select class="form-select" name="proprietario" id="proprietario">
                     <option selected>Selecione o proprietario</option>
                     {% for proprietario in proprietarios %}
                         <option value="{{ proprietario._id }}">{{ proprietario._nome }}</option>
                     {% endfor %}
             </select>
+            <label for="proprietario">Proprietario</label>
           </div>
       <br>
         <div class="mb-3">
-            <label for="corretor">Corretor</label>
             <select class="form-select" name="corretor" id="corretor">
                 <option selected>Selecione o Corretor</option>
                 {% for corretor in corretores %}
                         <option value="{{ corretor._id_corr }}">{{ corretor._nome }}</option>
                 {% endfor %}
             </select>
-
+            <label for="corretor">Corretor</label>
         </div>
    <script>
         $(document).ready(function() {
