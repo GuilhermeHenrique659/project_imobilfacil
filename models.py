@@ -1,10 +1,3 @@
-
-class Usuario:
-    def __init__(self, id, nome, senha):
-        self._id = id
-        self._nome = nome
-        self._senha = senha
-
 class imovel:
     def __init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao, valor_imovel, status, porcentagem, proprietario_id=None, corretor_id=None, imob_id=None, valor_venda=None,honorarios=None):
         self._id = imob_id
@@ -43,6 +36,8 @@ class imovel:
     def get_valor_venda(self):
         self._valor_venda = (self.get_valor_imovel() + ((self.get_percentagem() * self.get_valor_imovel())/100))
         return float(self._valor_venda)
+    def imprimir(self):
+        print('{} - {}'.format(self._bairro,self._tipo))
 
 class Proprietario:
     def __init__(self, nome, cpf, rg, endereco, telefone, email, id = None ):
@@ -53,6 +48,9 @@ class Proprietario:
         self._endereco = endereco
         self._telefone = telefone
         self._email = email
+
+    def imprimir(self):
+        print('{} - {}'.format(self._nome,self._telefone))
 
 class Corretores:
     def __init__(self, usuario, email, nome, imobil, creci, celular, cpf, endereco, senha, id_corr=None):
@@ -67,3 +65,10 @@ class Corretores:
         self._endereco =endereco
         self._senha = senha
 
+class Imob_Prop(imovel,Proprietario):
+    def __init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao,
+                 valor_imovel, status,porcentagem,proprietario_id, corretor_id, imob_id,
+                 valor_venda,honorarios,nome, cpf, rg, endereco, telefone, email, id):
+        imovel.__init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao, valor_imovel, status,
+                        porcentagem, proprietario_id, corretor_id, imob_id, valor_venda,honorarios)
+        Proprietario.__init__(self,nome, cpf, rg, endereco, telefone, email,id)

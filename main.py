@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, render_template, session, flash
-from models import Usuario, imovel, Proprietario, Corretores
+from models import imovel, Proprietario, Corretores
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao
 import bcrypt
 from flask_mysqldb import MySQL
@@ -28,7 +28,7 @@ def index():
     lista_imob = Imovel_Dao.listar()
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
-    return render_template('lista.html', corretores=lista_corr, imoveis=lista_imob, proprietarios=lista_prop)
+    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop)
 
 
 #criar_imovel
@@ -38,7 +38,7 @@ def novo_imovel():
         return redirect('/login?proxima=novo_imovel')
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
-    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr)
+    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr, user = session['usuario_logado'])
 
 @app.route('/criar_imovel', methods=['POST'])
 def criar_imovel():

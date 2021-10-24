@@ -1,5 +1,6 @@
 import MySQLdb
 import bcrypt
+from user import *
 
 print('Conectando...')
 conn = MySQLdb.connect(user='root', passwd='root', host='127.0.0.1', port=3306, charset='utf8')
@@ -47,8 +48,8 @@ conn.commit()
 
 criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
         `ID_IMOB` INT NOT NULL AUTO_INCREMENT,
-        `ID_CORR` INT NULL,
-        `ID_PROP` INT NULL,
+        `ID_CORR` INT NOT NULL,
+        `ID_PROP` INT NOT NULL,
         `SINGLA` CHAR(2) NULL,
         `TIPO` VARCHAR(45) NULL,
         `FINALIDADE` VARCHAR(45) NULL,
@@ -63,17 +64,24 @@ criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
         `PORCENTAGEM` REAL NULL,
         `HONORARIOS` REAL NULL,
         PRIMARY KEY (`ID_IMOB`),
-        CONSTRAINT fk_IMOVEIS_ID_PROP FOREIGN KEY (ID_PROP) REFERENCES PROPRIETARIOS (ID_PROP),
-        CONSTRAINT fk_IMOVEIS_ID_CORR FOREIGN KEY (ID_CORR) REFERENCES CORRETORES (ID_CORR)
+  CONSTRAINT `fk_IMOVEIS_PROPRIETARIOS`
+    FOREIGN KEY (`ID_PROP`)
+    REFERENCES `PROPRIETARIOS` (`ID_PROP`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_IMOVEIS_CORRETORES`
+    FOREIGN KEY (`ID_CORR`)
+    REFERENCES `CORRETORES` (`ID_CORR`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
     )ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_imovel)
 conn.commit()
 
 # inserindo usuarios
 cursor = conn.cursor()
-senha = '123456'
 senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
-cursor.execute('INSERT INTO Projeto_DB.CORRETORES ( USUARIO, NOME, EMAIL, SENHA ) VALUES ( %s, %s, %s, %s)', ('guilherme','Guilherme Henrique','teste@gmail.com',senha) )
+cursor.execute('INSERT INTO Projeto_DB.CORRETORES ( USUARIO, NOME, EMAIL, SENHA ) VALUES ( %s, %s, %s, %s)', (usuario,nome,email,senha) )
 
 cursor.executemany(
       'INSERT INTO Projeto_DB.PROPRIETARIOS ( NOME, CPF, RG, ENDERECO, TELEFONE, EMAIL) VALUES ( %s, %s, %s, %s, %s, %s)',
@@ -90,6 +98,9 @@ print(' -------------  Usuários:  -------------')
 for user in cursor.fetchall():
     print(user[0])
 
+cursor.execute('select imoveis.TIPO, imoveis.ID_CORR, corretores.NOME from imoveis join corretores on corretores.ID_CORR = imoveis.ID_CORR;')
+for imovel in cursor.fetchall():
+    print(imovel[0])
 
 # commitando senão nada tem efeito
 conn.commit()
