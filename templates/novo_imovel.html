@@ -38,7 +38,7 @@
           <div class="form-group">
             <label for="finalidade">Finalidade</label>
             <select class="form-select" id="finalidade" name="finalidade">
-                <option selected>Selecione a finalidade</option>
+                <option value="0" selected>Selecione a finalidade</option>
                     <option value="Residencial">Residencial</option>
                     <option value="Comercial">Comercial</option>
                     <option value="Industrial">Industrial</option>
@@ -80,7 +80,7 @@
         <div class="form-group">
             <label for="status">Status</label>
             <select class="form-select" id="status" name="status">
-              <option selected>Selecione o Status</option>
+              <option value="0" selected>Selecione o Status</option>
                     <option value="Livre">Livre</option>
                     <option value="Ocupado">Ocupado</option>
                     <option value="Vendido">Vendido</option>
@@ -96,7 +96,7 @@
       <br>
         <div class="mb-3">
             <select class="form-select" name="proprietario" id="proprietario">
-                    <option selected>Selecione o proprietario</option>
+                    <option value="0" selected>Selecione o proprietario</option>
                     {% for proprietario in proprietarios %}
                         <option value="{{ proprietario._id }}">{{ proprietario._nome }}</option>
                     {% endfor %}
@@ -106,7 +106,7 @@
       <br>
         <div class="mb-3">
             <select class="form-select" name="corretor" id="corretor">
-                <option selected>Selecione o Corretor</option>
+                <option value="0" selected>Selecione o Corretor</option>
                 {% for corretor in corretores %}
                         <option value="{{ corretor._id_corr }}">{{ corretor._nome }}</option>
                 {% endfor %}

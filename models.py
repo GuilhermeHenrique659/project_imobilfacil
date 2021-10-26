@@ -65,6 +65,7 @@ class Corretores:
         self._endereco =endereco
         self._senha = senha
 
+#classe para receber inner join da tabela imovel e proprietario do banco de dados
 class Imob_Prop(imovel,Proprietario):
     def __init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao,
                  valor_imovel, status,porcentagem,proprietario_id, corretor_id, imob_id,

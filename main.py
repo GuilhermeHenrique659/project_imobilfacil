@@ -1,8 +1,10 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from models import imovel, Proprietario, Corretores
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao
-import bcrypt
 from flask_mysqldb import MySQL
+from validacao import imovel_valida
+import bcrypt
+
 
 
 app = Flask(__name__)
@@ -38,7 +40,7 @@ def novo_imovel():
         return redirect('/login?proxima=novo_imovel')
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
-    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr, user = session['usuario_logado'])
+    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr)
 
 @app.route('/criar_imovel', methods=['POST'])
 def criar_imovel():
@@ -56,8 +58,17 @@ def criar_imovel():
     proprietario = request.form['proprietario']
     corretor = request.form['corretor']
     Imovel = imovel(sigla,tipo,finalidade,bairro,quadra,lote,area,descriacao,valor,status,porcentagem,proprietario,corretor)
-    Imovel_Dao.salvar(Imovel)
-    return redirect('/')
+    #verfica se os campos foram preenchidos
+    erros = imovel_valida(Imovel)
+    if erros:
+        for e in erros:
+            flash(e)
+        return redirect('/novo_imovel')
+    else:
+        Imovel_Dao.salvar(Imovel)
+        return redirect('/')
+
+
 
 #Criar Proprietario
 @app.route('/Proprietario')
