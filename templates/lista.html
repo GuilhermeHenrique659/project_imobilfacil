@@ -46,7 +46,7 @@
                     <th>Proprietario</th>
                     <th>Telefone</th>
                     <th>Status</th>
-                    <th></th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,7 +59,8 @@
                         <td>{{ l._nome}}</td>
                         <td>{{ l._telefone}}</td>
                         <td>{{ l._status }}</td>
-                        <td><a href="{{url_for('editar_imovel', id=l._imob_id)}}"><img src="../static/img/icon/pen.svg"></a></td>
+                        <td><a href="{{url_for('view_imovel', id=l._imob_id)}}"><img src="../static/img/icon/eye.svg"></a>
+                            <a href="{{url_for('editar_imovel', id=l._imob_id)}}"><img src="../static/img/icon/pen.svg"></a></td>
                     </tr>
                 {% endfor %}
 

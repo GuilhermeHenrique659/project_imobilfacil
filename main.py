@@ -30,6 +30,22 @@ def index():
     lista_corr = Corretores_dao.listar()
     return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop)
 
+#visualização do imovel
+@app.route('/view_imovel/<int:id>')
+def view_imovel(id):
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return redirect('/login?proxima=view_imovel/id')
+    Imovel = Imovel_Dao.busca_imob_id(id)
+    return render_template('view_imovel.html', imovel=Imovel)
+
+@app.route('/resumo_imovel/<int:id>')
+def resumo_imovel(id):
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return redirect('/login?proxima=view_imovel/id')
+    Imovel = Imovel_Dao.busca_imob_id(id)
+    return render_template('resumo_imovel.html', imovel=Imovel)
+
+
 #editar_imovel
 @app.route('/editar_imovel/<int:id>')
 def editar_imovel(id):
@@ -107,6 +123,8 @@ def criar_imovel():
     else:
         Imovel_Dao.salvar(Imovel)
         return redirect('/')
+
+
 
 #Criar Proprietario
 @app.route('/Proprietario')

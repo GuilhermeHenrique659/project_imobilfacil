@@ -1,0 +1,63 @@
+{% extends "template.html" %}
+{% block conteudo %}
+<div id="View_imovel">
+<table class="table table-striped table-responsive table-bordered">
+    <thead class="thead-default">
+        <tr>
+            <th>Informações do Imovel</th>
+        </tr>
+    </thead>
+</table>
+<br>
+<table class="table table-striped table-responsive table-bordered">
+    <thead class="thead-default">
+        <tr>
+            <th>ID: {{imovel._imob_id}}</th>
+            <th>Cidade: {{imovel._cidade}}</th>
+            <th>Status: {{imovel._status}}</th>
+        </tr>
+        <tr>
+            <th>Tipo: {{imovel._tipo}}</th>
+            <th>Bairro: {{imovel._bairro}}</th>
+            <th>Numero de banheiros: {{imovel._banheiro}}</th>
+        </tr>
+            <th>Finalidade: {{imovel._finalidade}}</th>
+            <th>Endereço: {{imovel._endereco}}</th>
+            <th>Numero de quartos: {{imovel._quartos}}</th>
+        <tr>
+            <th>Valor do imovel: R$ {{imovel._valor_imovel}}0</th>
+            <th>Area: {{imovel.get_area()}}m</th>
+            <th>Numero de garagens: {{imovel._garagem}}</th>
+        </tr>
+        <tr>
+            <th>Valor de venda: R$ {{imovel._valor_venda}}0</th>
+            <th>Descrição: {{imovel._descricao}}</th>
+            <th>Honorarios: R$ {{imovel._honorarios}}0</th>
+        </tr>
+    </thead>
+</table>
+</div>
+<br>
+<button type="button" class="btn btn-primary" onclick="CriaPDF()">Imprimir </button>
+<script>
+    function CriaPDF() {
+        var minhaTabela = document.getElementById('View_imovel').innerHTML;
+        var style = "<style>";
+        style = style + "table {width: 100%;font: 20px Calibri;}";
+        style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+        style = style + "padding: 2px 3px;text-align: center;}";
+        style = style + "</style>";
+        // CRIA UM OBJETO WINDOW
+        var win = window.open('', '', 'height=400,width=600');
+        win.document.write('<html><head>');
+        win.document.write('<title>Informações do imovel</title>');   // <title> CABEÇALHO DO PDF.
+        win.document.write(style);                                     // INCLUI UM ESTILO NA TAB HEAD
+        win.document.write('</head>');
+        win.document.write('<body>');
+        win.document.write(minhaTabela);                          // O CONTEUDO DA TABELA DENTRO DA TAG BODY
+        win.document.write('</body></html>');
+        win.document.close(); 	                                         // FECHA A JANELA
+        win.print();                                                            // IMPRIME O CONTEUDO
+    }
+</script>
+{% endblock %}
