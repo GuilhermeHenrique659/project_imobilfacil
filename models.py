@@ -1,12 +1,12 @@
 class imovel:
-    def __init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao, valor_imovel, status, porcentagem, proprietario_id=None, corretor_id=None, imob_id=None, valor_venda=None,honorarios=None):
-        self._id = imob_id
-        self._sigla = sigla
+    def __init__(self, tipo, finalidade, cidade, bairro, endereco,area, descricao, valor_imovel, status, porcentagem,
+                 proprietario_id=None, corretor_id=None, valor_venda=None,honorarios=None, banheiro=0, quartos=0, garagem=0, imob_id=None):
+        self._imob_id = imob_id
         self._tipo= tipo
         self._finalidade = finalidade
+        self._cidade = cidade
         self._bairro = bairro
-        self._quadra = quadra
-        self._lote = lote
+        self._endereco = endereco
         self._area = area
         self._descricao = descricao
         self._valor_imovel = valor_imovel
@@ -16,28 +16,35 @@ class imovel:
         self._honorarios = honorarios
         self._proprietario_id = proprietario_id
         self._corretor_id = corretor_id
+        self._banheiro = banheiro
+        self._quartos = quartos
+        self._garagem = garagem
 
-    def get_area(self):
+    def set_area(self):
         self._area = self._area.replace('m','')
         return float(self._area)
 
-    def get_percentagem(self):
+    def get_area(self):
+        return int(self._area)
+
+    def set_percentagem(self):
         self._porcentagem = self._porcentagem.replace('%','')
         return float(self._porcentagem)
 
-    def get_valor_imovel(self):
+    def set_valor_imovel(self):
         self._valor_imovel = self._valor_imovel.replace('.','')
         return float(self._valor_imovel)
 
-    def get_honorarios(self):
-        self._honorarios = (self.get_percentagem() * self.get_valor_imovel())/100
+    def get_valor_imovel(self):
+        return int(self._valor_imovel)
+
+    def set_honorarios(self):
+        self._honorarios = (self.set_percentagem() * self.set_valor_imovel())/100
         return float(self._honorarios)
 
-    def get_valor_venda(self):
-        self._valor_venda = (self.get_valor_imovel() + ((self.get_percentagem() * self.get_valor_imovel())/100))
+    def set_valor_venda(self):
+        self._valor_venda = (self.get_valor_imovel() + ((self.set_percentagem() * self.get_valor_imovel())/100))
         return float(self._valor_venda)
-    def imprimir(self):
-        print('{} - {}'.format(self._bairro,self._tipo))
 
 class Proprietario:
     def __init__(self, nome, cpf, rg, endereco, telefone, email, id = None ):
@@ -45,12 +52,9 @@ class Proprietario:
         self._nome = nome
         self._cpf = cpf
         self._rg = rg
-        self._endereco = endereco
+        self._endereco_prop = endereco
         self._telefone = telefone
         self._email = email
-
-    def imprimir(self):
-        print('{} - {}'.format(self._nome,self._telefone))
 
 class Corretores:
     def __init__(self, usuario, email, nome, imobil, creci, celular, cpf, endereco, senha, id_corr=None):
@@ -62,14 +66,15 @@ class Corretores:
         self._creci = creci
         self._celular = celular
         self._cpf = cpf
-        self._endereco =endereco
+        self._endereco = endereco
         self._senha = senha
 
 #classe para receber inner join da tabela imovel e proprietario do banco de dados
 class Imob_Prop(imovel,Proprietario):
-    def __init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao,
-                 valor_imovel, status,porcentagem,proprietario_id, corretor_id, imob_id,
-                 valor_venda,honorarios,nome, cpf, rg, endereco, telefone, email, id):
-        imovel.__init__(self, sigla, tipo, finalidade, bairro, quadra, lote,area, descricao, valor_imovel, status,
-                        porcentagem, proprietario_id, corretor_id, imob_id, valor_venda,honorarios)
-        Proprietario.__init__(self,nome, cpf, rg, endereco, telefone, email,id)
+    def __init__(self, imob_id, corretor_id, proprietario_id, tipo, finalidade, cidade, bairro,
+                 endereco,area, descricao, valor_imovel,valor_venda, status, porcentagem, honorarios, banheiro, quartos, garagem,
+                 id, nome, cpf, rg, endereco_prop, telefone, email):
+        imovel.__init__(self, tipo, finalidade, cidade, bairro, endereco,area, descricao, valor_imovel, status,porcentagem,
+                    proprietario_id, corretor_id, valor_venda, honorarios, banheiro, quartos, garagem, imob_id=imob_id)
+
+        Proprietario.__init__(self,nome, cpf, rg, endereco_prop, telefone, email,id)

@@ -18,12 +18,12 @@ class Erros:
 
 def imovel_valida(imovel):
     erro_list = Erros()
+
     #validação dos campos texto
-    erro_list.valida_campo_texto(imovel._sigla,'sigla')
     erro_list.valida_campo_texto(imovel._tipo,'tipo')
+    erro_list.valida_campo_texto(imovel._cidade,'cidade')
     erro_list.valida_campo_texto(imovel._bairro,'bairro')
-    erro_list.valida_campo_texto(imovel._lote,'lote')
-    erro_list.valida_campo_texto(imovel._area,'area')
+    erro_list.valida_campo_texto(imovel._endereco,'endereço')
     erro_list.valida_campo_texto(imovel._valor_imovel,'valor')
     erro_list.valida_campo_texto(imovel._porcentagem,'porcentagem')
 

@@ -40,28 +40,26 @@
             <thead class="thead-default">
                 <tr>
                     <th>ID</th>
-                    <th>Sigla</th>
                     <th>Tipo</th>
                     <th>Bairro</th>
-                    <th>Quadra</th>
-                    <th>Lote</th>
+                    <th>Endereço</th>
                     <th>Proprietario</th>
                     <th>Telefone</th>
                     <th>Status</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for l in lista %}
                     <tr>
-                        <td>{{ l._id}}</td>
-                        <td>{{ l._sigla }}</td>
+                        <td>{{ l._imob_id}}</td>
                         <td>{{ l._tipo }}</td>
                         <td>{{ l._bairro}}</td>
-                        <td>{{ l._quadra}}</td>
-                        <td>{{ l._lote }}</td>
+                        <td>{{ l._endereco}}</td>
                         <td>{{ l._nome}}</td>
                         <td>{{ l._telefone}}</td>
                         <td>{{ l._status }}</td>
+                        <td><a href="{{url_for('editar_imovel', id=l._imob_id)}}"><img src="../static/img/icon/pen.svg"></a></td>
                     </tr>
                 {% endfor %}
 

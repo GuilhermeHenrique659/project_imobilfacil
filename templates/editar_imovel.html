@@ -13,7 +13,7 @@
 
 <h1>Cadastro de imoveis</h1>
 <br>
-<form class="row g-3" action="/criar_imovel" method="post">
+<form class="row g-3" action="/atualizar_imovel" method="post">
     <fieldset>
     <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -24,16 +24,17 @@
 </nav>
 <div class="tab-content" id="nav-tabContent">
   <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
+      <input type="hidden" name="id" value="{{imovel._imob_id}}">
       <br>
           <div class="form-group">
             <label for="tipo">Tipo</label>
-            <input type="text" id="tipo" name="tipo" class="form-control">
+            <input type="text" id="tipo" name="tipo" class="form-control" value="{{imovel._tipo}}">
           </div>
       <br>
           <div class="form-group">
             <label for="finalidade">Finalidade</label>
             <select class="form-select" id="finalidade" name="finalidade">
-                <option value="0" selected>Selecione a finalidade</option>
+                <option value="{{imovel._finalidade}}" selected>{{imovel._finalidade}}</option>
                     <option value="Residencial">Residencial</option>
                     <option value="Comercial">Comercial</option>
                     <option value="Industrial">Industrial</option>
@@ -42,56 +43,56 @@
       <br>
         <div class="form-group">
             <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" class="form-control">
+            <input type="text" id="cidade" name="cidade" class="form-control" value="{{imovel._cidade}}">
           </div>
       <br>
         <div class="form-group">
             <label for="bairro">Bairro</label>
-            <input type="text" id="bairro" name="bairro" class="form-control">
+            <input type="text" id="bairro" name="bairro" class="form-control" value="{{imovel._bairro}}">
           </div>
       <br>
 
         <div class="form-group">
             <label for="endereco">Endereço</label>
-            <input type="text" id="endereco" name="endereco" class="form-control">
+            <input type="text" id="endereco" name="endereco" class="form-control" value="{{imovel._endereco}}">
           </div>
   </div>
   <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
       <br>
         <div class="form-group">
             <label for="area">Àrea</label>
-            <input type="text" id="area" name="area" class="form-control">
+            <input type="text" id="area" name="area" class="form-control" value="{{imovel.get_area()}}">
           </div>
       <br>
         <div class="form-group">
              <span class="form-group-text">Detalhes do imóvel </span>
-            <textarea class="form-control" aria-label="With textarea" id="detalhes" name="detalhes"></textarea>
+            <textarea class="form-control" aria-label="With textarea" id="detalhes" name="detalhes" value="{{imovel._detalhes}}"></textarea>
         </div>
       <br>
       <div class="form-group">
             <label for="banheiro">Banheiro</label>
-            <input type="text" id="banheiro" name="banheiro" class="form-control">
+            <input type="text" id="banheiro" name="banheiro" class="form-control" value="{{imovel._banheiro}}">
           </div>
       <br>
             <div class="form-group">
             <label for="quartos">Quartos</label>
-            <input type="text" id="quartos" name="quartos" class="form-control">
+            <input type="text" id="quartos" name="quartos" class="form-control" value="{{imovel._quartos}}">
           </div>
       <br>
             <div class="form-group">
             <label for="garagem">Garagem</label>
-            <input type="text" id="garagem" name="garagem" class="form-control">
+            <input type="text" id="garagem" name="garagem" class="form-control" value="{{imovel._garagem}}">
           </div>
       <br>
         <div class="form-group">
             <label for="valor">Valor</label>
-            <input type="text" id="valor" name="valor" class="form-control">
+            <input type="text" id="valor" name="valor" class="form-control" value="{{imovel.get_valor_imovel()}}">
           </div>
       <br>
         <div class="form-group">
             <label for="status">Status</label>
             <select class="form-select" id="status" name="status">
-              <option value="0" selected>Selecione o Status</option>
+              <option value="{{imovel._status}}" selected>{{imovel._status}}</option>
                     <option value="Livre">Livre</option>
                     <option value="Ocupado">Ocupado</option>
                     <option value="Vendido">Vendido</option>
@@ -100,14 +101,14 @@
       <br>
         <div class="form-group">
             <label for="porcentagem">Porcentagem</label>
-            <input type="text" id="porcentagem" name="porcentagem" class="form-control">
+            <input type="text" id="porcentagem" name="porcentagem" class="form-control" value="{{imovel._porcentagem}}">
           </div>
   </div>
   <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
       <br>
         <div class="mb-3">
             <select class="form-select" name="proprietario" id="proprietario">
-                    <option value="0" selected>Selecione o proprietario</option>
+                    <option value="{{ imovel._proprietario_id }}" selected>Selecione o proprietario</option>
                     {% for proprietario in proprietarios %}
                         <option value="{{ proprietario._id }}">{{ proprietario._nome }}</option>
                     {% endfor %}
@@ -117,7 +118,7 @@
       <br>
         <div class="mb-3">
             <select class="form-select" name="corretor" id="corretor">
-                <option value="0" selected>Selecione o Corretor</option>
+                <option value="{{ imovel._corretor_id }}" selected>Selecione o Corretor</option>
                 {% for corretor in corretores %}
                         <option value="{{ corretor._id_corr }}">{{ corretor._nome }}</option>
                 {% endfor %}

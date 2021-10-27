@@ -1,11 +1,9 @@
-from flask import Flask, request, redirect, render_template, session, flash
+from flask import Flask, request, redirect, render_template, session, flash,url_for
 from models import imovel, Proprietario, Corretores
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao
 from flask_mysqldb import MySQL
 from validacao import imovel_valida
 import bcrypt
-
-
 
 app = Flask(__name__)
 app.secret_key='LP2'
@@ -32,6 +30,45 @@ def index():
     lista_corr = Corretores_dao.listar()
     return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop)
 
+#editar_imovel
+@app.route('/editar_imovel/<int:id>')
+def editar_imovel(id):
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return redirect('/login?proxima=editar_imovel/id')
+    Imovel = Imovel_Dao.busca_imob_id(id)
+    lista_prop = Proprietario_dao.listar()
+    lista_corr = Corretores_dao.listar()
+    return render_template('editar_imovel.html', imovel=Imovel, proprietarios=lista_prop, corretores=lista_corr)
+
+
+@app.route('/atualizar_imovel', methods=['POST'])
+def atualiza_imovel():
+    tipo = request.form['tipo']
+    finalidade = request.form['finalidade']
+    cidade = request.form['cidade']
+    bairro = request.form['bairro']
+    endereco = request.form['endereco']
+    area = request.form['area']
+    descriacao = request.form['detalhes']
+    valor = request.form['valor']
+    status = request.form['status']
+    porcentagem = request.form['porcentagem']
+    proprietario = request.form['proprietario']
+    corretor = request.form['corretor']
+    banheiro = request.form['banheiro']
+    quartos = request.form['quartos']
+    garagem = request.form['garagem']
+    id = request.form['id']
+    Imovel = imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem ,proprietario,corretor,
+                    banheiro=banheiro, quartos=quartos, garagem=garagem, imob_id=id)
+    erros = imovel_valida(Imovel)
+    if erros:
+        for e in erros:
+            flash(e)
+        return redirect(url_for('editar_imovel',id=id))
+    else:
+        Imovel_Dao.salvar(Imovel)
+        return redirect('/')
 
 #criar_imovel
 @app.route('/novo_imovel')
@@ -44,12 +81,11 @@ def novo_imovel():
 
 @app.route('/criar_imovel', methods=['POST'])
 def criar_imovel():
-    sigla = request.form['sigla']
     tipo = request.form['tipo']
     finalidade = request.form['finalidade']
+    cidade = request.form['cidade']
     bairro = request.form['bairro']
-    quadra = request.form['quadra']
-    lote = request.form['lote']
+    endereco = request.form['endereco']
     area = request.form['area']
     descriacao = request.form['detalhes']
     valor = request.form['valor']
@@ -57,7 +93,11 @@ def criar_imovel():
     porcentagem = request.form['porcentagem']
     proprietario = request.form['proprietario']
     corretor = request.form['corretor']
-    Imovel = imovel(sigla,tipo,finalidade,bairro,quadra,lote,area,descriacao,valor,status,porcentagem,proprietario,corretor)
+    banheiro = request.form['banheiro']
+    quartos = request.form['quartos']
+    garagem = request.form['garagem']
+    Imovel = imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem,proprietario, corretor,
+                    banheiro=banheiro,quartos=quartos,garagem=garagem)
     #verfica se os campos foram preenchidos
     erros = imovel_valida(Imovel)
     if erros:
@@ -68,15 +108,12 @@ def criar_imovel():
         Imovel_Dao.salvar(Imovel)
         return redirect('/')
 
-
-
 #Criar Proprietario
 @app.route('/Proprietario')
 def rota_proprietario():
     if 'usuario_logado' not in session or session['usuario_logado']==None:
         return redirect('/login?proxima=novo_proprietario.html')
     return render_template('novo_proprietario.html')
-
 
 @app.route('/cad_prop', methods=['POST'])
 def criar_proprietario():
@@ -97,7 +134,6 @@ def rota_corretor():
         return redirect('/login?proxima=novo_proprietario.html')
     return render_template('novo_corretor.html')
 
-
 @app.route('/cad_corretor', methods=['POST'])
 def criar_Corretor():
     usuario = request.form['usuario_corr']
@@ -114,9 +150,7 @@ def criar_Corretor():
     Corretores_dao.salvar(corretor)
     return redirect('/')
 
-
 #login, autenticar, logout#
-
 @app.route('/login')
 def login():
     proxima = request.args.get('proxima')

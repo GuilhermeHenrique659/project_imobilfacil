@@ -1,14 +1,14 @@
 from models import imovel,Proprietario, Corretores, Imob_Prop
 
 #Sql da tabela imoveis
-SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, SINGLA, TIPO, FINALIDADE, BAIRRO, QUADRA, LOTE, AREA, DETALHES,' \
-                  ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS)' \
-                  ' values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s)'
+SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, TIPO, FINALIDADE, CIDADE, BAIRRO, ENDERECO, AREA, DETALHES,' \
+                  ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS, BANHEIRO, QUARTOS, GARAGEM)' \
+                  ' values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s, %s, %s)'
 
 SQL_DELETA_IMOVEL = 'delete from imoveis where ID = %s'
 
-SQL_ATUALIZA_IMOVEIS = 'UPDATE imoveis SET SIGLA=%s,TIPO=%s,FINALIDADE=%s,BAIRRO,QUADRA=%s,LOTE=%s,' \
-                       'VALOR_VENDA=%s,STATUS=%s, PORCENTAGEM=%s, HONORARIOS=%s, PROPRIETARIO_ID=%s where ID=%s'
+SQL_ATUALIZA_IMOVEIS = 'UPDATE imoveis SET ID_CORR=%s,ID_PROP=%s,TIPO=%s,FINALIDADE=%s,CIDADE=%s,BAIRRO=%s,ENDERECO=%s, AREA=%s, DETALHES=%s,'\
+                       'VALOR_IMOVEL=%s,VALOR_VENDA=%s,STATUS=%s, PORCENTAGEM=%s, HONORARIOS=%s,BANHEIRO=%s,QUARTOS=%s, GARAGEM=%s where ID_IMOB=%s'
 
 '''SQL_BUSCA_LISTA_IMOB = 'SELECT ID_IMOB, ID_CORR, ID_PROP, SINGLA, TIPO, FINALIDADE, BAIRRO, QUADRA, LOTE, AREA, DETALHES,' \
                   ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS from imoveis'
@@ -16,6 +16,7 @@ SQL_ATUALIZA_IMOVEIS = 'UPDATE imoveis SET SIGLA=%s,TIPO=%s,FINALIDADE=%s,BAIRRO
 
 SQL_BUSCA_LISTA_IMOB = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP'
 
+SQL_BUSCA_IMOB_ID = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP where imoveis.ID_IMOB = %s'
 
 #Sql da tabela propeitarios
 #SQL_DELETA_PROPRIETARIO = 'delete from proprietarios where ID_PROP = %s'
@@ -45,9 +46,9 @@ class cad_proprietario_dao:
         cursor = self.__db.connection.cursor()
 
         if (Proprietario._id):
-            cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (Proprietario._nome, Proprietario._cpf,Proprietario._rg, Proprietario._endereco, Proprietario._id, Proprietario._telefone,Proprietario._email))
+            cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (Proprietario._nome, Proprietario._cpf,Proprietario._rg, Proprietario._endereco_prop, Proprietario._id, Proprietario._telefone,Proprietario._email))
         else:
-            cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco, Proprietario._telefone, Proprietario._email))
+            cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco_prop, Proprietario._telefone, Proprietario._email))
             cursor._id = cursor.lastrowid
 
         self.__db.connection.commit()
@@ -94,6 +95,7 @@ class cad_corretor_dao:
         dados = cursor.fetchone()
         usuario = traduz_usuario(dados) if dados else None
         return usuario
+
 #cria objeto usuario
 def traduz_usuario(tupla):
     return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9], id_corr=tupla[0])
@@ -111,17 +113,16 @@ class imovelDao:
 
     def salvar(self, imovel):
         cursor = self.__db.connection.cursor()
-
-        if (imovel._id):
-            cursor.execute(SQL_ATUALIZA_IMOVEIS,( imovel._sigla, imovel._tipo, imovel._finalidade,
-                                                imovel._bairro, imovel._quadra,imovel._lote,imovel.get_area(),imovel._descricao,
-                                                imovel.get_valor_imovel(),imovel.get_valor_venda(),imovel._status,
-                                                imovel.get_percentagem(), imovel.get_honorarios(), imovel._proprietario_id ) )
+        if (imovel._imob_id):
+            cursor.execute(SQL_ATUALIZA_IMOVEIS, (imovel._corretor_id ,imovel._proprietario_id, imovel._tipo, imovel._finalidade,
+                                            imovel._cidade, imovel._bairro,imovel._endereco, imovel.set_area(),
+                                            imovel._descricao, imovel.set_valor_imovel(), imovel.set_valor_venda(), imovel._status,
+                                            imovel.set_percentagem(), imovel.set_honorarios(), imovel._banheiro, imovel._quartos, imovel._garagem, imovel._imob_id))
         else:
-            cursor.execute(SQL_CRIA_IMOVEL,( imovel._corretor_id ,imovel._proprietario_id,imovel._sigla, imovel._tipo, imovel._finalidade,
-                                            imovel._bairro, imovel._quadra,imovel._lote, imovel.get_area(),
-                                            imovel._descricao, imovel.get_valor_imovel(), imovel.get_valor_venda(), imovel._status,
-                                            imovel.get_percentagem(), imovel.get_honorarios()))
+            cursor.execute(SQL_CRIA_IMOVEL,( imovel._corretor_id ,imovel._proprietario_id, imovel._tipo, imovel._finalidade,
+                                            imovel._cidade, imovel._bairro,imovel._endereco, imovel.set_area(),
+                                            imovel._descricao, imovel.set_valor_imovel(), imovel.set_valor_venda(), imovel._status,
+                                            imovel.set_percentagem(), imovel.set_honorarios(),imovel._banheiro,imovel._quartos,imovel._garagem))
         self.__db.connection.commit()
         return imovel
 
@@ -131,8 +132,18 @@ class imovelDao:
         imoveis = traduz_imob(cursor.fetchall())
         return imoveis
 
+    def busca_imob_id(self, id):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_BUSCA_IMOB_ID, (id,))
+        tupla = cursor.fetchone()
+        return Imob_Prop(tupla[0],tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],
+                         tupla[10],tupla[11],tupla[12],tupla[13] ,tupla[14],tupla[15],tupla[16],tupla[17],tupla[18],
+                         tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24])
+
 def traduz_imob(imoveis):
     def cria_imob_lista(tupla):
-        return Imob_Prop(tupla[3],tupla[4],tupla[5],tupla[6],tupla[7], tupla[8],tupla[9],tupla[10], tupla[11],tupla[13],tupla[14],
-                      tupla[2], tupla[1], tupla[0], tupla[12],tupla[15],tupla[17], tupla[18], tupla[19], tupla[20], tupla[21], tupla[22],tupla[16])
+        return Imob_Prop(tupla[0],tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],
+                         tupla[10],tupla[11],tupla[12],tupla[13],tupla[14],tupla[15],tupla[16],tupla[17],tupla[18],
+                         tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24])
+
     return list(map(cria_imob_lista, imoveis))
