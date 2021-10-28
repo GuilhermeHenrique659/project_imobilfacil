@@ -59,11 +59,32 @@
                         <td>{{ l._nome}}</td>
                         <td>{{ l._telefone}}</td>
                         <td>{{ l._status }}</td>
-                        <td><a href="{{url_for('view_imovel', id=l._imob_id)}}"><img src="../static/img/icon/eye.svg"></a>
-                            <a href="{{url_for('editar_imovel', id=l._imob_id)}}"><img src="../static/img/icon/pen.svg"></a></td>
+                        <td><a href="{{url_for('view_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i>
+                            <img src="../static/img/icon/eye.svg"></i></button></a>
+                            <a href="{{url_for('editar_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i>
+                                <img src="../static/img/icon/pen.svg"></i></button></a>
+                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ l._imob_id}}"><i>
+                                <img src="../static/img/icon/trash.svg"></i></button>
+<div class="modal fade" id="modal{{ l._imob_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Deseja excluir o registro {{ l._imob_id }} </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Você tem certeza que deseja excluir o imovel: {{ l._endereco }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <a href="{{url_for('deleta_imovel', id=l._imob_id)}}"><button type="button" class="btn btn-danger">Deletar imovel</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+                        </td>
                     </tr>
                 {% endfor %}
-
             </tbody>
         </table>
   </div>

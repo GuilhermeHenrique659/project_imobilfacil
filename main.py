@@ -45,6 +45,11 @@ def resumo_imovel(id):
     Imovel = Imovel_Dao.busca_imob_id(id)
     return render_template('resumo_imovel.html', imovel=Imovel)
 
+#exclui_imovel
+@app.route('/deleta_imovel/<int:id>')
+def deleta_imovel(id):
+    Imovel_Dao.deletar_imob(id)
+    return redirect('/')
 
 #editar_imovel
 @app.route('/editar_imovel/<int:id>')

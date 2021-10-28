@@ -5,7 +5,7 @@ SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, TIPO, FINALIDADE, CIDA
                   ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS, BANHEIRO, QUARTOS, GARAGEM)' \
                   ' values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s, %s, %s)'
 
-SQL_DELETA_IMOVEL = 'delete from imoveis where ID = %s'
+SQL_DELETA_IMOVEL = 'delete from imoveis where ID_IMOB = %s'
 
 SQL_ATUALIZA_IMOVEIS = 'UPDATE imoveis SET ID_CORR=%s,ID_PROP=%s,TIPO=%s,FINALIDADE=%s,CIDADE=%s,BAIRRO=%s,ENDERECO=%s, AREA=%s, DETALHES=%s,'\
                        'VALOR_IMOVEL=%s,VALOR_VENDA=%s,STATUS=%s, PORCENTAGEM=%s, HONORARIOS=%s,BANHEIRO=%s,QUARTOS=%s, GARAGEM=%s where ID_IMOB=%s'
@@ -123,6 +123,8 @@ class imovelDao:
                                             imovel._cidade, imovel._bairro,imovel._endereco, imovel.set_area(),
                                             imovel._descricao, imovel.set_valor_imovel(), imovel.set_valor_venda(), imovel._status,
                                             imovel.set_percentagem(), imovel.set_honorarios(),imovel._banheiro,imovel._quartos,imovel._garagem))
+            cursor._id = cursor.lastrowid
+
         self.__db.connection.commit()
         return imovel
 
@@ -139,6 +141,10 @@ class imovelDao:
         return Imob_Prop(tupla[0],tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],
                          tupla[10],tupla[11],tupla[12],tupla[13] ,tupla[14],tupla[15],tupla[16],tupla[17],tupla[18],
                          tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24])
+
+    def deletar_imob(self, id):
+        self.__db.connection.cursor().execute(SQL_DELETA_IMOVEL, (id,))
+        self.__db.connection.commit()
 
 def traduz_imob(imoveis):
     def cria_imob_lista(tupla):
