@@ -1,41 +1,5 @@
-from models import imovel,Proprietario, Corretores, Imob_Prop
-
-#Sql da tabela imoveis
-SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, TIPO, FINALIDADE, CIDADE, BAIRRO, ENDERECO, AREA, DETALHES,' \
-                  ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS, BANHEIRO, QUARTOS, GARAGEM)' \
-                  ' values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s, %s, %s)'
-
-SQL_DELETA_IMOVEL = 'delete from imoveis where ID_IMOB = %s'
-
-SQL_ATUALIZA_IMOVEIS = 'UPDATE imoveis SET ID_CORR=%s,ID_PROP=%s,TIPO=%s,FINALIDADE=%s,CIDADE=%s,BAIRRO=%s,ENDERECO=%s, AREA=%s, DETALHES=%s,'\
-                       'VALOR_IMOVEL=%s,VALOR_VENDA=%s,STATUS=%s, PORCENTAGEM=%s, HONORARIOS=%s,BANHEIRO=%s,QUARTOS=%s, GARAGEM=%s where ID_IMOB=%s'
-
-'''SQL_BUSCA_LISTA_IMOB = 'SELECT ID_IMOB, ID_CORR, ID_PROP, SINGLA, TIPO, FINALIDADE, BAIRRO, QUADRA, LOTE, AREA, DETALHES,' \
-                  ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS from imoveis'
-'''
-
-SQL_BUSCA_LISTA_IMOB = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP'
-
-SQL_BUSCA_IMOB_ID = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP where imoveis.ID_IMOB = %s'
-
-#Sql da tabela propeitarios
-#SQL_DELETA_PROPRIETARIO = 'delete from proprietarios where ID_PROP = %s'
-
-SQL_CRIA_PROPRIETARIO = 'INSERT into proprietarios (NOME, CPF, RG, ENDERECO, TELEFONE, EMAIL) values (%s,%s,%s,%s,%s,%s)'
-
-SQL_ATUALIZA_PROPRIETARIO = 'UPDATE proprietarios SET NOME=%s, CPF=%s, RG=%s, ENDERECO=%s, TELEFONE=%s, EMAIL=%s  where ID_PROP=%s'
-
-SQL_BUSCAR_LISTA_PROP = 'SELECT ID_PROP, NOME, CPF, RG, ENDERECO,TELEFONE,EMAIL from proprietarios'
-
-#Sql da tabela corretores
-SQL_CRIA_CORRETORES = 'INSERT into corretores (USUARIO,EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)'
-
-SQL_ATUALIZA_CORRETORES = 'UPDATE corretores SET USUARIO=%s,EMAIL=%s,NOME=%s,IMOBIL=%s,CRECI=%s,CELULAR=%s,CPF=%s,ENDERECO=%s,SENHA=%s  where ID_CORR=%s'
-
-SQL_BUSCA_LISTA_CORRETORES = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA from corretores'
-
-SQL_BUSCA_CORR_ID = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA from corretores where USUARIO=%s'
-
+from models import imovel,Proprietario, Corretores, Imob_Prop, Tipo, Cidade, Bairro
+from SQL import *
 
 #proprietarios
 class cad_proprietario_dao:
@@ -131,7 +95,7 @@ class imovelDao:
     def listar(self):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_LISTA_IMOB)
-        imoveis = traduz_imob(cursor.fetchall())
+        imoveis = self.traduz_imob(cursor.fetchall())
         return imoveis
 
     def busca_imob_id(self, id):
@@ -140,16 +104,86 @@ class imovelDao:
         tupla = cursor.fetchone()
         return Imob_Prop(tupla[0],tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],
                          tupla[10],tupla[11],tupla[12],tupla[13] ,tupla[14],tupla[15],tupla[16],tupla[17],tupla[18],
-                         tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24])
+                         tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24], tupla[25], tupla[26],tupla[27],
+                         tupla[28],tupla[29],tupla[30],tupla[31])
 
     def deletar_imob(self, id):
         self.__db.connection.cursor().execute(SQL_DELETA_IMOVEL, (id,))
         self.__db.connection.commit()
 
-def traduz_imob(imoveis):
-    def cria_imob_lista(tupla):
-        return Imob_Prop(tupla[0],tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],
+    def traduz_imob(self,imoveis):
+        def cria_imob_lista(tupla):
+            return Imob_Prop(tupla[0],tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],
                          tupla[10],tupla[11],tupla[12],tupla[13],tupla[14],tupla[15],tupla[16],tupla[17],tupla[18],
-                         tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24])
+                         tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24],tupla[25], tupla[26], tupla[27],
+                         tupla[28],tupla[29],tupla[30],tupla[31])
 
-    return list(map(cria_imob_lista, imoveis))
+        return list(map(cria_imob_lista, imoveis))
+
+#tipos
+class tiposDao:
+    def __init__(self, db):
+        self.__db = db
+
+    def salvar(self, tipo):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_CRIA_TIPOS,(tipo._id_tipo,tipo._tipo_nome))
+        cursor._id = cursor.lastrowid
+        self.__db.connection.commit()
+        return tipo
+
+    def lista(self):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_LISTA_TIPOS)
+        tipos = self.traduz_tipos(cursor.fetchall())
+        return tipos
+
+    def traduz_tipos(self, tipos):
+        def cria_tipo_lista(tupla):
+                return Tipo(tupla[1],tupla[0])
+        return list(map(cria_tipo_lista, tipos))
+
+class ciadadeDao:
+    def __init__(self, db):
+        self.__db = db
+
+    def salvar(self, cidade):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_CRIA_CIDADE,(cidade._id_cidade,cidade._cidade_nome))
+        cursor._id = cursor.lastrowid
+        self.__db.connection.commit()
+        return cidade
+
+    def lista(self):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_LISTA_CIDADE)
+        tipos = self.traduz_tipos(cursor.fetchall())
+        return tipos
+
+    def traduz_tipos(self, cidades):
+        def cria_tipo_lista(tupla):
+                return Cidade(tupla[1],tupla[0])
+        return list(map(cria_tipo_lista, cidades))
+
+class bairroDao:
+    def __init__(self, db):
+        self.__db = db
+
+    def salvar(self, bairro):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_CRIA_BAIRRO,(bairro._id_bairro,bairro._bairro_nome,bairro._id_cid))
+        cursor._id = cursor.lastrowid
+        self.__db.connection.commit()
+        return bairro
+
+    def lista(self):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_LISTA_BAIRRO)
+        tipos = self.traduz_tipos(cursor.fetchall())
+        return tipos
+
+    def traduz_tipos(self, bairros):
+        def cria_tipo_lista(tupla):
+            return Bairro(tupla[1],tupla[2], id_bairro = tupla[0], bairro_cidade_nome = tupla[4])
+        return list(map(cria_tipo_lista, bairros))
+

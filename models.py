@@ -1,8 +1,25 @@
+class Cidade:
+    def __init__(self, cidade_nome, id_cidade = None):
+        self._id_cidade = id_cidade
+        self._cidade_nome = cidade_nome
+
+class Bairro:
+    def __init__(self, bairro_nome, id_cid, id_bairro = None, bairro_cidade_nome=None):
+        self._id_bairro = id_bairro
+        self._bairro_nome = bairro_nome
+        self._id_cid = id_cid
+        self._bairro_cid_nome = bairro_cidade_nome
+
+class Tipo:
+    def __init__(self,tipo_nome,id_tipo = None):
+        self._id_tipo = id_tipo
+        self._tipo_nome = tipo_nome
+
 class imovel:
     def __init__(self, tipo, finalidade, cidade, bairro, endereco,area, descricao, valor_imovel, status, porcentagem,
-                 proprietario_id=None, corretor_id=None, valor_venda=None,honorarios=None, banheiro=0, quartos=0, garagem=0, imob_id=None):
+                 proprietario_id=None, corretor_id=None, valor_venda=None,honorarios=None, banheiro=None, quartos=None, garagem=None, imob_id=None):
         self._imob_id = imob_id
-        self._tipo= tipo
+        self._tipo = tipo
         self._finalidade = finalidade
         self._cidade = cidade
         self._bairro = bairro
@@ -70,11 +87,13 @@ class Corretores:
         self._senha = senha
 
 #classe para receber inner join da tabela imovel e proprietario do banco de dados
-class Imob_Prop(imovel,Proprietario):
+class Imob_Prop(imovel,Proprietario,Tipo,Cidade,Bairro):
     def __init__(self, imob_id, corretor_id, proprietario_id, tipo, finalidade, cidade, bairro,
                  endereco,area, descricao, valor_imovel,valor_venda, status, porcentagem, honorarios, banheiro, quartos, garagem,
-                 id, nome, cpf, rg, endereco_prop, telefone, email):
+                 id, nome, cpf, rg, endereco_prop, telefone, email, tipo_id, tipo_nome,id_cidade,cidade_nome,id_bairro,bairro_nome,cidade_bairro_id):
         imovel.__init__(self, tipo, finalidade, cidade, bairro, endereco,area, descricao, valor_imovel, status,porcentagem,
                     proprietario_id, corretor_id, valor_venda, honorarios, banheiro, quartos, garagem, imob_id=imob_id)
-
         Proprietario.__init__(self,nome, cpf, rg, endereco_prop, telefone, email,id)
+        Tipo.__init__(self,tipo_nome,tipo_id)
+        Cidade.__init__(self,cidade_nome,id_cidade)
+        Bairro.__init__(self,bairro_nome,cidade_bairro_id,id_bairro)

@@ -41,6 +41,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Tipo</th>
+                    <th>Cidade</th>
                     <th>Bairro</th>
                     <th>Endereço</th>
                     <th>Proprietario</th>
@@ -53,8 +54,9 @@
                 {% for l in lista %}
                     <tr>
                         <td>{{ l._imob_id}}</td>
-                        <td>{{ l._tipo }}</td>
-                        <td>{{ l._bairro}}</td>
+                        <td>{{ l._tipo_nome}}</td>
+                        <td>{{ l._cidade_nome}}</td>
+                        <td>{{ l._bairro_nome}}</td>
                         <td>{{ l._endereco}}</td>
                         <td>{{ l._nome}}</td>
                         <td>{{ l._telefone}}</td>

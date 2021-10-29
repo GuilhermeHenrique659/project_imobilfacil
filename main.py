@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash,url_for
-from models import imovel, Proprietario, Corretores
-from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao
+from models import imovel, Proprietario, Corretores,Tipo,Cidade,Bairro
+from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao,tiposDao,ciadadeDao,bairroDao
 from flask_mysqldb import MySQL
 from validacao import imovel_valida
 import bcrypt
@@ -19,7 +19,9 @@ db = MySQL(app)
 Imovel_Dao = imovelDao(db)
 Proprietario_dao = cad_proprietario_dao(db)
 Corretores_dao = cad_corretor_dao(db)
-
+TiposDao = tiposDao(db)
+CidadeDao = ciadadeDao(db)
+BairroDao = bairroDao(db)
 #index
 @app.route('/')
 def index():
@@ -29,6 +31,38 @@ def index():
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
     return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop)
+
+#tipos,cidade e bairro
+#tipo
+@app.route('/novo_tipo', methods=['POST'])
+def novo_tipo():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return redirect('/login?proxima=novo_imovel')
+    Tipo_nome= request.form['tipo']
+    tipo = Tipo(Tipo_nome)
+    TiposDao.salvar(tipo)
+    return redirect('/novo_imovel')
+#cidade
+@app.route('/nova_cidade', methods=['POST'])
+def nova_cidade():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return redirect('/login?proxima=novo_imovel')
+    cidade_nome = request.form['cidade']
+    cidade = Cidade(cidade_nome)
+    CidadeDao.salvar(cidade)
+    return redirect('/novo_imovel')
+
+#bairro
+@app.route('/novo_bairro', methods=['POST'])
+def novo_bairro():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return redirect('/login?proxima=novo_imovel')
+    cidade = request.form['cidade_bairro']
+    bairro_nome = request.form['bairro']
+    bairro = Bairro(bairro_nome,cidade)
+    BairroDao.salvar(bairro)
+    return redirect('/novo_imovel')
+
 
 #visualização do imovel
 @app.route('/view_imovel/<int:id>')
@@ -59,15 +93,18 @@ def editar_imovel(id):
     Imovel = Imovel_Dao.busca_imob_id(id)
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
-    return render_template('editar_imovel.html', imovel=Imovel, proprietarios=lista_prop, corretores=lista_corr)
+    lista_tipo = TiposDao.lista()
+    lista_cidades = CidadeDao.lista()
+    lista_bairro = BairroDao.lista()
+    return render_template('editar_imovel.html', imovel=Imovel, proprietarios=lista_prop, corretores=lista_corr,tipos=lista_tipo,cidades=lista_cidades,bairros=lista_bairro)
 
 
 @app.route('/atualizar_imovel', methods=['POST'])
 def atualiza_imovel():
-    tipo = request.form['tipo']
+    tipo = request.form['tipos']
     finalidade = request.form['finalidade']
-    cidade = request.form['cidade']
-    bairro = request.form['bairro']
+    cidade = request.form['cidades']
+    bairro = request.form['bairros']
     endereco = request.form['endereco']
     area = request.form['area']
     descriacao = request.form['detalhes']
@@ -98,14 +135,17 @@ def novo_imovel():
         return redirect('/login?proxima=novo_imovel')
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
-    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr)
+    lista_tipo = TiposDao.lista()
+    lista_cidades = CidadeDao.lista()
+    lista_bairro = BairroDao.lista()
+    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr,tipos=lista_tipo,cidades=lista_cidades,bairros=lista_bairro)
 
 @app.route('/criar_imovel', methods=['POST'])
 def criar_imovel():
-    tipo = request.form['tipo']
+    tipo = request.form['tipos']
     finalidade = request.form['finalidade']
-    cidade = request.form['cidade']
-    bairro = request.form['bairro']
+    cidade = request.form['cidades']
+    bairro = request.form['bairros']
     endereco = request.form['endereco']
     area = request.form['area']
     descriacao = request.form['detalhes']

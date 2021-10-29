@@ -10,7 +10,27 @@
       $('#area').mask('##000m', {reverse: true});
   });
   </script>
-
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <form class="row g-3" action="/novo_tipo" method="post">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Criar tipo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <input type="text" id="tipo" name="tipo" class="form-control">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+      </div>
+    </div>
+  </div></form>
+</div>
 <h1>Cadastro de imoveis</h1>
 <br>
 <form class="row g-3" action="/atualizar_imovel" method="post">
@@ -26,11 +46,60 @@
   <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
       <input type="hidden" name="id" value="{{imovel._imob_id}}">
       <br>
-          <div class="form-group">
-            <label for="tipo">Tipo</label>
-            <input type="text" id="tipo" name="tipo" class="form-control" value="{{imovel._tipo}}">
+          <div class="row">
+              <div class="col">
+            <label for="tipos">Tipos</label>
+            <select class="form-select" id="tipos" name="tipos">
+                <option value="{{ imovel._id_tipo }}" selected>{{ imovel._tipo_nome}}</option>
+                    {% for tipo in tipos %}
+                        <option value="{{ tipo._id_tipo }}">{{ tipo._tipo_nome}}</option>
+                    {% endfor %}
+            </select>
+                  </div>
+              <div class="col">
+                  <br>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TipoModal">Criar tipo</button>
+              </div>
           </div>
       <br>
+      <div class="row">
+              <div class="col">
+            <label for="cidades">Tipos</label>
+            <select class="form-select" id="cidades" name="cidades">
+                <option value="{{imovel._id_cidade}}" selected>{{ imovel._cidade_nome }}</option>
+                    {% for cidade in cidades %}
+                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+                    {% endfor %}
+            </select>
+                  </div>
+              <div class="col">
+                  <br>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CidadeModal">Criar cidade</button>
+              </div>
+          </div>
+      <br>
+                  <div class="row">
+              <div class="col">
+            <label for="bairros">Bairros</label>
+            <select class="form-select" id="bairros" name="bairros">
+                <option value="{{ imovel._id_bairro }}" selected>{{imovel._bairro_nome}} / {{imovel._bairro_cid_nome}} </option>
+                    {% for bairro in bairros %}
+                        <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+                    {% endfor %}
+            </select>
+                  </div>
+              <div class="col">
+                  <br>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#BairroModal">Criar bairro</button>
+              </div>
+          </div>
+      <br>
+
+        <div class="form-group">
+            <label for="endereco">Endereço</label>
+            <input type="text" id="endereco" name="endereco" class="form-control" value="{{ imovel._endereco }}">
+          </div>
+                <br>
           <div class="form-group">
             <label for="finalidade">Finalidade</label>
             <select class="form-select" id="finalidade" name="finalidade">
@@ -39,22 +108,6 @@
                     <option value="Comercial">Comercial</option>
                     <option value="Industrial">Industrial</option>
             </select>
-          </div>
-      <br>
-        <div class="form-group">
-            <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" class="form-control" value="{{imovel._cidade}}">
-          </div>
-      <br>
-        <div class="form-group">
-            <label for="bairro">Bairro</label>
-            <input type="text" id="bairro" name="bairro" class="form-control" value="{{imovel._bairro}}">
-          </div>
-      <br>
-
-        <div class="form-group">
-            <label for="endereco">Endereço</label>
-            <input type="text" id="endereco" name="endereco" class="form-control" value="{{imovel._endereco}}">
           </div>
   </div>
   <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
