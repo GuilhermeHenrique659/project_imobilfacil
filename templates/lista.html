@@ -1,119 +1,156 @@
 {% extends "template.html" %}
 {% block conteudo %}
-<div class="content-list">
-<nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-link active" id="nav-corretor-tab" data-bs-toggle="tab" href="#nav-corretor" role="tab" aria-controls="nav-corretor" aria-selected="true">Lista de Corretor</a>
-    <a class="nav-link" id="nav-imovel-tab" data-bs-toggle="tab" href="#nav-imovel" role="tab" aria-controls="nav-imovel" aria-selected="false">Lista de Imovel</a>
-    <a class="nav-link" id="nav-prop-tab" data-bs-toggle="tab" href="#nav-prop" role="tab" aria-controls="nav-prop" aria-selected="false">Lista de proprietario</a>
-  </div>
-</nav>
-<div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
-    <table class="table table-striped table-responsive table-bordered">
-            <thead class="thead-default">
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Imobiliária</th>
-                    <th>CRECI</th>
-                    <th>CPF</th>
-                    <th>Celular</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for corretor in corretores %}
-                    <tr>
-                        <td>{{ corretor._id_corr }}</td>
-                        <td>{{ corretor._nome }}</td>
-                        <td>{{ corretor._imobil }}</td>
-                        <td>{{ corretor._creci }}</td>
-                        <td>{{ corretor._cpf }}</td>
-                        <td>{{ corretor._celular }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-  </div>
-  <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
-        <table class="table table-striped table-responsive table-bordered">
-            <thead class="thead-default">
-                <tr>
-                    <th>ID</th>
-                    <th>Tipo</th>
-                    <th>Cidade</th>
-                    <th>Bairro</th>
-                    <th>Endereço</th>
-                    <th>Proprietario</th>
-                    <th>Telefone</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for l in lista %}
-                    <tr>
-                        <td>{{ l._imob_id}}</td>
-                        <td>{{ l._tipo_nome}}</td>
-                        <td>{{ l._cidade_nome}}</td>
-                        <td>{{ l._bairro_nome}}</td>
-                        <td>{{ l._endereco}}</td>
-                        <td>{{ l._nome}}</td>
-                        <td>{{ l._telefone}}</td>
-                        <td>{{ l._status }}</td>
-                        <td><a href="{{url_for('view_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i>
-                            <img src="../static/img/icon/eye.svg"></i></button></a>
-                            <a href="{{url_for('editar_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i>
-                                <img src="../static/img/icon/pen.svg"></i></button></a>
-                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ l._imob_id}}"><i>
-                                <img src="../static/img/icon/trash.svg"></i></button>
-<div class="modal fade" id="modal{{ l._imob_id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+<div class="modal fade" id="FiltroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Deseja excluir o registro {{ l._imob_id }} </h5>
+        <h5 class="modal-title" id="TipoModalLabel">Filtrar cidade</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Você tem certeza que deseja excluir o imovel: {{ l._endereco }}
+        <div class="form-group">
+          <label for="cidade">Cidade</label>
+          <select class="form-select" id="cidade" name="cidade">
+            <option value="0" selected>Selecione a cidade</option>
+            {% for cidade in cidades %}
+            <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+            {% endfor %}
+          </select>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-          <a href="{{url_for('deleta_imovel', id=l._imob_id)}}"><button type="button" class="btn btn-danger">Deletar imovel</button></a>
+        <a href="{{url_for('filtro',id=1)}}"><button type="button" class="btn btn-primary">Filtrar</button></a>
       </div>
     </div>
   </div>
 </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-  </div>
-  <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
+
+<div class="content-list">
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-link active" id="nav-corretor-tab" data-bs-toggle="tab" href="#nav-corretor" role="tab"
+        aria-controls="nav-corretor" aria-selected="true">Lista de Corretor</a>
+      <a class="nav-link" id="nav-imovel-tab" data-bs-toggle="tab" href="#nav-imovel" role="tab"
+        aria-controls="nav-imovel" aria-selected="false">Lista de Imovel</a>
+      <a class="nav-link" id="nav-prop-tab" data-bs-toggle="tab" href="#nav-prop" role="tab" aria-controls="nav-prop"
+        aria-selected="false">Lista de proprietario</a>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
+      <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default">
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Imobiliária</th>
+            <th>CRECI</th>
+            <th>CPF</th>
+            <th>Celular</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for corretor in corretores %}
+          <tr>
+            <td>{{ corretor._id_corr }}</td>
+            <td>{{ corretor._nome }}</td>
+            <td>{{ corretor._imobil }}</td>
+            <td>{{ corretor._creci }}</td>
+            <td>{{ corretor._cpf }}</td>
+            <td>{{ corretor._celular }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#FiltroModal">Filtro</button>
+      <div>
+        <br>
         <table class="table table-striped table-responsive table-bordered">
-            <thead class="thead-default">
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Telefone</th>
-                    <th>E-mail</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for proprietario in proprietarios %}
-                <tr>
-                    <td>{{ proprietario._id }}</td>
-                    <td>{{ proprietario._nome }}</td>
-                    <td>{{ proprietario._cpf }}</td>
-                    <td>{{ proprietario._telefone }}</td>
-                    <td>{{ proprietario._email }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
+          <thead class="thead-default">
+            <tr>
+              <th>ID</th>
+              <th>Tipo</th>
+              <th>Cidade</th>
+              <th>Bairro</th>
+              <th>Endereço</th>
+              <th>Proprietario</th>
+              <th>Telefone</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for l in lista %}
+            <tr>
+              <td>{{ l._imob_id}}</td>
+              <td>{{ l._tipo._tipo_nome}}</td>
+              <td>{{ l._cidade._cidade_nome}}</td>
+              <td>{{ l._bairro._bairro_nome}}</td>
+              <td>{{ l._endereco}}</td>
+              <td>{{ l._proprietario._nome}}</td>
+              <td>{{ l._proprietario._telefone}}</td>
+              <td>{{ l._status }}</td>
+              <td><a href="{{url_for('view_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i>
+                      <img src="../static/img/icon/eye.svg"></i></button></a>
+                <a href="{{url_for('editar_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i>
+                      <img src="../static/img/icon/pen.svg"></i></button></a>
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ l._imob_id}}"><i>
+                    <img src="../static/img/icon/trash.svg"></i></button>
+                <div class="modal fade" id="modal{{ l._imob_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Deseja excluir o registro {{ l._imob_id }} </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Você tem certeza que deseja excluir o imovel: {{ l._endereco }}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <a href="{{url_for('deleta_imovel', id=l._imob_id)}}"><button type="button"
+                            class="btn btn-danger">Deletar imovel</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
+      <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default">
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>E-mail</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for proprietario in proprietarios %}
+          <tr>
+            <td>{{ proprietario._id }}</td>
+            <td>{{ proprietario._nome }}</td>
+            <td>{{ proprietario._cpf }}</td>
+            <td>{{ proprietario._telefone }}</td>
+            <td>{{ proprietario._email }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 </div>
 {% endblock %}

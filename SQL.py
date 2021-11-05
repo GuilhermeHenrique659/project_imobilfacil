@@ -1,11 +1,11 @@
 #Sql da tabela imoveis
-SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, ID_TIPO, FINALIDADE, ID_CIDADE, ID_BAIRRO, ENDERECO, AREA, DETALHES,' \
+SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, ID_TIPO, FINALIDADE, ID_CIDADE, ID_BAIRRO, ENDERECO_IMOVEL, AREA, DETALHES,' \
                   ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS, BANHEIRO, QUARTOS, GARAGEM)' \
                   ' values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s, %s, %s)'
 
 SQL_DELETA_IMOVEL = 'delete from imoveis where ID_IMOB = %s'
 
-SQL_ATUALIZA_IMOVEIS = 'UPDATE imoveis SET ID_CORR=%s,ID_PROP=%s,ID_TIPO=%s,FINALIDADE=%s,ID_CIDADE=%s,ID_BAIRRO=%s,ENDERECO=%s, AREA=%s, DETALHES=%s,'\
+SQL_ATUALIZA_IMOVEIS = 'UPDATE imoveis SET ID_CORR=%s,ID_PROP=%s,ID_TIPO=%s,FINALIDADE=%s,ID_CIDADE=%s,ID_BAIRRO=%s,ENDERECO_IMOVEL=%s, AREA=%s, DETALHES=%s,'\
                        'VALOR_IMOVEL=%s,VALOR_VENDA=%s,STATUS=%s, PORCENTAGEM=%s, HONORARIOS=%s,BANHEIRO=%s,QUARTOS=%s, GARAGEM=%s where ID_IMOB=%s'
 
 '''SQL_BUSCA_LISTA_IMOB = 'SELECT ID_IMOB, ID_CORR, ID_PROP, SINGLA, TIPO, FINALIDADE, BAIRRO, QUADRA, LOTE, AREA, DETALHES,' \
@@ -45,3 +45,7 @@ SQL_CRIA_CIDADE = 'INSERT into cidade (ID_CID,CIDADE) values(%s,%s)'
 SQL_LISTA_CIDADE = 'SELECT * FROM cidade'
 SQL_CRIA_BAIRRO = 'INSERT into bairro (ID_BAIRRO,BAIRRO,CIDADE_ID_CID) values(%s,%s, %s)'
 SQL_LISTA_BAIRRO = 'SELECT * FROM bairro inner join cidade on bairro.CIDADE_ID_CID = cidade.ID_CID'
+
+#filtro
+SQL_FILTRA_CIDADE = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
+                    'join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO where imoveis.ID_CIDADE= %s'

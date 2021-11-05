@@ -1,14 +1,14 @@
 {% extends "template.html" %}
 {% block conteudo %}
-  <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
-  <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
-  <script>
-   $(document).ready(function (){
-      $('#rg').mask('00.000.000-0');
-      $('#celular').mask('(00) 0000-0000');
-      $('#cpf').mask('000.000.000-00');
+<script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
+<script>
+  $(document).ready(function () {
+    $('#rg').mask('00.000.000-0');
+    $('#celular').mask('(00) 0000-0000');
+    $('#cpf').mask('000.000.000-00');
   });
-  </script>
+</script>
 <h1>Cadastro de Corretor</h1>
 <form action="/cad_corretor" method="post">
   <fieldset>
@@ -25,7 +25,7 @@
     <br>
     <div class="mb-3">
       <label for="nome" class="form-label">Nome</label>
-      <input type="text" name="nome_corr" class="form-control" id="nome" >
+      <input type="text" name="nome_corr" class="form-control" id="nome">
     </div>
     <br>
     <div class="mb-3">
@@ -39,8 +39,8 @@
     </div>
     <br>
     <div class="mb-3">
-        <label for="celular" class="form-label">Celular</label>
-        <input type="text" class="form-control" id="celular" name="celular_corr">
+      <label for="celular" class="form-label">Celular</label>
+      <input type="text" class="form-control" id="celular" name="celular_corr">
     </div>
     <br>
     <div class="mb-3">

@@ -19,17 +19,17 @@ class Erros:
 def imovel_valida(imovel):
     erro_list = Erros()
 
-    #validação dos campos texto
-    erro_list.valida_campo_texto(imovel._tipo,'tipo')
-    erro_list.valida_campo_texto(imovel._cidade,'cidade')
-    erro_list.valida_campo_texto(imovel._bairro,'bairro')
+    erro_list.valida_campo_select(imovel._tipo,'tipo')
+    erro_list.valida_campo_select(imovel._cidade,'cidade')
+    erro_list.valida_campo_select(imovel._bairro,'bairro')
     erro_list.valida_campo_texto(imovel._endereco,'endereço')
+    erro_list.valida_campo_select(imovel._finalidade, 'finalidade')
+
     erro_list.valida_campo_texto(imovel._valor_imovel,'valor')
     erro_list.valida_campo_texto(imovel._porcentagem,'porcentagem')
-
-    #validação dos campos select
-    erro_list.valida_campo_select(imovel._finalidade,'finalidade')
     erro_list.valida_campo_select(imovel._status,'status')
-    erro_list.valida_campo_select(imovel._proprietario_id,'proprietario')
-    erro_list.valida_campo_select(imovel._corretor_id,'corretor')
+
+    erro_list.valida_campo_select(imovel._proprietario,'proprietario')
+    erro_list.valida_campo_select(imovel._corretor,'corretor')
+
     return erro_list.get_erros()

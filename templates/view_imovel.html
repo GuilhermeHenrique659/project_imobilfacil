@@ -1,73 +1,74 @@
 {% extends "template.html" %}
 {% block conteudo %}
 <div id="View_imovel">
-<table class="table table-striped table-responsive table-bordered">
-    <thead class="thead-default">
-        <tr>
-            <th>Informações do proprietario</th>
-        </tr>
-    </thead>
-    </table>
-<br>
-<table class="table table-striped table-responsive table-bordered">
-    <thead class="thead-default">
-        <tr>
-            <th>ID: {{ imovel._id }}</th>
-            <th>Nome: {{ imovel._nome }}</th>
-        </tr>
-        <tr>
-            <th>CPF: {{ imovel._cpf }}</th>
-            <th>RG: {{ imovel._rg }}</th>
-        </tr>
-        <tr>
-            <th>Endereço: {{ imovel._endereco_prop }}</th>
-            <th>Telefone: {{ imovel._telefone }}</th>
-        </tr>
-        <tr>
-            <th>E-Mail: {{ imovel._email }}</th>
-        </tr>
-    </thead>
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default">
+            <tr>
+                <th>Informações do proprietario</th>
+            </tr>
+        </thead>
     </table>
     <br>
-<table class="table table-striped table-responsive table-bordered">
-    <thead class="thead-default">
-        <tr>
-            <th>Informações do Imovel</th>
-        </tr>
-    </thead>
-</table>
-<br>
-<table class="table table-striped table-responsive table-bordered">
-    <thead class="thead-default">
-        <tr>
-            <th>ID: {{imovel._imob_id}}</th>
-            <th>Cidade: {{imovel._cidade}}</th>
-            <th>Status: {{imovel._status}}</th>
-        </tr>
-        <tr>
-            <th>Tipo: {{imovel._tipo}}</th>
-            <th>Bairro: {{imovel._bairro}}</th>
-            <th>Numero de banheiros: {{imovel._banheiro}}</th>
-        </tr>
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default">
+            <tr>
+                <th>ID: {{ imovel._proprietario._id }}</th>
+                <th>Nome: {{ imovel._proprietario._nome }}</th>
+            </tr>
+            <tr>
+                <th>CPF: {{ imovel._proprietario._cpf }}</th>
+                <th>RG: {{ imovel._proprietario._rg }}</th>
+            </tr>
+            <tr>
+                <th>Endereço: {{ imovel._proprietario._endereco_prop }}</th>
+                <th>Telefone: {{ imovel._proprietario._telefone }}</th>
+            </tr>
+            <tr>
+                <th>E-Mail: {{ imovel._proprietario._email }}</th>
+            </tr>
+        </thead>
+    </table>
+    <br>
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default">
+            <tr>
+                <th>Informações do Imovel</th>
+            </tr>
+        </thead>
+    </table>
+    <br>
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default">
+            <tr>
+                <th>ID: {{imovel._imob_id}}</th>
+                <th>Cidade: {{imovel._cidade._cidade_nome}}</th>
+                <th>Status: {{imovel._status}}</th>
+            </tr>
+            <tr>
+                <th>Tipo: {{imovel._tipo}}</th>
+                <th>Bairro: {{imovel._bairro._bairro_nome}}</th>
+                <th>Numero de banheiros: {{imovel._banheiro}}</th>
+            </tr>
             <th>Finalidade: {{imovel._finalidade}}</th>
             <th>Endereço: {{imovel._endereco}}</th>
             <th>Numero de quartos: {{imovel._quartos}}</th>
-        <tr>
-            <th>Valor do imovel: R$ {{imovel._valor_imovel}}0</th>
-            <th>Area: {{imovel.get_area()}}m</th>
-            <th>Numero de garagens: {{imovel._garagem}}</th>
-        </tr>
-        <tr>
-            <th>Valor de venda: R$ {{imovel._valor_venda}}0</th>
-            <th>Descrição: {{imovel._descricao}}</th>
-            <th>Honorarios: R$ {{imovel._honorarios}}0</th>
-        </tr>
-    </thead>
-</table>
+            <tr>
+                <th>Valor do imovel: R$ {{imovel._valor_imovel}}0</th>
+                <th>Area: {{imovel.area}}m</th>
+                <th>Numero de garagens: {{imovel._garagem}}</th>
+            </tr>
+            <tr>
+                <th>Valor de venda: R$ {{imovel._valor_venda}}0</th>
+                <th>Descrição: {{imovel._descricao}}</th>
+                <th>Honorarios: R$ {{imovel._honorarios}}0</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 <br>
 <button type="button" class="btn btn-primary" onclick="CriaPDF()">Imprimir </button>
-<a href="{{url_for('resumo_imovel', id=imovel._imob_id)}}"><button type="button" class="btn btn-primary">Resumo</button></a>
+<a href="{{url_for('resumo_imovel', id=imovel._imob_id)}}"><button type="button"
+        class="btn btn-primary">Resumo</button></a>
 <a href="{{url_for('index')}}"><button type="button" class="btn btn-primary">Voltar</button></a>
 <script>
     function CriaPDF() {

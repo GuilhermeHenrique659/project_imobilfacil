@@ -3,22 +3,22 @@
 
 
 
-  <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
-  <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
-  <script>
-   $(document).ready(function (){
-      $('#rg').mask('00.000.000-0');
-      $('#telefone').mask('(00) 00000-0000');
-      $('#cpf').mask('000.000.000-00');
+<script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
+<script>
+  $(document).ready(function () {
+    $('#rg').mask('00.000.000-0');
+    $('#telefone').mask('(00) 00000-0000');
+    $('#cpf').mask('000.000.000-00');
   });
-  </script>
+</script>
 <h1>Cadastro de Proprietario</h1>
 <br>
 <form action="/cad_prop" method="post">
   <fieldset>
     <div class="mb-3">
       <label for="nome" class="form-label">Nome</label>
-      <input type="text" name="nome" class="form-control" id="nome" >
+      <input type="text" name="nome" class="form-control" id="nome">
     </div>
     <div class="mb-3">
       <label for="cpf" class="form-label">CPF</label>
@@ -33,8 +33,8 @@
       <input type="text" class="form-control" id="endereco" name="endereco">
     </div>
     <div class="mb-3">
-        <label for="telefone" class="form-label">Telefone</label>
-        <input type="text" class="form-control" id="telefone" name="telefone">
+      <label for="telefone" class="form-label">Telefone</label>
+      <input type="text" class="form-control" id="telefone" name="telefone">
     </div>
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>

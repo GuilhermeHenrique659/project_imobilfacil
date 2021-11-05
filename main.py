@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, render_template, session, flash,url_for
-from models import imovel, Proprietario, Corretores,Tipo,Cidade,Bairro
+from models import Imovel, Proprietario, Corretores,Tipo,Cidade,Bairro
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao,tiposDao,ciadadeDao,bairroDao
 from flask_mysqldb import MySQL
 from validacao import imovel_valida
@@ -22,6 +22,7 @@ Corretores_dao = cad_corretor_dao(db)
 TiposDao = tiposDao(db)
 CidadeDao = ciadadeDao(db)
 BairroDao = bairroDao(db)
+
 #index
 @app.route('/')
 def index():
@@ -30,14 +31,16 @@ def index():
     lista_imob = Imovel_Dao.listar()
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
-    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop)
+    lista_cidades = CidadeDao.lista()
+
+    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades)
 
 #tipos,cidade e bairro
+
+
 #tipo
 @app.route('/novo_tipo', methods=['POST'])
 def novo_tipo():
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=novo_imovel')
     Tipo_nome= request.form['tipo']
     tipo = Tipo(Tipo_nome)
     TiposDao.salvar(tipo)
@@ -45,8 +48,6 @@ def novo_tipo():
 #cidade
 @app.route('/nova_cidade', methods=['POST'])
 def nova_cidade():
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=novo_imovel')
     cidade_nome = request.form['cidade']
     cidade = Cidade(cidade_nome)
     CidadeDao.salvar(cidade)
@@ -55,8 +56,6 @@ def nova_cidade():
 #bairro
 @app.route('/novo_bairro', methods=['POST'])
 def novo_bairro():
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=novo_imovel')
     cidade = request.form['cidade_bairro']
     bairro_nome = request.form['bairro']
     bairro = Bairro(bairro_nome,cidade)
@@ -68,22 +67,27 @@ def novo_bairro():
 @app.route('/view_imovel/<int:id>')
 def view_imovel(id):
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=view_imovel/id')
-    Imovel = Imovel_Dao.busca_imob_id(id)
-    return render_template('view_imovel.html', imovel=Imovel)
+        return redirect('/login?proxima=view_imovel/<int:id>')
+    imovel = Imovel_Dao.busca_imob_id(id)
+    return render_template('view_imovel.html', imovel=imovel)
 
 @app.route('/resumo_imovel/<int:id>')
 def resumo_imovel(id):
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=view_imovel/id')
-    Imovel = Imovel_Dao.busca_imob_id(id)
-    return render_template('resumo_imovel.html', imovel=Imovel)
+        return redirect('/login?proxima=view_imovel/<int:id>')
+    imovel = Imovel_Dao.busca_imob_id(id)
+    return render_template('resumo_imovel.html', imovel=imovel)
 
 #exclui_imovel
 @app.route('/deleta_imovel/<int:id>')
 def deleta_imovel(id):
     Imovel_Dao.deletar_imob(id)
     return redirect('/')
+
+@app.route('/filtro/<int:id>')
+def filtro(id):
+    lista = Imovel_Dao.filtra(id)
+    return render_template('lista.html', lista = lista)
 
 #editar_imovel
 @app.route('/editar_imovel/<int:id>')
@@ -98,7 +102,8 @@ def editar_imovel(id):
     lista_bairro = BairroDao.lista()
     return render_template('editar_imovel.html', imovel=Imovel, proprietarios=lista_prop, corretores=lista_corr,tipos=lista_tipo,cidades=lista_cidades,bairros=lista_bairro)
 
-
+#padrao mvc
+#diego.saqui@muz.ifsuldeminas.edu.br
 @app.route('/atualizar_imovel', methods=['POST'])
 def atualiza_imovel():
     tipo = request.form['tipos']
@@ -117,15 +122,15 @@ def atualiza_imovel():
     quartos = request.form['quartos']
     garagem = request.form['garagem']
     id = request.form['id']
-    Imovel = imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem ,proprietario,corretor,
+    imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem ,proprietario,corretor,
                     banheiro=banheiro, quartos=quartos, garagem=garagem, imob_id=id)
-    erros = imovel_valida(Imovel)
+    erros = imovel_valida(imovel)
     if erros:
         for e in erros:
             flash(e)
         return redirect(url_for('editar_imovel',id=id))
     else:
-        Imovel_Dao.salvar(Imovel)
+        Imovel_Dao.salvar(imovel)
         return redirect('/')
 
 #criar_imovel
@@ -157,19 +162,17 @@ def criar_imovel():
     banheiro = request.form['banheiro']
     quartos = request.form['quartos']
     garagem = request.form['garagem']
-    Imovel = imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem,proprietario, corretor,
+    imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem,proprietario, corretor,
                     banheiro=banheiro,quartos=quartos,garagem=garagem)
     #verfica se os campos foram preenchidos
-    erros = imovel_valida(Imovel)
+    erros = imovel_valida(imovel)
     if erros:
         for e in erros:
             flash(e)
         return redirect('/novo_imovel')
     else:
-        Imovel_Dao.salvar(Imovel)
+        Imovel_Dao.salvar(imovel)
         return redirect('/')
-
-
 
 #Criar Proprietario
 @app.route('/Proprietario')
