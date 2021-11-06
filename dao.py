@@ -103,9 +103,13 @@ class imovelDao:
         cursor.execute(SQL_BUSCA_IMOB_ID, (id,))
         tupla = cursor.fetchone()
         tipo = Tipo(id_tipo=tupla[25], tipo_nome=tupla[26])
+
         cidade = Cidade(id_cidade=tupla[27], cidade_nome=tupla[28])
+
         bairro = Bairro(id_bairro=tupla[29], bairro_nome=tupla[30], id_cid=tupla[31],bairro_cidade_nome=tupla[28])
+
         proprietario = Proprietario(tupla[19], tupla[20], tupla[21], tupla[22], tupla[23], tupla[24], tupla[18])
+
         imovel = Imovel(tipo, tupla[4], cidade, bairro, tupla[7], tupla[8], tupla[9], tupla[10], tupla[12], tupla[13],
                         proprietario, tupla[2], tupla[11], tupla[14], tupla[15], tupla[16], tupla[17], imob_id=tupla[0])
         del tipo, cidade, bairro, proprietario

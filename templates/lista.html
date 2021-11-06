@@ -1,12 +1,12 @@
 {% extends "template.html" %}
 {% block conteudo %}
 
-
 <div class="modal fade" id="FiltroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3" action="/filtro_cidade" method="post">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="TipoModalLabel">Filtrar cidade</h5>
+        <h5 class="modal-title" id="FiltroModalLabel">Filtrar cidade</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -22,10 +22,11 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <a href="{{url_for('filtro',id=1)}}"><button type="button" class="btn btn-primary">Filtrar</button></a>
+        <button type="submit" class="btn btn-dark">Salvar</button>
       </div>
     </div>
   </div>
+  </form>
 </div>
 
 <div class="content-list">
@@ -67,7 +68,8 @@
       </table>
     </div>
     <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#FiltroModal">Filtro</button>
+      <br>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#FiltroModal">Filtrar por cidade</button>
       <div>
         <br>
         <table class="table table-striped table-responsive table-bordered">

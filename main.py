@@ -84,10 +84,17 @@ def deleta_imovel(id):
     Imovel_Dao.deletar_imob(id)
     return redirect('/')
 
-@app.route('/filtro/<int:id>')
-def filtro(id):
-    lista = Imovel_Dao.filtra(id)
-    return render_template('lista.html', lista = lista)
+@app.route('/filtro_cidade', methods=['POST'])
+def filtro():
+    id = request.form['cidade']
+    if id == "0":
+        lista_imob = Imovel_Dao.listar()
+    else:
+        lista_imob = Imovel_Dao.filtra(id)
+    lista_prop = Proprietario_dao.listar()
+    lista_corr = Corretores_dao.listar()
+    lista_cidades = CidadeDao.lista()
+    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades)
 
 #editar_imovel
 @app.route('/editar_imovel/<int:id>')
