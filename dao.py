@@ -110,15 +110,22 @@ class imovelDao:
 
         proprietario = Proprietario(tupla[19], tupla[20], tupla[21], tupla[22], tupla[23], tupla[24], tupla[18])
 
+        corretor = Corretores(tupla[33],tupla[34],tupla[35],tupla[36],tupla[37],tupla[38],tupla[39],tupla[40],tupla[41],tupla[32])
+
         imovel = Imovel(tipo, tupla[4], cidade, bairro, tupla[7], tupla[8], tupla[9], tupla[10], tupla[12], tupla[13],
-                        proprietario, tupla[2], tupla[11], tupla[14], tupla[15], tupla[16], tupla[17], imob_id=tupla[0])
-        del tipo, cidade, bairro, proprietario
+                        proprietario, corretor, tupla[11], tupla[14], tupla[15], tupla[16], tupla[17], imob_id=tupla[0])
+        del tipo, cidade, bairro, proprietario, corretor
         return imovel
 
 
-    def filtra(self, id):
+    def filtra(self, id, filtro):
+        filtros_dic = {
+            "filtra_cidade" : SQL_FILTRA_CIDADE,
+            "filtra_prop" : SQL_FILTRA_PROP,
+            "filtra_status" : SQL_FILTRA_STATUS
+        }
         cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_FILTRA_CIDADE, (id,))
+        cursor.execute(filtros_dic[filtro], (id,))
         imoveis = self.traduz_imob(cursor.fetchall())
         return imoveis
 
@@ -128,11 +135,11 @@ class imovelDao:
 
     def traduz_imob(self,imoveis):
         def cria_imob_lista(tupla):
-            tipo = Tipo(id_tipo=tupla[25],tipo_nome=tupla[26])
+            tipo = Tipo(id_tipo=tupla[25], tipo_nome=tupla[26])
 
             cidade = Cidade(id_cidade=tupla[27], cidade_nome=tupla[28])
 
-            bairro = Bairro(id_bairro=tupla[29],bairro_nome=tupla[30],id_cid=tupla[31],bairro_cidade_nome=tupla[28])
+            bairro = Bairro(id_bairro=tupla[29], bairro_nome=tupla[30], id_cid=tupla[31], bairro_cidade_nome=tupla[28])
 
             proprietario = Proprietario(tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24],tupla[18])
 

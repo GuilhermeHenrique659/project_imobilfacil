@@ -85,7 +85,7 @@
 <h1>Cadastro de imoveis</h1>
 
 <br>
-<form class="row g-3" action="/criar_imovel" method="post">
+<form class="row g-3 needs-validation" action="/criar_imovel" method="post" novalidate>
     <fieldset>
     <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -100,12 +100,14 @@
           <div class="row">
               <div class="col">
             <label for="tipos">Tipos</label>
-            <select class="form-select" id="tipos" name="tipos">
-                <option value="0" selected>Selecione o tipo</option>
+            <select class="form-select" id="tipos" name="tipos" required>
+                <option value="" selected>Selecione o tipo</option>
                     {% for tipo in tipos %}
                         <option value="{{ tipo._id_tipo }}">{{ tipo._tipo_nome}}</option>
                     {% endfor %}
-            </select>
+            </select><div class="invalid-feedback">
+              Por favor insira um tipo.
+              </div>
                   </div>
               <div class="col-md-1">
                   <br>
@@ -116,12 +118,15 @@
                   <div class="row">
               <div class="col">
             <label for="cidades">Cidade</label>
-            <select class="form-select" id="cidades" name="cidades">
-                <option value="0" selected>Selecione a cidade</option>
+            <select class="form-select" id="cidades" name="cidades" required>
+                <option value="" selected>Selecione a cidade</option>
                     {% for cidade in cidades %}
                         <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
                     {% endfor %}
             </select>
+                              <div class="invalid-feedback">
+              Por favor insira uma cidade.
+              </div>
                   </div>
               <div class="col-md-1">
                   <br>
@@ -132,12 +137,15 @@
                   <div class="row">
               <div class="col">
             <label for="bairros">Bairros</label>
-            <select class="form-select" id="bairros" name="bairros">
-                <option value="0" selected>Selecione o bairro</option>
+            <select class="form-select" id="bairros" name="bairros" required>
+                <option value="" selected>Selecione o bairro</option>
                     {% for bairro in bairros %}
                         <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
                     {% endfor %}
             </select>
+                              <div class="invalid-feedback">
+              Por favor insira um bairro.
+              </div>
                   </div>
               <div class="col-md-1">
                   <br>
@@ -148,17 +156,23 @@
 
         <div class="form-group">
             <label for="endereco">Endereço</label>
-            <input type="text" id="endereco" name="endereco" class="form-control">
+            <input type="text" id="endereco" name="endereco" class="form-control" required>
+            <div class="invalid-feedback">
+              Por favor insira um endereco.
+              </div>
           </div>
                 <br>
           <div class="form-group">
             <label for="finalidade">Finalidade</label>
-            <select class="form-select" id="finalidade" name="finalidade">
-                <option value="0" selected>Selecione a finalidade</option>
+            <select class="form-select" id="finalidade" name="finalidade" required>
+                <option value="" selected>Selecione a finalidade</option>
                     <option value="Residencial">Residencial</option>
                     <option value="Comercial">Comercial</option>
                     <option value="Industrial">Industrial</option>
             </select>
+                          <div class="invalid-feedback">
+              Por favor insira uma finalidade.
+              </div>
           </div>
   </div>
 
@@ -166,7 +180,10 @@
       <br>
         <div class="form-group">
             <label for="area">Àrea</label>
-            <input type="text" id="area" name="area" class="form-control">
+            <input type="text" id="area" name="area" class="form-control" required>
+                        <div class="invalid-feedback">
+              Por favor insira uma area.
+              </div>
           </div>
       <br>
         <div class="form-group">
@@ -176,59 +193,74 @@
       <br>
       <div class="form-group">
             <label for="banheiro">Banheiro</label>
-            <input type="text" id="banheiro" name="banheiro" class="form-control" value="0">
+            <input type="number" id="banheiro" name="banheiro" class="form-control" value="0">
           </div>
       <br>
             <div class="form-group">
             <label for="quartos">Quartos</label>
-            <input type="text" id="quartos" name="quartos" class="form-control" value="0">
+            <input type="number" id="quartos" name="quartos" class="form-control" value="0">
           </div>
       <br>
             <div class="form-group">
             <label for="garagem">Garagem</label>
-            <input type="text" id="garagem" name="garagem" class="form-control" value="0">
+            <input type="number" id="garagem" name="garagem" class="form-control" value="0">
           </div>
       <br>
         <div class="form-group">
             <label for="valor">Valor</label>
-            <input type="text" id="valor" name="valor" class="form-control">
+            <input type="text" id="valor" name="valor" class="form-control" required>
+                        <div class="invalid-feedback">
+              Por favor insira um valor.
+              </div>
           </div>
       <br>
         <div class="form-group">
             <label for="status">Status</label>
-            <select class="form-select" id="status" name="status">
-              <option value="0" selected>Selecione o Status</option>
+            <select class="form-select" id="status" name="status" required>
+              <option value="" selected>Selecione o Status</option>
                     <option value="Livre">Livre</option>
                     <option value="Ocupado">Ocupado</option>
                     <option value="Vendido">Vendido</option>
             </select>
+                        <div class="invalid-feedback">
+              Por favor insira o status.
+              </div>
           </div>
       <br>
         <div class="form-group">
             <label for="porcentagem">Porcentagem</label>
-            <input type="text" id="porcentagem" name="porcentagem" class="form-control">
+            <input type="text" id="porcentagem" name="porcentagem" class="form-control" required>
+                        <div class="invalid-feedback">
+              Por favor insira uma porcentagem.
+              </div>
           </div>
   </div>
   <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
       <br>
         <div class="mb-3">
-            <select class="form-select" name="proprietario" id="proprietario">
-                    <option value="0" selected>Selecione o proprietario</option>
+            <select class="form-select" name="proprietario" id="proprietario" required>
+                    <option value="" selected>Selecione o proprietario</option>
                     {% for proprietario in proprietarios %}
                         <option value="{{ proprietario._id }}">{{ proprietario._nome }}</option>
                     {% endfor %}
             </select>
             <label for="proprietario">Proprietario</label>
+                        <div class="invalid-feedback">
+              Por favor insira um proprietario.
+              </div>
           </div>
       <br>
         <div class="mb-3">
-            <select class="form-select" name="corretor" id="corretor">
-                <option value="0" selected>Selecione o Corretor</option>
+            <select class="form-select" name="corretor" id="corretor" required>
+                <option value="" selected>Selecione o Corretor</option>
                 {% for corretor in corretores %}
                         <option value="{{ corretor._id_corr }}">{{ corretor._nome }}</option>
                 {% endfor %}
             </select>
             <label for="corretor">Corretor</label>
+                        <div class="invalid-feedback">
+              Por favor insira um corretor.
+              </div>
         </div>
    <script>
         $(document).ready(function() {
@@ -239,6 +271,7 @@
             $('#proprietario').select2();
         });
     </script>
+
   </div>
 </div>
         <br>

@@ -2,7 +2,6 @@ from flask import Flask, request, redirect, render_template, session, flash,url_
 from models import Imovel, Proprietario, Corretores,Tipo,Cidade,Bairro
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao,tiposDao,ciadadeDao,bairroDao
 from flask_mysqldb import MySQL
-from validacao import imovel_valida
 import bcrypt
 
 app = Flask(__name__)
@@ -79,22 +78,27 @@ def resumo_imovel(id):
     return render_template('resumo_imovel.html', imovel=imovel)
 
 #exclui_imovel
-@app.route('/deleta_imovel/<int:id>')
-def deleta_imovel(id):
-    Imovel_Dao.deletar_imob(id)
-    return redirect('/')
 
-@app.route('/filtro_cidade', methods=['POST'])
+
+@app.route('/filtro', methods=['POST'])
 def filtro():
-    id = request.form['cidade']
+    filtro = request.form['filtro']
+    id = request.form[filtro]
     if id == "0":
         lista_imob = Imovel_Dao.listar()
     else:
-        lista_imob = Imovel_Dao.filtra(id)
+        lista_imob = Imovel_Dao.filtra(id,filtro)
+    if len(lista_imob) == 0:
+        flash("Nao foi encontrado nenhum imovel com esse filtro!")
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
     lista_cidades = CidadeDao.lista()
     return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades)
+
+@app.route('/deleta_imovel/<int:id>')
+def deleta_imovel(id):
+    Imovel_Dao.deletar_imob(id)
+    return redirect('/')
 
 #editar_imovel
 @app.route('/editar_imovel/<int:id>')
@@ -131,14 +135,8 @@ def atualiza_imovel():
     id = request.form['id']
     imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem ,proprietario,corretor,
                     banheiro=banheiro, quartos=quartos, garagem=garagem, imob_id=id)
-    erros = imovel_valida(imovel)
-    if erros:
-        for e in erros:
-            flash(e)
-        return redirect(url_for('editar_imovel',id=id))
-    else:
-        Imovel_Dao.salvar(imovel)
-        return redirect('/')
+    Imovel_Dao.salvar(imovel)
+    return redirect('/')
 
 #criar_imovel
 @app.route('/novo_imovel')
@@ -171,15 +169,8 @@ def criar_imovel():
     garagem = request.form['garagem']
     imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem,proprietario, corretor,
                     banheiro=banheiro,quartos=quartos,garagem=garagem)
-    #verfica se os campos foram preenchidos
-    erros = imovel_valida(imovel)
-    if erros:
-        for e in erros:
-            flash(e)
-        return redirect('/novo_imovel')
-    else:
-        Imovel_Dao.salvar(imovel)
-        return redirect('/')
+    Imovel_Dao.salvar(imovel)
+    return redirect('/')
 
 #Criar Proprietario
 @app.route('/Proprietario')

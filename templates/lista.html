@@ -1,18 +1,19 @@
 {% extends "template.html" %}
 {% block conteudo %}
 
-<div class="modal fade" id="FiltroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro_cidade" method="post">
+<div class="modal fade" id="FiltroCidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3" action="/filtro" method="post">
+    <input type="hidden" name="filtro" value="filtra_cidade">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="FiltroModalLabel">Filtrar cidade</h5>
+        <h5 class="modal-title" id="FiltroCidadeModalLabel">Filtrar cidade</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label for="cidade">Cidade</label>
-          <select class="form-select" id="cidade" name="cidade">
+          <label for="filtra_cidade">Cidade</label>
+          <select class="form-select" id="filtra_cidade" name="filtra_cidade">
             <option value="0" selected>Selecione a cidade</option>
             {% for cidade in cidades %}
             <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
@@ -22,12 +23,72 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-dark">Salvar</button>
+        <button type="submit" class="btn btn-dark">Filtrar</button>
       </div>
     </div>
   </div>
   </form>
 </div>
+
+<div class="modal fade" id="FiltroPropModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3" action="/filtro" method="post">
+    <input type="hidden" name="filtro" value="filtra_prop">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="FiltroPropModalLabel">Filtrar proprietarios</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="filtra_prop">Proprietarios</label>
+          <select class="form-select" id="filtra_prop" name="filtra_prop">
+            <option value="0" selected>Selecione o proprietario</option>
+          {% for proprietario in proprietarios %}
+            <option value="{{ proprietario._id }}">{{ proprietario._nome}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-dark">Filtrar</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
+<div class="modal fade" id="FiltroStatusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3" action="/filtro" method="post">
+    <input type="hidden" name="filtro" value="filtra_status">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="FiltroStatusModalLabel">Filtrar Status</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="filtra_status">Status</label>
+          <select class="form-select" id="filtra_status" name="filtra_status">
+            <option value="0" selected>Selecione o status</option>
+                    <option value="Livre">Livre</option>
+                    <option value="Ocupado">Ocupado</option>
+                    <option value="Vendido">Vendido</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-dark">Filtrar</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
+
 
 <div class="content-list">
   <nav>
@@ -69,10 +130,27 @@
     </div>
     <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
       <br>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#FiltroModal">Filtrar por cidade</button>
+
+      <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+              filtros
+            </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroCidadeModal">Filtrar por cidade</button></li>
+                 <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroPropModal">Filtrar por proprietarios</button></li>
+                   <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroStatusModal">Filtrar por status</button></li>
+            </ul>
+          </div>
+          <form class="d-flex">
+            <input class="form-control me-2" type="text"  id="search_field_input" placeholder="Search" aria-label="Search" onkeyup='search_table()'>
+          </form>
+        </div>
+      </nav>
       <div>
-        <br>
-        <table class="table table-striped table-responsive table-bordered">
+        <table class="table table-striped table-responsive table-bordered" id="myTable">
+
           <thead class="thead-default">
             <tr>
               <th>ID</th>
@@ -101,8 +179,11 @@
                       <img src="../static/img/icon/eye.svg"></i></button></a>
                 <a href="{{url_for('editar_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i>
                       <img src="../static/img/icon/pen.svg"></i></button></a>
+
+
                 <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ l._imob_id}}"><i>
                     <img src="../static/img/icon/trash.svg"></i></button>
+
                 <div class="modal fade" id="modal{{ l._imob_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                   aria-hidden="true">
                   <div class="modal-dialog">
@@ -155,4 +236,31 @@
     </div>
   </div>
 </div>
+<script>
+function search_table(){
+  // Declare variables 
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("search_field_input");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td") ; 
+    for(j=0 ; j<td.length ; j++)
+    {
+      let tdata = td[j] ;
+      if (tdata) {
+        if (tdata.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+          break ; 
+        } else {
+          tr[i].style.display = "none";
+        }
+      } 
+    }
+  }
+}
+</script>
 {% endblock %}
