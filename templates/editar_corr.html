@@ -1,0 +1,67 @@
+{% extends "template.html" %}
+{% block conteudo %}
+  <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+  <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
+  <script>
+   $(document).ready(function (){
+      $('#rg').mask('00.000.000-0');
+      $('#celular').mask('(00) 0000-0000');
+      $('#cpf').mask('000.000.000-00');
+  });
+  </script>
+<h1>Cadastro de Corretor</h1>
+<form action="/atualizar_corretor" method="post">
+  <fieldset>
+    <input type="hidden" name="id_corr" value="{{corretor._id_corr}}">
+    <br>
+    <div class="mb-3">
+      <label for="usuario" class="form-label">Usuário</label>
+      <input type=text class="form-control" id="usuario" name="usuario_corr" value="{{corretor._usuario}}">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="text" class="form-control" id="email" name="email_corr" value="{{corretor._email}}">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome</label>
+      <input type="text" name="nome_corr" class="form-control" id="nome" value="{{corretor._nome}}">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="imobil" class="form-label">Imobiliária</label>
+      <input type="text" class="form-control" id="imobil" name="imobil_corr" value="{{corretor._imobil}}">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="creci" class="form-label">CRECI</label>
+      <input type="text" class="form-control" id="creci" name="creci_corr" value="{{corretor._creci}}">
+    </div>
+    <br>
+    <div class="mb-3">
+        <label for="celular" class="form-label">Celular</label>
+        <input type="text" class="form-control" id="celular" name="celular_corr" value="{{corretor._celular}}">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="cpf" class="form-label">CPF</label>
+      <input type="text" class="form-control" id="cpf" name="cpf_corr" value="{{corretor._cpf}}">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="endereco" class="form-label">Endereço</label>
+      <input type="text" class="form-control" id="endereco" name="endereco_corr" value="{{corretor._endereco}}">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="senha" class="form-label">Senha</label>
+      <input type="password" class="form-control" id="senha" name="senha_corr" value="{{corretor._senha}}">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-dark">Salvar</button>
+    <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
+  </fieldset>
+</form>
+
+{% endblock %}

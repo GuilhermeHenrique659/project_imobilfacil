@@ -6,9 +6,9 @@ print('Conectando...')
 conn = MySQLdb.connect(user='root', passwd='root', host='127.0.0.1', port=3306, charset='utf8')
 
 # Descomente se quiser desfazer o banco...
-conn.cursor().execute("SET NAMES utf8;")
-conn.cursor().execute("DROP DATABASE `Projeto_DB`;")
-conn.commit()
+#conn.cursor().execute("SET NAMES utf8;")
+#conn.cursor().execute("DROP DATABASE `Projeto_DB`;")
+#conn.commit()
 conn.cursor().execute("CREATE DATABASE `Projeto_DB`;")
 conn.commit()
 
@@ -46,16 +46,45 @@ criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
 conn.cursor().execute(criar_tabela_proprietario)
 conn.commit()
 
+criar_tabela_tipo = '''CREATE TABLE `TIPOS` (
+        `ID_TIPO` INT NOT NULL AUTO_INCREMENT,
+        `TIPO` VARCHAR(45) NOT NULL,
+        PRIMARY KEY (`ID_TIPO`)
+    ) ENGINE=InnoDB;'''
+conn.cursor().execute(criar_tabela_tipo)
+conn.commit()
+
+criar_tabela_cidade = '''CREATE TABLE `CIDADE` (
+        `ID_CID` INT NOT NULL AUTO_INCREMENT,
+        `CIDADE` VARCHAR(45) NOT NULL,
+        PRIMARY KEY (`ID_CID`)    
+    ) ENGINE=InnoDB;'''
+conn.cursor().execute(criar_tabela_cidade)
+conn.commit()
+
+criar_tabela_bairro = '''CREATE TABLE `BAIRRO` (
+        `ID_BAIRRO` INT NOT NULL AUTO_INCREMENT,
+        `BAIRRO` VARCHAR(45) NOT NULL,
+        `CIDADE_ID_CID` INT NOT NULL,
+        PRIMARY KEY (`ID_BAIRRO`, `CIDADE_ID_CID`),
+    CONSTRAINT `fk_BAIRRO_CIDADE`
+    FOREIGN KEY (`CIDADE_ID_CID`)
+    REFERENCES `CIDADE` (`ID_CID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    ) ENGINE=InnoDB;'''
+conn.cursor().execute(criar_tabela_bairro)
+conn.commit()
+
 criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
         `ID_IMOB` INT NOT NULL AUTO_INCREMENT,
-        `ID_CORR` INT NOT NULL,
+        `ID_CORR` INT NULL,
         `ID_PROP` INT NOT NULL,
-        `SINGLA` CHAR(2) NULL,
-        `TIPO` VARCHAR(45) NULL,
+        `ID_TIPO` INT NOT NULL,
         `FINALIDADE` VARCHAR(45) NULL,
-        `BAIRRO` VARCHAR(45) NULL,
-        `QUADRA` VARCHAR(45) NULL,
-        `LOTE` VARCHAR(45) NULL,
+        `ID_CIDADE` INT NULL,
+        `ID_BAIRRO` INT NULL,
+        `ENDERECO_IMOVEL` VARCHAR(45) NULL,
         `AREA` REAL NULL,
         `DETALHES` VARCHAR(512) NULL,
         `VALOR_IMOVEL` REAL NULL,
@@ -63,6 +92,9 @@ criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
         `STATUS` VARCHAR(45) NULL,
         `PORCENTAGEM` REAL NULL,
         `HONORARIOS` REAL NULL,
+        `BANHEIRO` INT NULL,
+        `QUARTOS` INT NULL,
+        `GARAGEM` INT NULL,
         PRIMARY KEY (`ID_IMOB`),
   CONSTRAINT `fk_IMOVEIS_PROPRIETARIOS`
     FOREIGN KEY (`ID_PROP`)
@@ -73,8 +105,24 @@ criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
     FOREIGN KEY (`ID_CORR`)
     REFERENCES `CORRETORES` (`ID_CORR`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_IMOVEIS_TIPOS`
+    FOREIGN KEY (`ID_TIPO`)
+    REFERENCES `TIPOS` (`ID_TIPO`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_IMOVEIS_BAIRRO`
+    FOREIGN KEY (`ID_BAIRRO`)
+    REFERENCES `BAIRRO` (`ID_BAIRRO`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_IMOVEIS_CIDADE`
+    FOREIGN KEY (`ID_CIDADE`)
+    REFERENCES `CIDADE` (`ID_CID`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION
-    )ENGINE=InnoDB;'''
+    )
+ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_imovel)
 conn.commit()
 
@@ -98,9 +146,6 @@ print(' -------------  Usuários:  -------------')
 for user in cursor.fetchall():
     print(user[0])
 
-cursor.execute('select imoveis.TIPO, imoveis.ID_CORR, corretores.NOME from imoveis join corretores on corretores.ID_CORR = imoveis.ID_CORR;')
-for imovel in cursor.fetchall():
-    print(imovel[0])
 
 # commitando senão nada tem efeito
 conn.commit()

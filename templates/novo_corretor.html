@@ -1,21 +1,24 @@
 {% extends "template.html" %}
 {% block conteudo %}
-  <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
-  <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
-  <script>
-   $(document).ready(function (){
-      $('#rg').mask('00.000.000-0');
-      $('#celular').mask('(00) 0000-0000');
-      $('#cpf').mask('000.000.000-00');
+<script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
+<script>
+  $(document).ready(function () {
+    $('#rg').mask('00.000.000-0');
+    $('#celular').mask('(00) 0000-0000');
+    $('#cpf').mask('000.000.000-00');
   });
-  </script>
+</script>
 <h1>Cadastro de Corretor</h1>
-<form action="/cad_corretor" method="post">
+<form action="/cad_corretor" method="post" class="needs-validation" novalidate>
   <fieldset>
     <br>
     <div class="mb-3">
       <label for="usuario" class="form-label">Usuário</label>
-      <input type=text class="form-control" id="usuario" name="usuario_corr">
+      <input type=text class="form-control" id="usuario" name="usuario_corr" required>
+        <div class="invalid-feedback">
+              Por favor insira um Usuário.
+        </div>
     </div>
     <br>
     <div class="mb-3">
@@ -25,7 +28,10 @@
     <br>
     <div class="mb-3">
       <label for="nome" class="form-label">Nome</label>
-      <input type="text" name="nome_corr" class="form-control" id="nome" >
+      <input type="text" name="nome_corr" class="form-control" id="nome" required>
+        <div class="invalid-feedback">
+              Por favor insira um nome.
+        </div>
     </div>
     <br>
     <div class="mb-3">
@@ -35,17 +41,26 @@
     <br>
     <div class="mb-3">
       <label for="creci" class="form-label">CRECI</label>
-      <input type="text" class="form-control" id="creci" name="creci_corr">
+      <input type="text" class="form-control" id="creci" name="creci_corr" required>
+        <div class="invalid-feedback">
+              Por favor insira o CRECI.
+        </div>
     </div>
     <br>
     <div class="mb-3">
-        <label for="celular" class="form-label">Celular</label>
-        <input type="text" class="form-control" id="celular" name="celular_corr">
+      <label for="celular" class="form-label">Celular</label>
+      <input type="text" class="form-control" id="celular" name="celular_corr" required>
+        <div class="invalid-feedback">
+              Por favor insira um Telefone.
+        </div>
     </div>
     <br>
     <div class="mb-3">
       <label for="cpf" class="form-label">CPF</label>
-      <input type="text" class="form-control" id="cpf" name="cpf_corr">
+      <input type="text" class="form-control" id="cpf" name="cpf_corr" required>
+        <div class="invalid-feedback">
+              Por favor insira um CPF.
+        </div>
     </div>
     <br>
     <div class="mb-3">
@@ -55,10 +70,44 @@
     <br>
     <div class="mb-3">
       <label for="senha" class="form-label">Senha</label>
-      <input type="password" class="form-control" id="senha" name="senha_corr">
+      <input type="password" class="form-control" id="senha" name="senha_corr" required>
+        <div class="invalid-feedback">
+              Por favor insira uma senha.
+        </div>
     </div>
     <br>
+                      <div class="row">
+              <div class="col">
+            <label for="cidades">Cidade</label>
+            <select class="form-select" id="cidades" name="cidades" required>
+                <option value="" selected>Selecione a cidade</option>
+                    {% for cidade in cidades %}
+                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+                    {% endfor %}
+            </select>
+                              <div class="invalid-feedback">
+              Por favor insira uma cidade.
+              </div>
+                  </div>
+          </div>
+      <br>
+                  <div class="row">
+              <div class="col">
+            <label for="bairros">Bairros</label>
+            <select class="form-select" id="bairros" name="bairros" required>
+                <option value="" selected>Selecione o bairro</option>
+                    {% for bairro in bairros %}
+                        <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+                    {% endfor %}
+            </select>
+                              <div class="invalid-feedback">
+              Por favor insira um bairro.
+              </div>
+                  </div>
+          </div>
+      <br>
     <button type="submit" class="btn btn-dark">Salvar</button>
+    <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
   </fieldset>
 </form>
 

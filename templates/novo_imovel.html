@@ -10,10 +10,82 @@
       $('#area').mask('##000m', {reverse: true});
   });
   </script>
-
+      <div class="modal fade" id="TipoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <form class="row g-3" action="/novo_tipo" method="post">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="TipoModalLabel">Criar tipo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <input type="text" id="tipo" name="tipo" class="form-control">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+      </div>
+    </div>
+  </div></form>
+</div>
+      <div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <form class="row g-3" action="/novo_bairro" method="post">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Criar tipo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="cidade_bairro">Cidade</label>
+            <select class="form-select" id="cidade_bairro" name="cidade_bairro">
+                <option value="0" selected>Selecione a tipo</option>
+                    {% for cidade in cidades %}
+                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+                    {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bairro">Bairro</label>
+            <input type="text" id="bairro" name="bairro" class="form-control">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+      </div>
+    </div>
+  </div></form>
+</div>
+      <div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <form class="row g-3" action="/nova_cidade" method="post">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="CidadeModalLabel">Criar tipo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="cidade">Cidade</label>
+            <input type="text" id="cidade" name="cidade" class="form-control">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+      </div>
+    </div>
+  </div></form>
+</div>
 <h1>Cadastro de imoveis</h1>
+
 <br>
-<form class="row g-3" action="/criar_imovel" method="post">
+<form class="row g-3 needs-validation" action="/criar_imovel" method="post" novalidate>
     <fieldset>
     <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -25,46 +97,93 @@
 <div class="tab-content" id="nav-tabContent">
   <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
       <br>
-    <div class="form-group">
-            <label for="sigla">Sigla</label>
-            <input type="text" id="sigla" name="sigla" class="form-control">
+          <div class="row">
+              <div class="col">
+            <label for="tipos">Tipos</label>
+            <select class="form-select" id="tipos" name="tipos" required>
+                <option value="" selected>Selecione o tipo</option>
+                    {% for tipo in tipos %}
+                        <option value="{{ tipo._id_tipo }}">{{ tipo._tipo_nome}}</option>
+                    {% endfor %}
+            </select><div class="invalid-feedback">
+              Por favor insira um tipo.
+              </div>
+                  </div>
+              <div class="col-md-1">
+                  <br>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TipoModal">Criar tipo</button>
+              </div>
           </div>
       <br>
-          <div class="form-group">
-            <label for="tipo">Tipo</label>
-            <input type="text" id="tipo" name="tipo" class="form-control">
+                  <div class="row">
+              <div class="col">
+            <label for="cidades">Cidade</label>
+            <select class="form-select" id="cidades" name="cidades" required>
+                <option value="" selected>Selecione a cidade</option>
+                    {% for cidade in cidades %}
+                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+                    {% endfor %}
+            </select>
+                              <div class="invalid-feedback">
+              Por favor insira uma cidade.
+              </div>
+                  </div>
+              <div class="col-md-1">
+                  <br>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CidadeModal">Criar cidade</button>
+              </div>
           </div>
       <br>
+                  <div class="row">
+              <div class="col">
+            <label for="bairros">Bairros</label>
+            <select class="form-select" id="bairros" name="bairros" required>
+                <option value="" selected>Selecione o bairro</option>
+                    {% for bairro in bairros %}
+                        <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+                    {% endfor %}
+            </select>
+                              <div class="invalid-feedback">
+              Por favor insira um bairro.
+              </div>
+                  </div>
+              <div class="col-md-1">
+                  <br>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#BairroModal">Criar bairro</button>
+              </div>
+          </div>
+      <br>
+
+        <div class="form-group">
+            <label for="endereco">Endereço</label>
+            <input type="text" id="endereco" name="endereco" class="form-control" required>
+            <div class="invalid-feedback">
+              Por favor insira um endereco.
+              </div>
+          </div>
+                <br>
           <div class="form-group">
             <label for="finalidade">Finalidade</label>
-            <select class="form-select" id="finalidade" name="finalidade">
-                <option selected>Selecione a finalidade</option>
+            <select class="form-select" id="finalidade" name="finalidade" required>
+                <option value="" selected>Selecione a finalidade</option>
                     <option value="Residencial">Residencial</option>
                     <option value="Comercial">Comercial</option>
                     <option value="Industrial">Industrial</option>
             </select>
-          </div>
-      <br>
-        <div class="form-group">
-            <label for="bairro">Bairro</label>
-            <input type="text" id="bairro" name="bairro" class="form-control">
-          </div>
-      <br>
-        <div class="form-group">
-            <label for="quadra">Quadra</label>
-            <input type="text" id="quadra" name="quadra" class="form-control">
-          </div>
-      <br>
-        <div class="form-group">
-            <label for="lote">Lote</label>
-            <input type="text" id="lote" name="lote" class="form-control">
+                          <div class="invalid-feedback">
+              Por favor insira uma finalidade.
+              </div>
           </div>
   </div>
+
   <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
       <br>
         <div class="form-group">
             <label for="area">Àrea</label>
-            <input type="text" id="area" name="area" class="form-control">
+            <input type="text" id="area" name="area" class="form-control" required>
+                        <div class="invalid-feedback">
+              Por favor insira uma area.
+              </div>
           </div>
       <br>
         <div class="form-group">
@@ -72,46 +191,76 @@
             <textarea class="form-control" aria-label="With textarea" id="detalhes" name="detalhes"></textarea>
         </div>
       <br>
+      <div class="form-group">
+            <label for="banheiro">Banheiro</label>
+            <input type="number" id="banheiro" name="banheiro" class="form-control" value="0">
+          </div>
+      <br>
+            <div class="form-group">
+            <label for="quartos">Quartos</label>
+            <input type="number" id="quartos" name="quartos" class="form-control" value="0">
+          </div>
+      <br>
+            <div class="form-group">
+            <label for="garagem">Garagem</label>
+            <input type="number" id="garagem" name="garagem" class="form-control" value="0">
+          </div>
+      <br>
         <div class="form-group">
             <label for="valor">Valor</label>
-            <input type="text" id="valor" name="valor" class="form-control">
+            <input type="text" id="valor" name="valor" class="form-control" required>
+                        <div class="invalid-feedback">
+              Por favor insira um valor.
+              </div>
           </div>
       <br>
         <div class="form-group">
             <label for="status">Status</label>
-            <select class="form-select" id="status" name="status">
-              <option selected>Selecione o Status</option>
+            <select class="form-select" id="status" name="status" required>
+              <option value="" selected>Selecione o Status</option>
                     <option value="Livre">Livre</option>
                     <option value="Ocupado">Ocupado</option>
                     <option value="Vendido">Vendido</option>
             </select>
+                        <div class="invalid-feedback">
+              Por favor insira o status.
+              </div>
           </div>
       <br>
         <div class="form-group">
             <label for="porcentagem">Porcentagem</label>
-            <input type="text" id="porcentagem" name="porcentagem" class="form-control">
+            <input type="text" id="porcentagem" name="porcentagem" class="form-control" required>
+                        <div class="invalid-feedback">
+              Por favor insira uma porcentagem.
+              </div>
           </div>
   </div>
   <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
       <br>
         <div class="mb-3">
-            <select class="form-select" name="proprietario" id="proprietario">
-                    <option selected>Selecione o proprietario</option>
+            <select class="form-select" name="proprietario" id="proprietario" required>
+                    <option value="" selected>Selecione o proprietario</option>
                     {% for proprietario in proprietarios %}
                         <option value="{{ proprietario._id }}">{{ proprietario._nome }}</option>
                     {% endfor %}
             </select>
             <label for="proprietario">Proprietario</label>
+                        <div class="invalid-feedback">
+              Por favor insira um proprietario.
+              </div>
           </div>
       <br>
         <div class="mb-3">
-            <select class="form-select" name="corretor" id="corretor">
-                <option selected>Selecione o Corretor</option>
+            <select class="form-select" name="corretor" id="corretor" required>
+                <option value="" selected>Selecione o Corretor</option>
                 {% for corretor in corretores %}
                         <option value="{{ corretor._id_corr }}">{{ corretor._nome }}</option>
                 {% endfor %}
             </select>
             <label for="corretor">Corretor</label>
+                        <div class="invalid-feedback">
+              Por favor insira um corretor.
+              </div>
         </div>
    <script>
         $(document).ready(function() {
@@ -122,10 +271,13 @@
             $('#proprietario').select2();
         });
     </script>
+
   </div>
 </div>
         <br>
           <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+        <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
+
     </fieldset>
 </form>
 

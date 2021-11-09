@@ -1,40 +1,5 @@
-from models import imovel,Proprietario, Corretores, Imob_Prop
-
-#Sql da tabela imoveis
-SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, SINGLA, TIPO, FINALIDADE, BAIRRO, QUADRA, LOTE, AREA, DETALHES,' \
-                  ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS)' \
-                  ' values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s)'
-
-SQL_DELETA_IMOVEL = 'delete from imoveis where ID = %s'
-
-SQL_ATUALIZA_IMOVEIS = 'UPDATE imoveis SET SIGLA=%s,TIPO=%s,FINALIDADE=%s,BAIRRO,QUADRA=%s,LOTE=%s,' \
-                       'VALOR_VENDA=%s,STATUS=%s, PORCENTAGEM=%s, HONORARIOS=%s, PROPRIETARIO_ID=%s where ID=%s'
-
-'''SQL_BUSCA_LISTA_IMOB = 'SELECT ID_IMOB, ID_CORR, ID_PROP, SINGLA, TIPO, FINALIDADE, BAIRRO, QUADRA, LOTE, AREA, DETALHES,' \
-                  ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS from imoveis'
-'''
-
-SQL_BUSCA_LISTA_IMOB = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP'
-
-
-#Sql da tabela propeitarios
-#SQL_DELETA_PROPRIETARIO = 'delete from proprietarios where ID_PROP = %s'
-
-SQL_CRIA_PROPRIETARIO = 'INSERT into proprietarios (NOME, CPF, RG, ENDERECO, TELEFONE, EMAIL) values (%s,%s,%s,%s,%s,%s)'
-
-SQL_ATUALIZA_PROPRIETARIO = 'UPDATE proprietarios SET NOME=%s, CPF=%s, RG=%s, ENDERECO=%s, TELEFONE=%s, EMAIL=%s  where ID_PROP=%s'
-
-SQL_BUSCAR_LISTA_PROP = 'SELECT ID_PROP, NOME, CPF, RG, ENDERECO,TELEFONE,EMAIL from proprietarios'
-
-#Sql da tabela corretores
-SQL_CRIA_CORRETORES = 'INSERT into corretores (USUARIO,EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)'
-
-SQL_ATUALIZA_CORRETORES = 'UPDATE corretores SET USUARIO=%s,EMAIL=%s,NOME=%s,IMOBIL=%s,CRECI=%s,CELULAR=%s,CPF=%s,ENDERECO=%s,SENHA=%s  where ID_CORR=%s'
-
-SQL_BUSCA_LISTA_CORRETORES = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA from corretores'
-
-SQL_BUSCA_CORR_ID = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA from corretores where USUARIO=%s'
-
+from models import Imovel,Proprietario, Corretores, Tipo, Cidade, Bairro
+from SQL import *
 
 #proprietarios
 class cad_proprietario_dao:
@@ -45,9 +10,9 @@ class cad_proprietario_dao:
         cursor = self.__db.connection.cursor()
 
         if (Proprietario._id):
-            cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (Proprietario._nome, Proprietario._cpf,Proprietario._rg, Proprietario._endereco, Proprietario._id, Proprietario._telefone,Proprietario._email))
+            cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (Proprietario._nome, Proprietario._cpf,Proprietario._rg, Proprietario._endereco_prop, Proprietario._telefone,Proprietario._email, Proprietario._id))
         else:
-            cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco, Proprietario._telefone, Proprietario._email))
+            cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco_prop, Proprietario._telefone, Proprietario._email))
             cursor._id = cursor.lastrowid
 
         self.__db.connection.commit()
@@ -58,6 +23,19 @@ class cad_proprietario_dao:
         cursor.execute(SQL_BUSCAR_LISTA_PROP)
         proprietarios = traduz_prop(cursor.fetchall())
         return proprietarios
+
+    # busca um unico proprietario pelo id
+    def busca_por_id(self,id):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_PROP_POR_ID, (id,))
+        tupla = cursor.fetchone()
+        return Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], id=tupla[0])
+    def deletar_prop(self,id):
+        self.__db.connection.cursor().execute(SQL_DESATIVA)
+        self.__db.connection.cursor().execute(SQL_DELETA_PROPRIETARIO, (id,))
+        self.__db.connection.cursor().execute(SQL_ATIVA)
+        self.__db.connection.commit()
+
 
 def traduz_prop(proprietarios):
     def cria_prop_lista(tupla):
@@ -73,7 +51,7 @@ class cad_corretor_dao:
         cursor = self.__db.connection.cursor()
 
         if (corretor._id_corr):
-            cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._id_corr,corretor._usuario,corretor._email,corretor._nome,corretor._imobil,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha))
+            cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._imobil,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._id_corr))
         else:
             cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._imobil,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha))
             cursor._id = cursor.lastrowid
@@ -94,6 +72,20 @@ class cad_corretor_dao:
         dados = cursor.fetchone()
         usuario = traduz_usuario(dados) if dados else None
         return usuario
+        # busca um unico corretor pelo id
+
+    def busca_por_id_edit(self, id):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_BUSCA_CORR_POR_ID, (id,))
+        tupla = cursor.fetchone()
+        return Corretores(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], tupla[9], id_corr=tupla[0])
+
+    def deletar_corr(self,id):
+        self.__db.connection.cursor().execute(SQL_DESATIVA)
+        self.__db.connection.cursor().execute(SQL_DELETA_CORRETOR, (id,))
+        self.__db.connection.cursor().execute(SQL_ATIVA)
+        self.__db.connection.commit()
+
 #cria objeto usuario
 def traduz_usuario(tupla):
     return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9], id_corr=tupla[0])
@@ -111,28 +103,143 @@ class imovelDao:
 
     def salvar(self, imovel):
         cursor = self.__db.connection.cursor()
-
-        if (imovel._id):
-            cursor.execute(SQL_ATUALIZA_IMOVEIS,( imovel._sigla, imovel._tipo, imovel._finalidade,
-                                                imovel._bairro, imovel._quadra,imovel._lote,imovel.get_area(),imovel._descricao,
-                                                imovel.get_valor_imovel(),imovel.get_valor_venda(),imovel._status,
-                                                imovel.get_percentagem(), imovel.get_honorarios(), imovel._proprietario_id ) )
+        if (imovel._imob_id):
+            cursor.execute(SQL_ATUALIZA_IMOVEIS, (imovel._corretor ,imovel._proprietario, imovel._tipo, imovel._finalidade,
+                                            imovel._cidade, imovel._bairro,imovel._endereco, imovel.set_area(),
+                                            imovel._descricao, imovel.set_valor_imovel(), imovel.set_valor_venda(), imovel._status,
+                                            imovel.set_percentagem(), imovel.set_honorarios(), imovel._banheiro, imovel._quartos, imovel._garagem, imovel._imob_id))
         else:
-            cursor.execute(SQL_CRIA_IMOVEL,( imovel._corretor_id ,imovel._proprietario_id,imovel._sigla, imovel._tipo, imovel._finalidade,
-                                            imovel._bairro, imovel._quadra,imovel._lote, imovel.get_area(),
-                                            imovel._descricao, imovel.get_valor_imovel(), imovel.get_valor_venda(), imovel._status,
-                                            imovel.get_percentagem(), imovel.get_honorarios()))
+            cursor.execute(SQL_CRIA_IMOVEL,( imovel._corretor ,imovel._proprietario, imovel._tipo, imovel._finalidade,
+                                            imovel._cidade, imovel._bairro,imovel._endereco, imovel.set_area(),
+                                            imovel._descricao, imovel.set_valor_imovel(), imovel.set_valor_venda(), imovel._status,
+                                            imovel.set_percentagem(), imovel.set_honorarios(),imovel._banheiro,imovel._quartos,imovel._garagem))
+            cursor._id = cursor.lastrowid
+
         self.__db.connection.commit()
         return imovel
 
     def listar(self):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_LISTA_IMOB)
-        imoveis = traduz_imob(cursor.fetchall())
+        imoveis = self.traduz_imob(cursor.fetchall())
         return imoveis
 
-def traduz_imob(imoveis):
-    def cria_imob_lista(tupla):
-        return Imob_Prop(tupla[3],tupla[4],tupla[5],tupla[6],tupla[7], tupla[8],tupla[9],tupla[10], tupla[11],tupla[13],tupla[14],
-                      tupla[2], tupla[1], tupla[0], tupla[12],tupla[15],tupla[17], tupla[18], tupla[19], tupla[20], tupla[21], tupla[22],tupla[16])
-    return list(map(cria_imob_lista, imoveis))
+    def busca_imob_id(self, id):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_BUSCA_IMOB_ID, (id,))
+        tupla = cursor.fetchone()
+        tipo = Tipo(id_tipo=tupla[25], tipo_nome=tupla[26])
+
+        cidade = Cidade(id_cidade=tupla[27], cidade_nome=tupla[28])
+
+        bairro = Bairro(id_bairro=tupla[29], bairro_nome=tupla[30], id_cid=tupla[31],bairro_cidade_nome=tupla[28])
+
+        proprietario = Proprietario(tupla[19], tupla[20], tupla[21], tupla[22], tupla[23], tupla[24], tupla[18])
+
+        corretor = Corretores(tupla[33],tupla[34],tupla[35],tupla[36],tupla[37],tupla[38],tupla[39],tupla[40],tupla[41],tupla[32])
+
+        imovel = Imovel(tipo, tupla[4], cidade, bairro, tupla[7], tupla[8], tupla[9], tupla[10], tupla[12], tupla[13],
+                        proprietario, corretor, tupla[11], tupla[14], tupla[15], tupla[16], tupla[17], imob_id=tupla[0])
+        del tipo, cidade, bairro, proprietario, corretor
+        return imovel
+
+
+    def filtra(self, id, filtro):
+        filtros_dic = {
+            "filtra_cidade" : SQL_FILTRA_CIDADE,
+            "filtra_prop" : SQL_FILTRA_PROP,
+            "filtra_status" : SQL_FILTRA_STATUS
+        }
+        cursor = self.__db.connection.cursor()
+        cursor.execute(filtros_dic[filtro], (id,))
+        imoveis = self.traduz_imob(cursor.fetchall())
+        return imoveis
+
+    def deletar_imob(self, id):
+        self.__db.connection.cursor().execute(SQL_DELETA_IMOVEL, (id,))
+        self.__db.connection.commit()
+
+    def traduz_imob(self,imoveis):
+        def cria_imob_lista(tupla):
+            tipo = Tipo(id_tipo=tupla[25], tipo_nome=tupla[26])
+
+            cidade = Cidade(id_cidade=tupla[27], cidade_nome=tupla[28])
+
+            bairro = Bairro(id_bairro=tupla[29], bairro_nome=tupla[30], id_cid=tupla[31], bairro_cidade_nome=tupla[28])
+
+            proprietario = Proprietario(tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24],tupla[18])
+
+            imovel = Imovel(tipo,tupla[4], cidade , bairro, tupla[7],tupla[8],tupla[9],tupla[10],tupla[12],tupla[13],
+                            proprietario,tupla[2], tupla[11],tupla[14],tupla[15],tupla[16],tupla[17],imob_id=tupla[0])
+
+            del tipo,cidade,bairro,proprietario
+            return imovel
+        return list(map(cria_imob_lista, imoveis))
+
+#tipos
+class tiposDao:
+    def __init__(self, db):
+        self.__db = db
+
+    def salvar(self, tipo):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_CRIA_TIPOS,(tipo._id_tipo,tipo._tipo_nome))
+        cursor._id = cursor.lastrowid
+        self.__db.connection.commit()
+        return tipo
+
+    def lista(self):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_LISTA_TIPOS)
+        tipos = self.traduz_tipos(cursor.fetchall())
+        return tipos
+
+    def traduz_tipos(self, tipos):
+        def cria_tipo_lista(tupla):
+                return Tipo(tupla[1],tupla[0])
+        return list(map(cria_tipo_lista, tipos))
+
+class ciadadeDao:
+    def __init__(self, db):
+        self.__db = db
+
+    def salvar(self, cidade):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_CRIA_CIDADE,(cidade._id_cidade,cidade._cidade_nome))
+        cursor._id = cursor.lastrowid
+        self.__db.connection.commit()
+        return cidade
+
+    def lista(self):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_LISTA_CIDADE)
+        cidades = self.traduz_tipos(cursor.fetchall())
+        return cidades
+
+    def traduz_tipos(self, cidades):
+        def cria_tipo_lista(tupla):
+                return Cidade(tupla[1],tupla[0])
+        return list(map(cria_tipo_lista, cidades))
+
+class bairroDao:
+    def __init__(self, db):
+        self.__db = db
+
+    def salvar(self, bairro):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_CRIA_BAIRRO,(bairro._id_bairro,bairro._bairro_nome,bairro._id_cid))
+        cursor._id = cursor.lastrowid
+        self.__db.connection.commit()
+        return bairro
+
+    def lista(self):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_LISTA_BAIRRO)
+        bairros = self.traduz_tipos(cursor.fetchall())
+        return bairros
+
+    def traduz_tipos(self, bairros):
+        def cria_tipo_lista(tupla):
+            return Bairro(tupla[1],tupla[2], id_bairro = tupla[0], bairro_cidade_nome = tupla[4])
+        return list(map(cria_tipo_lista, bairros))
+
