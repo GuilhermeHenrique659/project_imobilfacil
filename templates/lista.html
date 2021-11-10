@@ -124,11 +124,35 @@
             <td>{{ corretor._cpf }}</td>
             <td>{{ corretor._celular }}</td>
             <td><a href="{{url_for('editar_corretor', id=corretor._id_corr)}}"><button type="button" class="btn"><i>
-            <img src="../static/img/icon/pen.svg"></i></button></a>
-              <a href="{{url_for('deletar_corr', id=corretor._id_corr)}}"><i>
-              <img src="../static/img/icon/trash.svg"></i></a></td>
-          </tr>
+            <img src="../static/img/icon/pen.svg"></i></button></a></td>
 
+          <td>
+              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ corretor._id_corr}}"><i>
+                    <img src="../static/img/icon/trash.svg"></i></button>
+
+                <div class="modal fade" id="modal{{ corretor._id_corr}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Deseja excluir o registro {{ corretor._id_corr }} </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Você tem certeza que deseja excluir o corretor: {{ corretor._nome }},
+                        CFP: {{ corretor._cpf }}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <a href="{{url_for('deletar_corr', id=corretor._id_corr)}}"><button type="button"
+                            class="btn btn-danger">Deletar corretor</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
@@ -235,9 +259,32 @@
             <td>{{ proprietario._telefone }}</td>
             <td>{{ proprietario._email }}</td>
             <td><a href="{{url_for('editar_proprietario', id=proprietario._id)}}"><button type="button" class="btn"><i>
-              <img src="../static/img/icon/pen.svg"></i></button></a>
-              <a href="{{url_for('deletar_prop', id=proprietario._id)}}"><i>
-              <img src="../static/img/icon/trash.svg"></i></a>
+              <img src="../static/img/icon/pen.svg"></i></button></a></td>
+            <td>
+              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ proprietario._id}}"><i>
+                    <img src="../static/img/icon/trash.svg"></i></button>
+
+                <div class="modal fade" id="modal{{ proprietario._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Deseja excluir o registro {{ proprietario._id }} </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Você tem certeza que deseja excluir o proprietário: {{ proprietario._nome }},
+                        CFP: {{ proprietario._cpf }}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <a href="{{url_for('deletar_prop', id=proprietario._id)}}"><button type="button"
+                            class="btn btn-danger">Deletar proprietário</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
             </td>
           </tr>
           {% endfor %}
