@@ -12,22 +12,32 @@
       $('#cpf').mask('000.000.000-00');
   });
   </script>
-<h1>Cadastro de Proprietario</h1>
+<h1>Editar Proprietario</h1>
 <br>
-<form action="/atualizar_prop" method="post">
+<form action="/atualizar_prop" method="post" class="needs-validation" novalidate>
   <fieldset>
     <input type="hidden" name="id" value="{{proprietario._id}}">
     <div class="mb-3">
       <label for="nome" class="form-label">Nome</label>
-      <input type="text" name="nome" class="form-control" id="nome" value="{{proprietario._nome}}" >
+      <input type="text" name="nome" class="form-control" id="nome" value="{{proprietario._nome}}" required >
+      <div class="invalid-feedback">
+              Por favor insira um nome.
+      </div>
     </div>
+
     <div class="mb-3">
       <label for="cpf" class="form-label">CPF</label>
-      <input type="text" class="form-control" id="cpf" name="cpf" value="{{proprietario._cpf}}">
+      <input type="text" class="form-control" id="cpf" name="cpf" value="{{proprietario._cpf}}" required>
+      <div class="invalid-feedback">
+              Por favor insira um CPF.
+      </div>
     </div>
     <div class="mb-3">
       <label for="rg" class="form-label">RG</label>
-      <input type=text class="form-control" id="rg" name="rg" value="{{proprietario._rg}}">
+      <input type=text class="form-control" id="rg" name="rg" value="{{proprietario._rg}}" required>
+      <div class="invalid-feedback">
+              Por favor insira um RG.
+      </div>
     </div>
     <div class="mb-3">
       <label for="endereco" class="form-label">Endereço</label>
@@ -35,12 +45,45 @@
     </div>
     <div class="mb-3">
         <label for="telefone" class="form-label">Telefone</label>
-        <input type="text" class="form-control" id="telefone" name="telefone" value="{{proprietario._telefone}}">
+        <input type="text" class="form-control" id="telefone" name="telefone" value="{{proprietario._telefone}} " required>
+      <div class="invalid-feedback">
+              Por favor insira um Telefone.
+      </div>
     </div>
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
       <input type="text" class="form-control" id="email" name="email" value="{{proprietario._email}}">
     </div>
+    <div class="row">
+      <div class="col">
+        <label for="cidades">Cidade</label>
+        <select class="form-select" id="cidades" name="cidades" required>
+          <option value="" selected>Selecione a cidade</option>
+            {% for cidade in cidades %}
+              <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+          {% endfor %}
+        </select>
+        <div class="invalid-feedback">
+              Por favor insira uma cidade.
+        </div>
+      </div>
+    </div>
+      <br>
+    <div class="row">
+      <div class="col">
+        <label for="bairros">Bairro</label>
+        <select class="form-select" id="bairros" name="bairros" required>
+          <option value="" selected>Selecione o bairro</option>
+            {% for bairro in bairros %}
+              <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+            {% endfor %}
+        </select>
+        <div class="invalid-feedback">
+              Por favor insira um bairro.
+        </div>
+      </div>
+    </div>
+      <br>
     <button type="submit" class="btn btn-dark">Salvar</button>
     <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
   </fieldset>

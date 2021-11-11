@@ -10,9 +10,9 @@ class cad_proprietario_dao:
         cursor = self.__db.connection.cursor()
 
         if (Proprietario._id):
-            cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (Proprietario._nome, Proprietario._cpf,Proprietario._rg, Proprietario._endereco_prop, Proprietario._telefone,Proprietario._email, Proprietario._id))
+            cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (Proprietario._nome, Proprietario._cpf,Proprietario._rg, Proprietario._endereco_prop, Proprietario._telefone,Proprietario._email,Proprietario._cidade,Proprietario._bairro, Proprietario._id))
         else:
-            cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco_prop, Proprietario._telefone, Proprietario._email))
+            cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco_prop, Proprietario._telefone, Proprietario._email,Proprietario._cidade,Proprietario._bairro))
             cursor._id = cursor.lastrowid
 
         self.__db.connection.commit()
@@ -29,7 +29,7 @@ class cad_proprietario_dao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_PROP_POR_ID, (id,))
         tupla = cursor.fetchone()
-        return Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], id=tupla[0])
+        return Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], id=tupla[0])
     def deletar_prop(self,id):
         self.__db.connection.cursor().execute(SQL_DESATIVA)
         self.__db.connection.cursor().execute(SQL_DELETA_PROPRIETARIO, (id,))
@@ -39,7 +39,7 @@ class cad_proprietario_dao:
 
 def traduz_prop(proprietarios):
     def cria_prop_lista(tupla):
-        return Proprietario(tupla[1], tupla[2],tupla[3], tupla[4],tupla[5], tupla[6], id=tupla[0])
+        return Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], id=tupla[0])
     return list(map(cria_prop_lista, proprietarios))
 #corretor/
 
@@ -51,9 +51,9 @@ class cad_corretor_dao:
         cursor = self.__db.connection.cursor()
 
         if (corretor._id_corr):
-            cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._imobil,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._id_corr))
+            cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._imobil,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro,corretor._id_corr))
         else:
-            cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._imobil,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha))
+            cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._imobil,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
             cursor._id = cursor.lastrowid
 
         self.__db.connection.commit()
@@ -78,7 +78,7 @@ class cad_corretor_dao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_CORR_POR_ID, (id,))
         tupla = cursor.fetchone()
-        return Corretores(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], tupla[9], id_corr=tupla[0])
+        return Corretores(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], tupla[9],tupla[10],tupla[11], id_corr=tupla[0])
 
     def deletar_corr(self,id):
         self.__db.connection.cursor().execute(SQL_DESATIVA)
@@ -88,12 +88,12 @@ class cad_corretor_dao:
 
 #cria objeto usuario
 def traduz_usuario(tupla):
-    return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9], id_corr=tupla[0])
+    return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],tupla[10],tupla[11], id_corr=tupla[0])
 
 #tranforma dodos do bd em uma lista de objetos
 def traduz_corr(corretores):
     def cria_corr(tupla):
-        return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9], id_corr=tupla[0])
+        return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],tupla[10],tupla[11], id_corr=tupla[0])
     return list(map(cria_corr, corretores))
 #imovel/
 

@@ -13,38 +13,6 @@ conn.cursor().execute("CREATE DATABASE `Projeto_DB`;")
 conn.commit()
 
 conn.cursor().execute("USE `Projeto_DB`;")
-criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
-    `ID_CORR` INT NOT NULL AUTO_INCREMENT,
-    `USUARIO` VARCHAR(45) NOT NULL,
-    `EMAIL` VARCHAR(45) NULL,
-    `NOME` VARCHAR(45) NULL,
-    `IMOBIL` VARCHAR(45) NULL,
-    `CRECI` CHAR(15) NULL,
-    `CELULAR` CHAR(25) NULL,
-    `CPF` CHAR(25) NULL,
-    `ENDERECO` VARCHAR(45) NULL,
-    `SENHA` VARCHAR(128) NULL,
-    PRIMARY KEY (`ID_CORR`),
-    UNIQUE INDEX `USUARIO_UNIQUE` (`USUARIO` ASC),
-    UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC),
-    UNIQUE INDEX `CPF_UNIQUE` (`CPF` ASC)
-   ) ENGINE=InnoDB;'''
-conn.cursor().execute(criar_tabela_corretor)
-conn.commit()
-
-criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
-        `ID_PROP` INT NOT NULL AUTO_INCREMENT,
-        `NOME` VARCHAR(45) NOT NULL,
-        `CPF` CHAR(25) NOT NULL,
-        `RG` VARCHAR(20) NOT NULL,
-        `ENDERECO` VARCHAR(45) NOT NULL,
-        `TELEFONE` CHAR(25) NOT NULL,
-        `EMAIL` VARCHAR(45) NOT NULL,
-        PRIMARY KEY (`ID_PROP`),
-        UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC)
-    ) ENGINE=InnoDB;'''
-conn.cursor().execute(criar_tabela_proprietario)
-conn.commit()
 
 criar_tabela_tipo = '''CREATE TABLE `TIPOS` (
         `ID_TIPO` INT NOT NULL AUTO_INCREMENT,
@@ -75,7 +43,62 @@ criar_tabela_bairro = '''CREATE TABLE `BAIRRO` (
     ) ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_bairro)
 conn.commit()
+criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
+        `ID_CORR` INT NOT NULL AUTO_INCREMENT,
+        `USUARIO` VARCHAR(45) NOT NULL,
+        `EMAIL` VARCHAR(45) NULL,
+        `NOME` VARCHAR(45) NULL,
+        `IMOBIL` VARCHAR(45) NULL,
+        `CRECI` CHAR(15) NULL,
+        `CELULAR` CHAR(25) NULL,
+        `CPF` CHAR(25) NULL,
+        `ENDERECO` VARCHAR(45) NULL,
+        `SENHA` VARCHAR(128) NULL,
+        PRIMARY KEY (`ID_CORR`),
+        UNIQUE INDEX `USUARIO_UNIQUE` (`USUARIO` ASC),
+        UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC),
+        UNIQUE INDEX `CPF_UNIQUE` (`CPF` ASC),
+        `ID_CIDADE` INT NULL,
+        `ID_BAIRRO` INT NULL,
+    CONSTRAINT `fk_CORRETOR_BAIRRO`
+        FOREIGN KEY (`ID_BAIRRO`)
+        REFERENCES `BAIRRO` (`ID_BAIRRO`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
+    CONSTRAINT `fk_CORRETOR_CIDADE`
+        FOREIGN KEY (`ID_CIDADE`)
+        REFERENCES `CIDADE` (`ID_CID`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION
+   ) ENGINE=InnoDB;'''
+conn.cursor().execute(criar_tabela_corretor)
+conn.commit()
 
+criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
+        `ID_PROP` INT NOT NULL AUTO_INCREMENT,
+        `NOME` VARCHAR(45) NOT NULL,
+        `CPF` CHAR(25) NOT NULL,
+        `RG` VARCHAR(20) NOT NULL,
+        `ENDERECO` VARCHAR(45) NOT NULL,
+        `TELEFONE` CHAR(25) NOT NULL,
+        `EMAIL` VARCHAR(45) NOT NULL,
+        PRIMARY KEY (`ID_PROP`),
+        UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC),
+        `ID_CIDADE` INT NULL,
+        `ID_BAIRRO` INT NULL,
+    CONSTRAINT `fk_PROPRIETARIO_BAIRRO`
+        FOREIGN KEY (`ID_BAIRRO`)
+        REFERENCES `BAIRRO` (`ID_BAIRRO`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
+    CONSTRAINT `fk_PROPRIETARIO_CIDADE`
+        FOREIGN KEY (`ID_CIDADE`)
+        REFERENCES `CIDADE` (`ID_CID`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION
+    ) ENGINE=InnoDB;'''
+conn.cursor().execute(criar_tabela_proprietario)
+conn.commit()
 criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
         `ID_IMOB` INT NOT NULL AUTO_INCREMENT,
         `ID_CORR` INT NULL,

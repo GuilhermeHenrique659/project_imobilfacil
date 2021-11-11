@@ -179,7 +179,7 @@ def rota_proprietario():
         return redirect('/login?proxima=novo_proprietario.html')
     lista_cidades = CidadeDao.lista()
     lista_bairro = BairroDao.lista()
-    return render_template('novo_proprietario.html',cidades=lista_cidades,bairros=lista_bairro)
+    return render_template('novo_proprietario.html', cidades=lista_cidades, bairros=lista_bairro)
 
 @app.route('/cad_prop', methods=['POST'])
 def criar_proprietario():
@@ -189,15 +189,19 @@ def criar_proprietario():
     endereco = request.form['endereco']
     telefone = request.form['telefone']
     email = request.form['email']
-    proprietario = Proprietario(nome,cpf,rg,endereco,telefone,email)
+    cidade = request.form['cidades']
+    bairro = request.form['bairros']
+    proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, cidade, bairro)
     Proprietario_dao.salvar(proprietario)
     return redirect('/')
 @app.route('/editar_prop/<int:id>')
 def editar_proprietario(id):
     if 'usuario_logado' not in session or session['usuario_logado']==None:
         return redirect('/login?proxima=editar_prop.html')
+    lista_cidades = CidadeDao.lista()
+    lista_bairro = BairroDao.lista()
     proprietario = Proprietario_dao.busca_por_id(id)
-    return render_template('editar_prop.html', proprietario = proprietario)
+    return render_template('editar_prop.html', proprietario=proprietario,cidades=lista_cidades ,bairros=lista_bairro)
 
 @app.route('/atualizar_prop', methods=['POST'])
 def atualizar_proprietario():
@@ -208,8 +212,10 @@ def atualizar_proprietario():
     endereco = request.form['endereco']
     telefone = request.form['telefone']
     email = request.form['email']
+    cidade = request.form['cidades']
+    bairro = request.form['bairros']
     id = request.form['id']
-    proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, id)
+    proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, cidade ,bairro, id)
     Proprietario_dao.salvar(proprietario)
     return redirect('/')
 @app.route('/deletar_prop/<int:id>')
@@ -236,8 +242,10 @@ def criar_Corretor():
     cpf = request.form['cpf_corr']
     endereco = request.form['endereco_corr']
     senha = request.form['senha_corr']
+    cidade = request.form['cidades_corr']
+    bairro = request.form['bairros_corr']
     senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
-    corretor = Corretores(usuario,email,nome,imobil,creci,celular,cpf,endereco,senha)
+    corretor = Corretores(usuario,email, nome, imobil, creci, celular, cpf, endereco, senha, cidade, bairro)
     Corretores_dao.salvar(corretor)
     return redirect('/')
 
@@ -245,8 +253,10 @@ def criar_Corretor():
 def editar_corretor(id):
     if 'usuario_logado' not in session or session['usuario_logado']==None:
         return redirect('/login?proxima=editar-corr.html')
+    lista_cidades = CidadeDao.lista()
+    lista_bairro = BairroDao.lista()
     corretor = Corretores_dao.busca_por_id_edit(id)
-    return render_template('editar_corr.html', corretor = corretor)
+    return render_template('editar_corr.html', corretor=corretor, cidades=lista_cidades, bairros=lista_bairro)
 
 @app.route('/atualizar_corretor', methods=['POST'])
 def atualizar_corretor():
@@ -259,9 +269,11 @@ def atualizar_corretor():
     cpf = request.form['cpf_corr']
     endereco = request.form['endereco_corr']
     senha = request.form['senha_corr']
+    cidade = request.form['cidades_corr']
+    bairro = request.form['bairros_corr']
     id = request.form['id_corr']
     senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
-    corretor = Corretores(usuario,email,nome,imobil,creci,celular,cpf,endereco,senha,id)
+    corretor = Corretores(usuario,email,nome,imobil,creci,celular,cpf,endereco,senha,cidade,bairro,id)
     Corretores_dao.salvar(corretor)
     return redirect('/')
 

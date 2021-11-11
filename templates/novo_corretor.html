@@ -76,10 +76,10 @@
         </div>
     </div>
     <br>
-                      <div class="row">
-              <div class="col">
-            <label for="cidades">Cidade</label>
-            <select class="form-select" id="cidades" name="cidades" required>
+      <div class="row">
+          <div class="col">
+            <label for="cidades_corr">Cidade</label>
+            <select class="form-select" id="cidades_corr" name="cidades_corr" required>
                 <option value="" selected>Selecione a cidade</option>
                     {% for cidade in cidades %}
                         <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
@@ -91,10 +91,10 @@
                   </div>
           </div>
       <br>
-                  <div class="row">
-              <div class="col">
-            <label for="bairros">Bairros</label>
-            <select class="form-select" id="bairros" name="bairros" required>
+      <div class="row">
+          <div class="col">
+              <label for="bairros_corr">Bairros</label>
+            <select class="form-select" id="bairros_corr" name="bairros_corr" required>
                 <option value="" selected>Selecione o bairro</option>
                     {% for bairro in bairros %}
                         <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>

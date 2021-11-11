@@ -135,7 +135,7 @@
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Deseja excluir o registro {{ corretor._id_corr }} </h5>
+                        <h5 class="modal-title" id="exampleModalLabel1">Deseja excluir o registro {{ corretor._id_corr }} </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
@@ -269,7 +269,7 @@
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Deseja excluir o registro {{ proprietario._id }} </h5>
+                        <h5 class="modal-title" id="exampleModalLabel2">Deseja excluir o registro {{ proprietario._id }} </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
@@ -295,7 +295,7 @@
 </div>
 <script>
 function search_table(){
-  // Declare variables 
+  // Declare variables
   var input, filter, table, tr, td, i;
   input = document.getElementById("search_field_input");
   filter = input.value.toUpperCase();
@@ -304,18 +304,18 @@ function search_table(){
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td") ; 
+    td = tr[i].getElementsByTagName("td") ;
     for(j=0 ; j<td.length ; j++)
     {
       let tdata = td[j] ;
       if (tdata) {
         if (tdata.innerHTML.toUpperCase().indexOf(filter) > -1) {
           tr[i].style.display = "";
-          break ; 
+          break ;
         } else {
           tr[i].style.display = "none";
         }
-      } 
+      }
     }
   }
 }
