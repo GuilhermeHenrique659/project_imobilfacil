@@ -31,9 +31,7 @@ class cad_proprietario_dao:
         tupla = cursor.fetchone()
         return Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], id=tupla[0])
     def deletar_prop(self,id):
-        self.__db.connection.cursor().execute(SQL_DESATIVA)
         self.__db.connection.cursor().execute(SQL_DELETA_PROPRIETARIO, (id,))
-        self.__db.connection.cursor().execute(SQL_ATIVA)
         self.__db.connection.commit()
 
 
@@ -81,9 +79,7 @@ class cad_corretor_dao:
         return Corretores(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], tupla[9],tupla[10],tupla[11], id_corr=tupla[0])
 
     def deletar_corr(self,id):
-        self.__db.connection.cursor().execute(SQL_DESATIVA)
         self.__db.connection.cursor().execute(SQL_DELETA_CORRETOR, (id,))
-        self.__db.connection.cursor().execute(SQL_ATIVA)
         self.__db.connection.commit()
 
 #cria objeto usuario
