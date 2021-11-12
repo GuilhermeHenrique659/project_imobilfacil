@@ -2,7 +2,7 @@
 {% block conteudo %}
 
 <div class="modal fade" id="FiltroCidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro" method="post">
+  <form class="row g-3" action="/filtro_imovel" method="post">
     <input type="hidden" name="filtro" value="filtra_cidade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -30,8 +30,37 @@
   </form>
 </div>
 
+<div class="modal fade" id="FiltroBairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3" action="/filtro_imovel" method="post">
+    <input type="hidden" name="filtro" value="filtra_bairro">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="FiltroBairroModalLabel">Filtrar garagem</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="filtra_bairro">Numero de garagem</label>
+          <select class="form-select" id="filtra_bairro" name="filtra_bairro">
+            <option value="0" selected>Selecione o bairro</option>
+            {% for bairro in bairros %}
+            <option value="{{ bairro._id_bairro }}">{{ bairro._bairro_nome }}/{{ bairro._bairro_cid_nome }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-dark">Filtrar</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
 <div class="modal fade" id="FiltroPropModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro" method="post">
+  <form class="row g-3" action="/filtro_imovel" method="post">
     <input type="hidden" name="filtro" value="filtra_prop">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -60,7 +89,7 @@
 </div>
 
 <div class="modal fade" id="FiltroStatusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro" method="post">
+  <form class="row g-3" action="/filtro_imovel" method="post">
     <input type="hidden" name="filtro" value="filtra_status">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -87,6 +116,79 @@
   </div>
   </form>
 </div>
+
+<div class="modal fade" id="FiltroBanheiroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3" action="/filtro_imovel" method="post">
+    <input type="hidden" name="filtro" value="filtra_banheiro">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="FiltroBanheiroModalLabel">Filtrar Quartos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="filtra_banheiro">Numero de quartos</label>
+          <input type="number" class="form-select" id="filtra_banheiro" name="filtra_banheiro">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-dark">Filtrar</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
+<div class="modal fade" id="FiltroQuartosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3" action="/filtro_imovel" method="post">
+    <input type="hidden" name="filtro" value="filtra_quartos">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="FiltroQuartosModalLabel">Filtrar Quartos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="filtra_quartos">Numero de quartos</label>
+          <input type="number" class="form-select" id="filtra_quartos" name="filtra_quartos">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-dark">Filtrar</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
+<div class="modal fade" id="FiltroGaragemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3" action="/filtro_imovel" method="post">
+    <input type="hidden" name="filtro" value="filtra_garagem">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="FiltroGaragemModalLabel">Filtrar garagem</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="filtra_garagem">Numero de garagem</label>
+          <input type="number" class="form-select" id="filtra_garagem" name="filtra_garagem">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-dark">Filtrar</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
 
 
 
@@ -134,17 +236,23 @@
       <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
           <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-outline-success me-2" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
               filtros
             </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
               <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroCidadeModal">Filtrar por cidade</button></li>
+                <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroBairroModal">Filtrar por bairro</button></li>
                  <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroPropModal">Filtrar por proprietarios</button></li>
                    <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroStatusModal">Filtrar por status</button></li>
+                  <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroQuartosModal">Filtrar por quartos</button></li>
+                   <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroBanheiroModal">Filtrar por banheiro</button></li>
+                   <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroGaragemModal">Filtrar por garagem</button></li>
+
             </ul>
+            <a href="{{url_for('index')}}"><button class="btn btn-sm btn-outline-secondary" type="button">Limpar filtros</button></a>
           </div>
           <form class="d-flex">
-            <input class="form-control me-2" type="text"  id="search_field_input" placeholder="Search" aria-label="Search" onkeyup='search_table()'>
+            <input class="form-control me-2" type="text"  id="search_field_input" placeholder="Buscar" aria-label="Search" onkeyup='search_table()'>
           </form>
         </div>
       </nav>
@@ -219,6 +327,7 @@
             <th>CPF</th>
             <th>Telefone</th>
             <th>E-mail</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -229,6 +338,8 @@
             <td>{{ proprietario._cpf }}</td>
             <td>{{ proprietario._telefone }}</td>
             <td>{{ proprietario._email }}</td>
+            <td><a href="{{url_for('deletar_prop', id=proprietario._id)}}"><i>
+              <img src="../static/img/icon/trash.svg"></i></a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -238,14 +349,12 @@
 </div>
 <script>
 function search_table(){
-  // Declare variables 
   var input, filter, table, tr, td, i;
   input = document.getElementById("search_field_input");
   filter = input.value.toUpperCase();
   table = document.getElementById("myTable");
   tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td") ; 
     for(j=0 ; j<td.length ; j++)

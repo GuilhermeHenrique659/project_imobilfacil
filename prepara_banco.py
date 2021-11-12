@@ -65,13 +65,13 @@ conn.commit()
 criar_tabela_bairro = '''CREATE TABLE `BAIRRO` (
         `ID_BAIRRO` INT NOT NULL AUTO_INCREMENT,
         `BAIRRO` VARCHAR(45) NOT NULL,
-        `CIDADE_ID_CID` INT NOT NULL,
-        PRIMARY KEY (`ID_BAIRRO`, `CIDADE_ID_CID`),
+        `CIDADE_ID_CID` INT NULL,
+        PRIMARY KEY (`ID_BAIRRO`),
     CONSTRAINT `fk_BAIRRO_CIDADE`
     FOREIGN KEY (`CIDADE_ID_CID`)
     REFERENCES `CIDADE` (`ID_CID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
     ) ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_bairro)
 conn.commit()
@@ -79,8 +79,8 @@ conn.commit()
 criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
         `ID_IMOB` INT NOT NULL AUTO_INCREMENT,
         `ID_CORR` INT NULL,
-        `ID_PROP` INT NOT NULL,
-        `ID_TIPO` INT NOT NULL,
+        `ID_PROP` INT NULL,
+        `ID_TIPO` INT NULL,
         `FINALIDADE` VARCHAR(45) NULL,
         `ID_CIDADE` INT NULL,
         `ID_BAIRRO` INT NULL,
@@ -99,28 +99,28 @@ criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
   CONSTRAINT `fk_IMOVEIS_PROPRIETARIOS`
     FOREIGN KEY (`ID_PROP`)
     REFERENCES `PROPRIETARIOS` (`ID_PROP`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+     ON DELETE SET NULL
+     ON UPDATE CASCADE,
   CONSTRAINT `fk_IMOVEIS_CORRETORES`
     FOREIGN KEY (`ID_CORR`)
     REFERENCES `CORRETORES` (`ID_CORR`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+     ON DELETE SET NULL
+     ON UPDATE CASCADE,
   CONSTRAINT `fk_IMOVEIS_TIPOS`
     FOREIGN KEY (`ID_TIPO`)
     REFERENCES `TIPOS` (`ID_TIPO`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+     ON DELETE SET NULL
+     ON UPDATE CASCADE,
   CONSTRAINT `fk_IMOVEIS_BAIRRO`
     FOREIGN KEY (`ID_BAIRRO`)
     REFERENCES `BAIRRO` (`ID_BAIRRO`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+     ON DELETE SET NULL
+     ON UPDATE CASCADE,
   CONSTRAINT `fk_IMOVEIS_CIDADE`
     FOREIGN KEY (`ID_CIDADE`)
     REFERENCES `CIDADE` (`ID_CID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
     )
 ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_imovel)
@@ -146,7 +146,5 @@ print(' -------------  Usuários:  -------------')
 for user in cursor.fetchall():
     print(user[0])
 
-
-# commitando senão nada tem efeito
 conn.commit()
 cursor.close()

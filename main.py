@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session, flash,url_for
+from flask import Flask, request, redirect, render_template, session, flash
 from models import Imovel, Proprietario, Corretores,Tipo,Cidade,Bairro
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao,tiposDao,ciadadeDao,bairroDao
 from flask_mysqldb import MySQL
@@ -22,6 +22,8 @@ TiposDao = tiposDao(db)
 CidadeDao = ciadadeDao(db)
 BairroDao = bairroDao(db)
 
+
+
 #index
 @app.route('/')
 def index():
@@ -31,8 +33,8 @@ def index():
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
     lista_cidades = CidadeDao.lista()
-
-    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades)
+    lista_bairro = BairroDao.lista()
+    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades,bairros=lista_bairro)
 
 #tipos,cidade e bairro
 
@@ -77,23 +79,22 @@ def resumo_imovel(id):
     imovel = Imovel_Dao.busca_imob_id(id)
     return render_template('resumo_imovel.html', imovel=imovel)
 
-#exclui_imovel
-
-
-@app.route('/filtro', methods=['POST'])
-def filtro():
+#filtra imovel
+@app.route('/filtro_imovel', methods=['POST'])
+def filtro_imovel():
     filtro = request.form['filtro']
     id = request.form[filtro]
-    if id == "0":
-        lista_imob = Imovel_Dao.listar()
-    else:
-        lista_imob = Imovel_Dao.filtra(id,filtro)
-    if len(lista_imob) == 0:
+    lista_imob = Imovel_Dao.filtra(id, filtro)
+    if len(lista_imob) == 0 or id == "0":
         flash("Nao foi encontrado nenhum imovel com esse filtro!")
+        lista_imob = Imovel_Dao.listar()
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
     lista_cidades = CidadeDao.lista()
-    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades)
+    lista_bairro = BairroDao.lista()
+    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades, bairros=lista_bairro)
+
+#exclui_imovel
 
 @app.route('/deleta_imovel/<int:id>')
 def deleta_imovel(id):
@@ -189,6 +190,12 @@ def criar_proprietario():
     email = request.form['email']
     proprietario = Proprietario(nome,cpf,rg,endereco,telefone,email)
     Proprietario_dao.salvar(proprietario)
+    return redirect('/')
+
+
+@app.route('/deletar_prop/<int:id>')
+def deletar_prop(id):
+    Proprietario_dao.deletar_prop(id)
     return redirect('/')
 
 #corretor

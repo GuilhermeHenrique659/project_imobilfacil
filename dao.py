@@ -24,6 +24,10 @@ class cad_proprietario_dao:
         proprietarios = traduz_prop(cursor.fetchall())
         return proprietarios
 
+    def deletar_prop(self,id):
+        self.__db.connection.cursor().execute(SQL_DELETA_PROPRIETARIO, (id,))
+        self.__db.connection.commit()
+
 def traduz_prop(proprietarios):
     def cria_prop_lista(tupla):
         return Proprietario(tupla[1], tupla[2],tupla[3], tupla[4],tupla[5], tupla[6], id=tupla[0])
@@ -108,9 +112,11 @@ class imovelDao:
 
         bairro = Bairro(id_bairro=tupla[29], bairro_nome=tupla[30], id_cid=tupla[31],bairro_cidade_nome=tupla[28])
 
-        proprietario = Proprietario(tupla[19], tupla[20], tupla[21], tupla[22], tupla[23], tupla[24], tupla[18])
+        if tupla[18] == None:
+            null = ""
+        proprietario = Proprietario(tupla[19], tupla[20], tupla[21], tupla[22], tupla[23], tupla[24], null)
 
-        corretor = Corretores(tupla[33],tupla[34],tupla[35],tupla[36],tupla[37],tupla[38],tupla[39],tupla[40],tupla[41],tupla[32])
+        corretor = Corretores(tupla[33],tupla[34],tupla[35],tupla[36],tupla[37],tupla[38],tupla[39],tupla[40],tupla[41], tupla[32])
 
         imovel = Imovel(tipo, tupla[4], cidade, bairro, tupla[7], tupla[8], tupla[9], tupla[10], tupla[12], tupla[13],
                         proprietario, corretor, tupla[11], tupla[14], tupla[15], tupla[16], tupla[17], imob_id=tupla[0])
@@ -122,7 +128,11 @@ class imovelDao:
         filtros_dic = {
             "filtra_cidade" : SQL_FILTRA_CIDADE,
             "filtra_prop" : SQL_FILTRA_PROP,
-            "filtra_status" : SQL_FILTRA_STATUS
+            "filtra_status" : SQL_FILTRA_STATUS,
+            "filtra_quartos" : SQL_FILTRO_QUARTO,
+            "filtra_banheiro" : SQL_FILTRO_BANHEIRO,
+            "filtra_garagem" : SQL_FILTRO_GARAGEM,
+            "filtra_bairro" : SQL_FILTRO_BAIRRO
         }
         cursor = self.__db.connection.cursor()
         cursor.execute(filtros_dic[filtro], (id,))
@@ -145,7 +155,6 @@ class imovelDao:
 
             imovel = Imovel(tipo,tupla[4], cidade , bairro, tupla[7],tupla[8],tupla[9],tupla[10],tupla[12],tupla[13],
                             proprietario,tupla[2], tupla[11],tupla[14],tupla[15],tupla[16],tupla[17],imob_id=tupla[0])
-
             del tipo,cidade,bairro,proprietario
             return imovel
         return list(map(cria_imob_lista, imoveis))
