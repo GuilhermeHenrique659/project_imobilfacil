@@ -14,8 +14,8 @@ class cad_proprietario_dao:
         else:
             cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco_prop, Proprietario._telefone, Proprietario._email,Proprietario._cidade,Proprietario._bairro))
             cursor._id = cursor.lastrowid
-
         self.__db.connection.commit()
+
         return Proprietario
 
     def listar(self):
@@ -157,6 +157,7 @@ class imovelDao:
 
     def traduz_imob(self,imoveis):
         def cria_imob_lista(tupla):
+            print(tupla)
             tipo = Tipo(id_tipo=tupla[25], tipo_nome=tupla[26])
 
             cidade = Cidade(id_cidade=tupla[27], cidade_nome=tupla[28])

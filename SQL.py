@@ -21,11 +21,9 @@ SQL_BUSCA_IMOB_ID = 'select * from imoveis inner join proprietarios on imoveis.I
 
 
 #Sql da tabela propeitarios
-SQL_DESATIVA='SET FOREIGN_KEY_CHECKS=0;'
 
 SQL_DELETA_PROPRIETARIO = 'delete from proprietarios where ID_PROP = %s'
 
-SQL_ATIVA='SET FOREIGN_KEY_CHECKS=1;'
 
 SQL_CRIA_PROPRIETARIO = 'INSERT into proprietarios (NOME, CPF, RG, ENDERECO, TELEFONE, EMAIL,ID_CIDADE, ID_BAIRRO) values (%s,%s,%s,%s,%s,%s,%s,%s)'
 
@@ -48,6 +46,11 @@ SQL_BUSCA_LISTA_CORRETORES = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,C
 SQL_BUSCA_CORR_ID = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA,ID_CIDADE, ID_BAIRRO from corretores where USUARIO=%s'
 
 SQL_BUSCA_CORR_POR_ID = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA,ID_CIDADE, ID_BAIRRO from corretores where ID_CORR=%s'
+
+
+
+
+#Sql da tabela corretores
 
 #TIPOS
 SQL_CRIA_TIPOS = 'INSERT into tipos (ID_TIPO,TIPO) values(%s,%s)'

@@ -112,6 +112,7 @@
             <th>CRECI</th>
             <th>CPF</th>
             <th>Celular</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -124,13 +125,11 @@
             <td>{{ corretor._cpf }}</td>
             <td>{{ corretor._celular }}</td>
             <td><a href="{{url_for('editar_corretor', id=corretor._id_corr)}}"><button type="button" class="btn"><i>
-            <img src="../static/img/icon/pen.svg"></i></button></a></td>
-
-          <td>
-              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ corretor._id_corr}}"><i>
+            <img src="../static/img/icon/pen.svg"></i></button></a>
+              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_corr{{ corretor._id_corr}}"><i>
                     <img src="../static/img/icon/trash.svg"></i></button>
 
-                <div class="modal fade" id="modal{{ corretor._id_corr}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                <div class="modal fade" id="modal_corr{{ corretor._id_corr}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                   aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -150,7 +149,6 @@
                     </div>
                   </div>
                 </div>
-
             </td>
           </tr>
           {% endfor %}
@@ -210,10 +208,10 @@
                       <img src="../static/img/icon/pen.svg"></i></button></a>
 
 
-                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ l._imob_id}}"><i>
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_imob{{ l._imob_id}}"><i>
                     <img src="../static/img/icon/trash.svg"></i></button>
 
-                <div class="modal fade" id="modal{{ l._imob_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                <div class="modal fade" id="modal_imob{{ l._imob_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                   aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -248,6 +246,7 @@
             <th>CPF</th>
             <th>Telefone</th>
             <th>E-mail</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -259,12 +258,11 @@
             <td>{{ proprietario._telefone }}</td>
             <td>{{ proprietario._email }}</td>
             <td><a href="{{url_for('editar_proprietario', id=proprietario._id)}}"><button type="button" class="btn"><i>
-              <img src="../static/img/icon/pen.svg"></i></button></a></td>
-            <td>
-              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ proprietario._id}}"><i>
+              <img src="../static/img/icon/pen.svg"></i></button></a>
+              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_prop{{ proprietario._id}}"><i>
                     <img src="../static/img/icon/trash.svg"></i></button>
 
-                <div class="modal fade" id="modal{{ proprietario._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                <div class="modal fade" id="modal_prop{{ proprietario._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                   aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -295,7 +293,11 @@
 </div>
 <script>
 function search_table(){
+<<<<<<< HEAD
   // Declare variables
+=======
+  // Declare variables 
+>>>>>>> main
   var input, filter, table, tr, td, i;
   input = document.getElementById("search_field_input");
   filter = input.value.toUpperCase();
@@ -304,18 +306,30 @@ function search_table(){
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
+<<<<<<< HEAD
     td = tr[i].getElementsByTagName("td") ;
+=======
+    td = tr[i].getElementsByTagName("td") ; 
+>>>>>>> main
     for(j=0 ; j<td.length ; j++)
     {
       let tdata = td[j] ;
       if (tdata) {
         if (tdata.innerHTML.toUpperCase().indexOf(filter) > -1) {
           tr[i].style.display = "";
+<<<<<<< HEAD
           break ;
         } else {
           tr[i].style.display = "none";
         }
       }
+=======
+          break ; 
+        } else {
+          tr[i].style.display = "none";
+        }
+      } 
+>>>>>>> main
     }
   }
 }

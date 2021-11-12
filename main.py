@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session, flash,url_for
+from flask import Flask, request, redirect, render_template, session, flash
 from models import Imovel, Proprietario, Corretores,Tipo,Cidade,Bairro
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao,tiposDao,ciadadeDao,bairroDao
 from flask_mysqldb import MySQL
@@ -61,7 +61,6 @@ def novo_bairro():
     BairroDao.salvar(bairro)
     return redirect('/novo_imovel')
 
-
 #visualização do imovel
 @app.route('/view_imovel/<int:id>')
 def view_imovel(id):
@@ -94,6 +93,8 @@ def filtro():
     lista_corr = Corretores_dao.listar()
     lista_cidades = CidadeDao.lista()
     return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades)
+
+#exclui_imovel
 
 @app.route('/deleta_imovel/<int:id>')
 def deleta_imovel(id):

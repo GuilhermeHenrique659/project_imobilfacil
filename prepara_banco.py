@@ -6,9 +6,8 @@ print('Conectando...')
 conn = MySQLdb.connect(user='root', passwd='root', host='127.0.0.1', port=3306, charset='utf8')
 
 # Descomente se quiser desfazer o banco...
-#conn.cursor().execute("SET NAMES utf8;")
-#conn.cursor().execute("DROP DATABASE `Projeto_DB`;")
-#conn.commit()
+conn.cursor().execute("SET NAMES utf8;")
+conn.cursor().execute("DROP DATABASE `Projeto_DB`;")
 conn.cursor().execute("CREATE DATABASE `Projeto_DB`;")
 conn.commit()
 
@@ -99,6 +98,7 @@ criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
     ) ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_proprietario)
 conn.commit()
+
 criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
         `ID_IMOB` INT NOT NULL AUTO_INCREMENT,
         `ID_CORR` INT NULL,
@@ -143,8 +143,7 @@ criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
     FOREIGN KEY (`ID_CIDADE`)
     REFERENCES `CIDADE` (`ID_CID`)
     ON DELETE SET NULL
-    ON UPDATE CASCADE
-    )
+    ON UPDATE CASCADE)
 ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_imovel)
 conn.commit()
