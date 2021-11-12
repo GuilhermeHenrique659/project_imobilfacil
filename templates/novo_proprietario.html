@@ -2,6 +2,7 @@
 {% block conteudo %}
 
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
 <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
 <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
@@ -14,32 +15,81 @@
 </script>
 <h1>Cadastro de Proprietario</h1>
 <br>
-<form action="/cad_prop" method="post">
+<form action="/cad_prop" method="post" class="needs-validation" novalidate>
   <fieldset>
     <div class="mb-3">
       <label for="nome" class="form-label">Nome</label>
-      <input type="text" name="nome" class="form-control" id="nome">
+      <input type="text" name="nome" class="form-control" id="nome" required>
+        <div class="invalid-feedback">
+              Por favor insira um nome.
+        </div>
     </div>
     <div class="mb-3">
       <label for="cpf" class="form-label">CPF</label>
-      <input type="text" class="form-control" id="cpf" name="cpf">
+      <input type="text" class="form-control" id="cpf" name="cpf" required>
+        <div class="invalid-feedback">
+              Por favor insira um CPF.
+        </div>
     </div>
     <div class="mb-3">
       <label for="rg" class="form-label">RG</label>
-      <input type=text class="form-control" id="rg" name="rg">
+      <input type=text class="form-control" id="rg" name="rg" required>
+        <div class="invalid-feedback">
+              Por favor insira um RG.
+        </div>
     </div>
     <div class="mb-3">
       <label for="endereco" class="form-label">Endereço</label>
-      <input type="text" class="form-control" id="endereco" name="endereco">
+      <input type="text" class="form-control" id="endereco" name="endereco" required>
+                <div class="invalid-feedback">
+              Por favor insira um endereço.
+        </div>
     </div>
     <div class="mb-3">
       <label for="telefone" class="form-label">Telefone</label>
-      <input type="text" class="form-control" id="telefone" name="telefone">
+      <input type="text" class="form-control" id="telefone" name="telefone" required>
+        <div class="invalid-feedback">
+              Por favor insira um Telefone.
+        </div>
+
     </div>
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
-      <input type="text" class="form-control" id="email" name="email">
+      <input type="text" class="form-control" id="email" name="email" required>
+                <div class="invalid-feedback">
+              Por favor insira um Email.
+        </div>
     </div>
+                      <div class="row">
+              <div class="col">
+            <label for="cidades">Cidade</label>
+            <select class="form-select" id="cidades" name="cidades" required>
+                <option value="" selected>Selecione a cidade</option>
+                    {% for cidade in cidades %}
+                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+                    {% endfor %}
+            </select>
+                              <div class="invalid-feedback">
+              Por favor insira uma cidade.
+              </div>
+                  </div>
+          </div>
+      <br>
+                  <div class="row">
+              <div class="col">
+            <label for="bairros">Bairro</label>
+            <select class="form-select" id="bairros" name="bairros" required>
+                <option value="" selected>Selecione o bairro</option>
+                    {% for bairro in bairros %}
+                        <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+                    {% endfor %}
+            </select>
+                              <div class="invalid-feedback">
+              Por favor insira um bairro.
+              </div>
+                  </div>
+          </div>
+      <br>
     <button type="submit" class="btn btn-dark">Salvar</button>
     <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
   </fieldset>
