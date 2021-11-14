@@ -155,7 +155,11 @@ class imovelDao:
         filtros_dic = {
             "filtra_cidade" : SQL_FILTRA_CIDADE,
             "filtra_prop" : SQL_FILTRA_PROP,
-            "filtra_status" : SQL_FILTRA_STATUS
+            "filtra_status" : SQL_FILTRA_STATUS,
+            "filtra_quartos": SQL_FILTRO_QUARTO,
+            "filtra_banheiro": SQL_FILTRO_BANHEIRO,
+            "filtra_garagem": SQL_FILTRO_GARAGEM,
+            "filtra_bairro": SQL_FILTRO_BAIRRO
         }
         cursor = self.__db.connection.cursor()
         cursor.execute(filtros_dic[filtro], (id,))
