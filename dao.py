@@ -16,7 +16,7 @@ class cad_proprietario_dao:
             cursor._id = cursor.lastrowid
         self.__db.connection.commit()
 
-        return Proprietario
+        del Proprietario
 
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -29,7 +29,13 @@ class cad_proprietario_dao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_PROP_POR_ID, (id,))
         tupla = cursor.fetchone()
-        return Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], id=tupla[0])
+        cidade = Cidade(id_cidade=tupla[9], cidade_nome=tupla[10])
+
+        bairro = Bairro(id_bairro=tupla[11], bairro_nome=tupla[12], id_cid=tupla[13],bairro_cidade_nome=tupla[10])
+
+        proprietario = Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], cidade, bairro, id=tupla[0])
+        del cidade,bairro
+        return proprietario
     def deletar_prop(self,id):
         self.__db.connection.cursor().execute(SQL_DELETA_PROPRIETARIO, (id,))
         self.__db.connection.commit()
@@ -55,7 +61,7 @@ class cad_corretor_dao:
             cursor._id = cursor.lastrowid
 
         self.__db.connection.commit()
-        return corretor
+        del corretor
     # faz lista de corretores para mostrar no index
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -70,13 +76,17 @@ class cad_corretor_dao:
         dados = cursor.fetchone()
         usuario = traduz_usuario(dados) if dados else None
         return usuario
-        # busca um unico corretor pelo id
 
+    # busca um unico corretor pelo id
     def busca_por_id_edit(self, id):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_CORR_POR_ID, (id,))
         tupla = cursor.fetchone()
-        return Corretores(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], tupla[9],tupla[10],tupla[11], id_corr=tupla[0])
+        cidade = Cidade(id_cidade=tupla[12], cidade_nome=tupla[13])
+        bairro = Bairro(id_bairro=tupla[14], bairro_nome=tupla[15], id_cid=tupla[16],bairro_cidade_nome=tupla[13])
+        corretor = Corretores(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], tupla[9],cidade,bairro, id_corr=tupla[0])
+        del cidade,bairro
+        return corretor
 
     def deletar_corr(self,id):
         self.__db.connection.cursor().execute(SQL_DELETA_CORRETOR, (id,))
@@ -112,7 +122,7 @@ class imovelDao:
             cursor._id = cursor.lastrowid
 
         self.__db.connection.commit()
-        return imovel
+        del imovel
 
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -124,18 +134,19 @@ class imovelDao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_IMOB_ID, (id,))
         tupla = cursor.fetchone()
-        tipo = Tipo(id_tipo=tupla[25], tipo_nome=tupla[26])
+        tipo = Tipo(id_tipo=tupla[27], tipo_nome=tupla[28])
 
-        cidade = Cidade(id_cidade=tupla[27], cidade_nome=tupla[28])
+        cidade = Cidade(id_cidade=tupla[29], cidade_nome=tupla[30])
 
-        bairro = Bairro(id_bairro=tupla[29], bairro_nome=tupla[30], id_cid=tupla[31],bairro_cidade_nome=tupla[28])
+        bairro = Bairro(id_bairro=tupla[31], bairro_nome=tupla[32], id_cid=tupla[33], bairro_cidade_nome=tupla[30])
 
-        proprietario = Proprietario(tupla[19], tupla[20], tupla[21], tupla[22], tupla[23], tupla[24], tupla[18])
+        proprietario = Proprietario(tupla[19], tupla[20], tupla[21], tupla[22], tupla[23], tupla[24], id=tupla[18])
 
-        corretor = Corretores(tupla[33],tupla[34],tupla[35],tupla[36],tupla[37],tupla[38],tupla[39],tupla[40],tupla[41],tupla[32])
+        corretor = Corretores(tupla[35],tupla[36],tupla[37],tupla[38],tupla[39],tupla[40],tupla[41],tupla[42],tupla[43], id_corr=tupla[34])
 
         imovel = Imovel(tipo, tupla[4], cidade, bairro, tupla[7], tupla[8], tupla[9], tupla[10], tupla[12], tupla[13],
                         proprietario, corretor, tupla[11], tupla[14], tupla[15], tupla[16], tupla[17], imob_id=tupla[0])
+
         del tipo, cidade, bairro, proprietario, corretor
         return imovel
 
@@ -157,14 +168,13 @@ class imovelDao:
 
     def traduz_imob(self,imoveis):
         def cria_imob_lista(tupla):
-            print(tupla)
-            tipo = Tipo(id_tipo=tupla[25], tipo_nome=tupla[26])
+            tipo = Tipo(id_tipo=tupla[27], tipo_nome=tupla[28])
 
-            cidade = Cidade(id_cidade=tupla[27], cidade_nome=tupla[28])
+            cidade = Cidade(id_cidade=tupla[29], cidade_nome=tupla[30])
 
-            bairro = Bairro(id_bairro=tupla[29], bairro_nome=tupla[30], id_cid=tupla[31], bairro_cidade_nome=tupla[28])
+            bairro = Bairro(id_bairro=tupla[31], bairro_nome=tupla[32], id_cid=tupla[33], bairro_cidade_nome=tupla[30])
 
-            proprietario = Proprietario(tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24],tupla[18])
+            proprietario = Proprietario(tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24], id=tupla[18])
 
             imovel = Imovel(tipo,tupla[4], cidade , bairro, tupla[7],tupla[8],tupla[9],tupla[10],tupla[12],tupla[13],
                             proprietario,tupla[2], tupla[11],tupla[14],tupla[15],tupla[16],tupla[17],imob_id=tupla[0])
@@ -183,7 +193,7 @@ class tiposDao:
         cursor.execute(SQL_CRIA_TIPOS,(tipo._id_tipo,tipo._tipo_nome))
         cursor._id = cursor.lastrowid
         self.__db.connection.commit()
-        return tipo
+        del tipo
 
     def lista(self):
         cursor = self.__db.connection.cursor()
@@ -205,7 +215,7 @@ class ciadadeDao:
         cursor.execute(SQL_CRIA_CIDADE,(cidade._id_cidade,cidade._cidade_nome))
         cursor._id = cursor.lastrowid
         self.__db.connection.commit()
-        return cidade
+        del cidade
 
     def lista(self):
         cursor = self.__db.connection.cursor()
@@ -227,7 +237,7 @@ class bairroDao:
         cursor.execute(SQL_CRIA_BAIRRO,(bairro._id_bairro,bairro._bairro_nome,bairro._id_cid))
         cursor._id = cursor.lastrowid
         self.__db.connection.commit()
-        return bairro
+        del bairro
 
     def lista(self):
         cursor = self.__db.connection.cursor()

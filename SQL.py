@@ -31,7 +31,9 @@ SQL_ATUALIZA_PROPRIETARIO = 'UPDATE proprietarios SET NOME=%s, CPF=%s, RG=%s, EN
 
 SQL_BUSCAR_LISTA_PROP = 'SELECT ID_PROP, NOME, CPF, RG, ENDERECO, TELEFONE, EMAIl, ID_CIDADE, ID_BAIRRO from proprietarios'
 
-SQL_PROP_POR_ID = 'SELECT ID_PROP, NOME, CPF, RG, ENDERECO, TELEFONE, EMAIL, ID_CIDADE, ID_BAIRRO from proprietarios where ID_PROP=%s'
+SQL_PROP_POR_ID = 'select * from projeto_db.proprietarios ' \
+                  'inner join projeto_db.cidade on proprietarios.ID_CIDADE = cidade.ID_CID ' \
+                  'inner join projeto_db.bairro on proprietarios.ID_BAIRRO = bairro.ID_BAIRRO where ID_PROP=%s'
 
 
 #Sql da tabela corretores
@@ -45,9 +47,9 @@ SQL_BUSCA_LISTA_CORRETORES = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,C
 
 SQL_BUSCA_CORR_ID = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA,ID_CIDADE, ID_BAIRRO from corretores where USUARIO=%s'
 
-SQL_BUSCA_CORR_POR_ID = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,IMOBIL,CRECI,CELULAR,CPF,ENDERECO,SENHA,ID_CIDADE, ID_BAIRRO from corretores where ID_CORR=%s'
-
-
+SQL_BUSCA_CORR_POR_ID = 'SELECT * from projeto_db.corretores ' \
+                        ' join projeto_db.cidade on corretores.ID_CIDADE = cidade.ID_CID ' \
+                        ' join projeto_db.bairro on corretores.ID_BAIRRO = bairro.ID_BAIRRO where ID_CORR=%s'
 
 
 #Sql da tabela corretores

@@ -11,7 +11,7 @@
   });
   </script>
       <div class="modal fade" id="TipoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3" action="/novo_tipo" method="post">
+          <form class="row g-3 needs-validation" action="/novo_tipo" method="post" novalidate>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -21,7 +21,10 @@
       <div class="modal-body">
           <div class="form-group">
             <label for="tipo">Tipo</label>
-            <input type="text" id="tipo" name="tipo" class="form-control">
+            <input type="text" id="tipo" name="tipo" class="form-control" required>
+              <div class="invalid-feedback">
+              Por favor insira uma tipo.
+              </div>
           </div>
       </div>
       <div class="modal-footer">
@@ -32,7 +35,7 @@
   </div></form>
 </div>
       <div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3" action="/novo_bairro" method="post">
+          <form class="row g-3 needs-validation" action="/novo_bairro" method="post" novalidate>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -42,16 +45,21 @@
       <div class="modal-body">
           <div class="form-group">
             <label for="cidade_bairro">Cidade</label>
-            <select class="form-select" id="cidade_bairro" name="cidade_bairro">
+            <select class="form-select" id="cidade_bairro" name="cidade_bairro" required>
                 <option value="0" selected>Selecione a tipo</option>
                     {% for cidade in cidades %}
                         <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
                     {% endfor %}
-            </select>
+            </select><div class="invalid-feedback">
+              Por favor insira uma cidade.
+              </div>
           </div>
           <div class="form-group">
             <label for="bairro">Bairro</label>
-            <input type="text" id="bairro" name="bairro" class="form-control">
+            <input type="text" id="bairro" name="bairro" class="form-control" required>
+              <div class="invalid-feedback">
+              Por favor insira um bairro.
+              </div>
           </div>
       </div>
       <div class="modal-footer">
@@ -62,7 +70,7 @@
   </div></form>
 </div>
       <div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3" action="/nova_cidade" method="post">
+          <form class="row g-3 needs-validation" action="/nova_cidade" method="post" novalidate>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -72,7 +80,10 @@
       <div class="modal-body">
           <div class="form-group">
             <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" class="form-control">
+            <input type="text" id="cidade" name="cidade" class="form-control" required>
+              <div class="invalid-feedback">
+              Por favor insira uma cidade.
+              </div>
           </div>
       </div>
       <div class="modal-footer">

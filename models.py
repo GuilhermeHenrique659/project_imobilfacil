@@ -66,7 +66,7 @@ class Imovel:
         return float(self._valor_venda)
 
 class Proprietario:
-    def __init__(self, nome, cpf, rg, endereco, telefone, email, cidade, bairro, id = None ):
+    def __init__(self, nome, cpf, rg, endereco, telefone, email, cidade=None, bairro=None, id = None ):
         self._id = id
         self._nome = nome
         self._cpf = cpf
@@ -78,7 +78,7 @@ class Proprietario:
         self._bairro = bairro
 
 class Corretores:
-    def __init__(self, usuario, email, nome, imobil, creci, celular, cpf, endereco, senha, cidade, bairro, id_corr=None):
+    def __init__(self, usuario, email, nome, imobil, creci, celular, cpf, endereco, senha, cidade=None, bairro=None, id_corr=None):
         self._id_corr = id_corr
         self._usuario = usuario
         self._email = email

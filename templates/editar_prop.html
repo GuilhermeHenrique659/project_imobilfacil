@@ -58,7 +58,7 @@
       <div class="col">
         <label for="cidades">Cidade</label>
         <select class="form-select" id="cidades" name="cidades" required>
-          <option value="" selected>Selecione a cidade</option>
+          <option value="{{proprietario._cidade._id_cidade}}" selected>{{proprietario._cidade._cidade_nome}}</option>
             {% for cidade in cidades %}
               <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
           {% endfor %}
@@ -73,7 +73,7 @@
       <div class="col">
         <label for="bairros">Bairro</label>
         <select class="form-select" id="bairros" name="bairros" required>
-          <option value="" selected>Selecione o bairro</option>
+          <option value="{{proprietario._bairro._id_bairro}}" selected>{{proprietario._bairro._bairro_nome}}</option>
             {% for bairro in bairros %}
               <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
             {% endfor %}

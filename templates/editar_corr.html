@@ -72,19 +72,11 @@
       <input type="text" class="form-control" id="endereco" name="endereco_corr" value="{{corretor._endereco}}">
     </div>
     <br>
-    <div class="mb-3">
-      <label for="senha" class="form-label">Senha</label>
-      <input type="password" class="form-control" id="senha" name="senha_corr" required>
-      <div class="invalid-feedback">
-              Por favor insira uma senha.
-        </div>
-    </div>
-    <br>
           <div class="row">
           <div class="col">
             <label for="cidades_corr">Cidade</label>
             <select class="form-select" id="cidades_corr" name="cidades_corr" required>
-                <option value="" selected>Selecione a cidade</option>
+                <option value="{{corretor._cidade._id_cidade}}" selected>{{corretor._cidade._cidade_nome}}</option>
                     {% for cidade in cidades %}
                         <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
                     {% endfor %}
@@ -99,7 +91,7 @@
           <div class="col">
               <label for="bairros_corr">Bairros</label>
             <select class="form-select" id="bairros_corr" name="bairros_corr" required>
-                <option value="" selected>Selecione o bairro</option>
+                <option value="{{ corretor._bairro._id_bairro }}" selected>{{corretor._bairro._bairro_nome}}</option>
                     {% for bairro in bairros %}
                         <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
                     {% endfor %}
@@ -109,7 +101,14 @@
               </div>
                   </div>
           </div>
-    <br>
+        <br>
+    <div class="mb-3">
+      <label for="senha" class="form-label">Senha</label>
+      <input type="password" class="form-control" id="senha" name="senha_corr" required>
+      <div class="invalid-feedback">
+              Por favor insira uma senha.
+        </div>
+    </div>
     <button type="submit" class="btn btn-dark">Salvar</button>
     <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
   </fieldset>
