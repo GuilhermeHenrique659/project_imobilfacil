@@ -1,0 +1,28 @@
+{% extends "template.html" %}
+{% block conteudo %}
+
+<div class="content-list">
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default" >
+        <tr>
+            <th>ID</th>
+            <th>Honorarios do corretor</th>
+            <th>Porcentagem do corretor</th>
+            <th>Nome do corretor</th>
+            <th>Endereço do imovel</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for fin in financeiros %}
+                <tr>
+                    <td>{{fin._id_fin}}</td>
+                    <td>{{fin._honorarios_corr}}</td>
+                    <td>{{fin._porcentagem_corr}}</td>
+                    <td>{{fin._corr}}</td>
+                    <td>{{fin._imob}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

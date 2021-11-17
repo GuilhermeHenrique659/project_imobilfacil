@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash
-from models import Imovel, Proprietario, Corretores,Tipo,Cidade,Bairro
-from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao,tiposDao,ciadadeDao,bairroDao
+from models import Imovel, Proprietario, Corretores,Tipo,Cidade,Bairro, Financeiro
+from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao,tiposDao,ciadadeDao,bairroDao,financeiroDao
 from flask_mysqldb import MySQL
 import bcrypt
 
@@ -21,7 +21,7 @@ Corretores_dao = cad_corretor_dao(db)
 TiposDao = tiposDao(db)
 CidadeDao = ciadadeDao(db)
 BairroDao = bairroDao(db)
-
+FinDao = financeiroDao(db)
 #index
 @app.route('/')
 def index():
@@ -61,6 +61,22 @@ def novo_bairro():
     BairroDao.salvar(bairro)
     return redirect('/novo_imovel')
 
+#financerio
+def cria_financeiro(imovel):
+    FinDao.pocura_deleta(imovel._imob_id)
+    financeiro = Financeiro(imovel.honorarios, 1, imovel._imob_id, imovel._corretor)
+    if imovel._status == 'Vendido':
+        FinDao.salvar(financeiro)
+    else:
+        return
+
+@app.route('/financeiro')
+def financeiro():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return redirect('/login?proxima=''')
+    lista_fin = FinDao.lista()
+    return render_template('financeiro.html', financeiros = lista_fin)
+
 #visualização do imovel
 @app.route('/view_imovel/<int:id>')
 def view_imovel(id):
@@ -83,12 +99,10 @@ def resumo_imovel(id):
 def filtro():
     filtro = request.form['filtro']
     id = request.form[filtro]
-    if id == "0":
-        lista_imob = Imovel_Dao.listar()
-    else:
-        lista_imob = Imovel_Dao.filtra(id,filtro)
+    lista_imob = Imovel_Dao.filtra(id,filtro)
     if len(lista_imob) == 0:
         flash("Nao foi encontrado nenhum imovel com esse filtro!")
+        return redirect('/')
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
     lista_cidades = CidadeDao.lista()
@@ -137,6 +151,7 @@ def atualiza_imovel():
     imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem ,proprietario,corretor,
                     banheiro=banheiro, quartos=quartos, garagem=garagem, imob_id=id)
     Imovel_Dao.salvar(imovel)
+    cria_financeiro(imovel)
     return redirect('/')
 
 #criar_imovel
@@ -170,7 +185,9 @@ def criar_imovel():
     garagem = request.form['garagem']
     imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem,proprietario, corretor,
                     banheiro=banheiro,quartos=quartos,garagem=garagem)
-    Imovel_Dao.salvar(imovel)
+    id = Imovel_Dao.salvar(imovel)
+    imovel.set_id(id)
+    cria_financeiro(imovel)
     return redirect('/')
 
 #Criar Proprietario

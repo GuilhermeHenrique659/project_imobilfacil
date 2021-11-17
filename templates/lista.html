@@ -2,7 +2,7 @@
 {% block conteudo %}
 
 <div class="modal fade" id="FiltroCidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro" method="post">
+  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
     <input type="hidden" name="filtro" value="filtra_cidade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -13,12 +13,15 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="filtra_cidade">Cidade</label>
-          <select class="form-select" id="filtra_cidade" name="filtra_cidade">
-            <option value="0" selected>Selecione a cidade</option>
+          <select class="form-select" id="filtra_cidade" name="filtra_cidade" required>
+            <option value="" selected>Selecione a cidade</option>
             {% for cidade in cidades %}
             <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
             {% endfor %}
           </select>
+          <div class="invalid-feedback">
+              Por favor insira uma cidade.
+        </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -31,7 +34,7 @@
 </div>
 
 <div class="modal fade" id="FiltroPropModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro" method="post">
+  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
     <input type="hidden" name="filtro" value="filtra_prop">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -42,12 +45,15 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="filtra_prop">Proprietarios</label>
-          <select class="form-select" id="filtra_prop" name="filtra_prop">
-            <option value="0" selected>Selecione o proprietario</option>
+          <select class="form-select" id="filtra_prop" name="filtra_prop" required>
+            <option value="" selected>Selecione o proprietario</option>
           {% for proprietario in proprietarios %}
             <option value="{{ proprietario._id }}">{{ proprietario._nome}}</option>
             {% endfor %}
           </select>
+          <div class="invalid-feedback">
+              Por favor insira um proprietario.
+        </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -60,7 +66,7 @@
 </div>
 
 <div class="modal fade" id="FiltroStatusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro" method="post">
+  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
     <input type="hidden" name="filtro" value="filtra_status">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -71,12 +77,15 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="filtra_status">Status</label>
-          <select class="form-select" id="filtra_status" name="filtra_status">
-            <option value="0" selected>Selecione o status</option>
+          <select class="form-select" id="filtra_status" name="filtra_status" required>
+            <option value="" selected>Selecione o status</option>
                     <option value="Livre">Livre</option>
                     <option value="Ocupado">Ocupado</option>
                     <option value="Vendido">Vendido</option>
           </select>
+          <div class="invalid-feedback">
+              Por favor insira um status.
+        </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -89,7 +98,7 @@
 </div>
 
 <div class="modal fade" id="FiltroBanheiroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro" method="post">
+  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
     <input type="hidden" name="filtro" value="filtra_banheiro">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -100,7 +109,10 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="filtra_banheiro">Numero de quartos</label>
-          <input type="number" class="form-select" id="filtra_banheiro" name="filtra_banheiro">
+          <input type="number" class="form-select" id="filtra_banheiro" name="filtra_banheiro" value="0" required>
+          <div class="invalid-feedback">
+              Por favor insira o numero de banheiro.
+        </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -113,7 +125,7 @@
 </div>
 
 <div class="modal fade" id="FiltroQuartosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro" method="post">
+  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
     <input type="hidden" name="filtro" value="filtra_quartos">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -124,7 +136,10 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="filtra_quartos">Numero de quartos</label>
-          <input type="number" class="form-select" id="filtra_quartos" name="filtra_quartos">
+          <input type="number" class="form-select" id="filtra_quartos" name="filtra_quartos" value="0" required>
+          <div class="invalid-feedback">
+              Por favor insira um numero de quartos.
+        </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -137,7 +152,7 @@
 </div>
 
 <div class="modal fade" id="FiltroGaragemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3" action="/filtro" method="post">
+  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
     <input type="hidden" name="filtro" value="filtra_garagem">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -148,7 +163,10 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="filtra_garagem">Numero de garagem</label>
-          <input type="number" class="form-select" id="filtra_garagem" name="filtra_garagem">
+          <input type="number" class="form-select" id="filtra_garagem" name="filtra_garagem" value="0" required>
+          <div class="invalid-feedback">
+              Por favor insira um numero de garagem.
+        </div>
         </div>
       </div>
       <div class="modal-footer">

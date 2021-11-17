@@ -40,6 +40,8 @@ class Imovel:
     def set_area(self):
         self._area = self._area.replace('m','')
         return float(self._area)
+    def set_id(self,id):
+        self._imob_id = id
 
     @property
     def area(self):
@@ -59,6 +61,9 @@ class Imovel:
 
     def set_honorarios(self):
         self._honorarios = (self.set_percentagem() * self.set_valor_imovel())/100
+        return float(self._honorarios)
+    @property
+    def honorarios(self):
         return float(self._honorarios)
 
     def set_valor_venda(self):
@@ -92,3 +97,18 @@ class Corretores:
         self._cidade = cidade
         self._bairro = bairro
         self._senha = senha
+
+class Financeiro:
+    def __init__(self, honorarios_corr, porcentagem_corr, imob=None,corr=None, id_fin=None):
+        self._honorarios_corr = honorarios_corr
+        self._porcentagem_corr = porcentagem_corr
+        self._imob = imob
+        self._corr = corr
+        self._id_fin = id_fin
+
+    def get_honorarios_corr(self):
+        return float(self._honorarios_corr)
+
+    def set_honorarios_corr(self):
+        self._honorarios_corr = self._honorarios_corr*self._porcentagem_corr
+

@@ -148,6 +148,28 @@ ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_imovel)
 conn.commit()
 
+criar_tabela_financeiro = '''CREATE TABLE `FINANCEIRO` (
+    `ID_FIN` INT NOT NULL AUTO_INCREMENT,
+    `HONORARIOS_CORR` REAL NULL,
+    `PORCENTAGEM_CORR` REAL NULL,
+    `ID_CORR_FIN` INT NOT NULL,
+    `ID_IMOB_FIN` INT NOT NULL,
+    PRIMARY KEY (`ID_FIN`,`ID_CORR_FIN`,`ID_IMOB_FIN`),
+    CONSTRAINT `fk_FINANCEIRO_CORRETORES`
+        FOREIGN KEY (`ID_CORR_FIN`)
+        REFERENCES `CORRETORES` (`ID_CORR`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT `fk_FINANCEIRO_IMOVEIS`
+        FOREIGN KEY (`ID_IMOB_FIN`)
+        REFERENCES `IMOVEIS` (`ID_IMOB`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE)
+    ENGINE = InnoDB;
+'''
+conn.cursor().execute(criar_tabela_financeiro)
+conn.commit()
+
 # inserindo usuarios
 cursor = conn.cursor()
 senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())

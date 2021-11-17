@@ -52,7 +52,18 @@ SQL_BUSCA_CORR_POR_ID = 'SELECT * from projeto_db.corretores ' \
                         ' join projeto_db.bairro on corretores.ID_BAIRRO = bairro.ID_BAIRRO where ID_CORR=%s'
 
 
-#Sql da tabela corretores
+#Sql da tabela financeiro
+SQL_BUSCA_FIN_ID = 'SELECT * from financeiro where ID_IMOB_FIN = %s'
+
+SQL_DELETA_FIN = 'delete from financeiro where ID_IMOB_FIN = %s'
+
+SQL_CRIA_FIN = 'INSERT into financeiro (HONORARIOS_CORR,PORCENTAGEM_CORR, ID_CORR_FIN, ID_IMOB_FIN) values(%s,%s,%s,%s)'
+
+SQL_ATUALIZA_FIN = 'UPDATE financeiro SET HONORARIOS_CORR=%s,PORCENTAGEM_CORR=%s,ID_CORR_FIN=%s,ID_IMOB_FIN=%s where ID_FIN=%s'
+
+SQL_LISTA_FIN = 'SELECT financeiro.ID_FIN, financeiro.HONORARIOS_CORR, financeiro.PORCENTAGEM_CORR,corretores.NOME,imoveis.ENDERECO_IMOVEL FROM financeiro ' \
+                'inner join corretores on financeiro.ID_CORR_FIN = ID_CORR ' \
+                'inner join imoveis on financeiro.ID_IMOB_FIN = imoveis.ID_IMOB'
 
 #TIPOS
 SQL_CRIA_TIPOS = 'INSERT into tipos (ID_TIPO,TIPO) values(%s,%s)'

@@ -1,4 +1,4 @@
-from models import Imovel,Proprietario, Corretores, Tipo, Cidade, Bairro
+from models import Imovel,Proprietario, Corretores, Tipo, Cidade, Bairro, Financeiro
 from SQL import *
 
 #proprietarios
@@ -119,10 +119,10 @@ class imovelDao:
                                             imovel._cidade, imovel._bairro,imovel._endereco, imovel.set_area(),
                                             imovel._descricao, imovel.set_valor_imovel(), imovel.set_valor_venda(), imovel._status,
                                             imovel.set_percentagem(), imovel.set_honorarios(),imovel._banheiro,imovel._quartos,imovel._garagem))
-            cursor._id = cursor.lastrowid
-
+        cursor._id = cursor.lastrowid
         self.__db.connection.commit()
         del imovel
+        return cursor._id
 
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -186,6 +186,39 @@ class imovelDao:
             del tipo,cidade,bairro,proprietario
             return imovel
         return list(map(cria_imob_lista, imoveis))
+
+class financeiroDao:
+    def __init__(self, db):
+        self.__db = db
+    def salvar(self,finaceiro):
+        cursor = self.__db.connection.cursor()
+        if(finaceiro._id_fin):
+            cursor.execute(SQL_ATUALIZA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro._corr,finaceiro._imob,finaceiro._id_fin))
+        else:
+            cursor.execute(SQL_CRIA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro._corr,finaceiro._imob))
+            cursor._id = cursor.lastrowid
+        self.__db.connection.commit()
+
+    def pocura_deleta(self, id):
+        fin = self.__db.connection.cursor().execute(SQL_BUSCA_FIN_ID, (id,))
+        if fin:
+            self.__db.connection.cursor().execute(SQL_DELETA_FIN, (id,))
+            self.__db.connection.commit()
+        else:
+            fin = None
+        return fin
+
+    def lista(self):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_LISTA_FIN)
+        fin = self.traduz_fin(cursor.fetchall())
+        return fin
+
+    def traduz_fin(self,fin):
+        def cria_lista_fin(tupla):
+            return Financeiro(tupla[1],tupla[2],tupla[4],tupla[3],tupla[0])
+        return list(map(cria_lista_fin, fin))
+
 
 #tipos
 class tiposDao:
