@@ -59,10 +59,10 @@ SQL_DELETA_FIN = 'delete from financeiro where ID_IMOB_FIN = %s'
 
 SQL_CRIA_FIN = 'INSERT into financeiro (HONORARIOS_CORR,PORCENTAGEM_CORR, HONORARIOS_IMOB, PORCENTAGEM_IMOB ,ID_CORR_FIN, ID_IMOB_FIN) values(%s,%s,%s,%s,%s,%s)'
 
-SQL_ATUALIZA_FIN = 'UPDATE financeiro SET HONORARIOS_CORR=%s,PORCENTAGEM_CORR=%s, HONORARIOS_IMOB=%s, PORCENTAGEM_IMOB=%s, ID_CORR_FIN=%s, ID_IMOB_FIN=%s where ID_FIN=%s'
+SQL_ATUALIZA_FIN = 'UPDATE financeiro SET HONORARIOS_CORR=%s,PORCENTAGEM_CORR=%s, HONORARIOS_IMOB=%s, PORCENTAGEM_IMOB=%s where ID_FIN=%s'
 
 SQL_LISTA_FIN = 'SELECT financeiro.ID_FIN, financeiro.HONORARIOS_CORR, financeiro.PORCENTAGEM_CORR,financeiro.HONORARIOS_IMOB, financeiro.PORCENTAGEM_IMOB, ' \
-                'corretores.NOME, imoveis.ENDERECO_IMOVEL , imoveis.VALOR_VENDA, imoveis.HONORARIOS, financeiro.ID_IMOB_FIN,financeiro.ID_CORR_FIN FROM financeiro ' \
+                'corretores.NOME, imoveis.ENDERECO_IMOVEL , imoveis.VALOR_VENDA, imoveis.HONORARIOS FROM financeiro ' \
                 'inner join corretores on financeiro.ID_CORR_FIN = ID_CORR ' \
                 'inner join imoveis on financeiro.ID_IMOB_FIN = imoveis.ID_IMOB'
 

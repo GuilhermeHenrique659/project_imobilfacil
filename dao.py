@@ -137,6 +137,7 @@ class imovelDao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_IMOB_ID, (id,))
         tupla = cursor.fetchone()
+
         tipo = Tipo(id_tipo=tupla[27], tipo_nome=tupla[28])
 
         cidade = Cidade(id_cidade=tupla[29], cidade_nome=tupla[30])
@@ -196,10 +197,8 @@ class financeiroDao:
     def salvar(self,finaceiro):
         cursor = self.__db.connection.cursor()
         if(finaceiro._id_fin):
-            print(finaceiro._id_imob)
-            print(finaceiro._id_cor)
             cursor.execute(SQL_ATUALIZA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
-                                             finaceiro._porcentagem_imob,finaceiro._id_cor,finaceiro._id_imob,finaceiro._id_fin))
+                                             finaceiro._porcentagem_imob,finaceiro._id_fin))
         else:
             cursor.execute(SQL_CRIA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
                                          finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._imob))
@@ -223,9 +222,7 @@ class financeiroDao:
 
     def traduz_fin(self,fin):
         def cria_lista_fin(tupla):
-            print(tupla[9])
-            print(tupla[10])
-            return Financeiro(tupla[1],tupla[2],tupla[3],tupla[4],tupla[8],tupla[7],tupla[6],tupla[5],tupla[0],tupla[10],tupla[9])
+            return Financeiro(tupla[1],tupla[2],tupla[3],tupla[4],tupla[8],tupla[7],tupla[6],tupla[5],tupla[0])
         return list(map(cria_lista_fin, fin))
 
 #tipos

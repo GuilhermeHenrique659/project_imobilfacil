@@ -22,6 +22,7 @@ TiposDao = tiposDao(db)
 CidadeDao = ciadadeDao(db)
 BairroDao = bairroDao(db)
 FinDao = financeiroDao(db)
+
 #index
 @app.route('/')
 def index():
@@ -35,8 +36,6 @@ def index():
     return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades,bairros=lista_bairro)
 
 #tipos,cidade e bairro
-
-
 #tipo
 @app.route('/novo_tipo', methods=['POST'])
 def novo_tipo():
@@ -44,6 +43,7 @@ def novo_tipo():
     tipo = Tipo(Tipo_nome)
     TiposDao.salvar(tipo)
     return redirect('/novo_imovel')
+
 #cidade
 @app.route('/nova_cidade', methods=['POST'])
 def nova_cidade():
@@ -70,19 +70,19 @@ def cria_financeiro(imovel):
     else:
         return
 
+#atualiza_financeiro
 @app.route('/atualizar_finceiro', methods=['POST'])
 def atualizar_finceiro():
     porcentagem_corr =  request.form['porcentagem_corr']
     honorarios_corr = request.form['valor_corr']
     porcentagem_imob = request.form['porcentagem_imob']
     honorarios_imob = request.form['valor_imob']
-    id_corr = request.form['id_corr']
-    id_imob = request.form['id_imob']
     id = request.form['id']
-    financeiro = Financeiro(honorarios_corr,porcentagem_corr,honorarios_imob,porcentagem_imob,id_fin=id,id_cor=id_corr,id_imob=id_imob)
+    financeiro = Financeiro(honorarios_corr,porcentagem_corr,honorarios_imob,porcentagem_imob,id_fin=id)
     FinDao.salvar(financeiro)
     return redirect('/financeiro')
 
+#mostrar lista de vendas
 @app.route('/financeiro')
 def financeiro():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
@@ -117,8 +117,6 @@ def resumo_imovel(id):
     return render_template('resumo_imovel.html', imovel=imovel)
 
 #exclui_imovel
-
-
 @app.route('/filtro', methods=['POST'])
 def filtro():
     filtro = request.form['filtro']
@@ -134,7 +132,6 @@ def filtro():
     return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades,bairros=lista_bairro)
 
 #exclui_imovel
-
 @app.route('/deleta_imovel/<int:id>')
 def deleta_imovel(id):
     Imovel_Dao.deletar_imob(id)
@@ -153,8 +150,7 @@ def editar_imovel(id):
     lista_bairro = BairroDao.lista()
     return render_template('editar_imovel.html', imovel=Imovel, proprietarios=lista_prop, corretores=lista_corr,tipos=lista_tipo,cidades=lista_cidades,bairros=lista_bairro)
 
-#padrao mvc
-#diego.saqui@muz.ifsuldeminas.edu.br
+#atualiza_imovel
 @app.route('/atualizar_imovel', methods=['POST'])
 def atualiza_imovel():
     tipo = request.form['tipos']
@@ -248,7 +244,6 @@ def editar_proprietario(id):
 
 @app.route('/atualizar_prop', methods=['POST'])
 def atualizar_proprietario():
-
     nome = request.form['nome']
     cpf = request.form['cpf']
     rg = request.form['rg']
@@ -261,6 +256,7 @@ def atualizar_proprietario():
     proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, cidade ,bairro, id)
     Proprietario_dao.salvar(proprietario)
     return redirect('/')
+
 @app.route('/deletar_prop/<int:id>')
 def deletar_prop(id):
     Proprietario_dao.deletar_prop(id)

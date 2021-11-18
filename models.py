@@ -99,7 +99,7 @@ class Corretores:
 
 class Financeiro:
     def __init__(self, honorarios_corr, porcentagem_corr, honorarios_imob , porcentagem_imob,
-                 honorarios_total=None,valor_total=None, imob=None,corr=None, id_fin=None,id_cor=None,id_imob=None):
+                 honorarios_total=None,valor_total=None, imob=None,corr=None, id_fin=None):
         self._honorarios_corr = honorarios_corr
         self._porcentagem_corr = porcentagem_corr
         self._honorarios_imob = honorarios_imob
@@ -109,8 +109,6 @@ class Financeiro:
         self._id_fin = id_fin
         self._valor_total = valor_total
         self._honorarios_total = honorarios_total
-        self._id_cor = id_cor
-        self._id_imob = id_imob
 
     @property
     def honorarios_total(self):
