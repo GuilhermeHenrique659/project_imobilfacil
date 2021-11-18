@@ -45,8 +45,8 @@ def traduz_prop(proprietarios):
     def cria_prop_lista(tupla):
         return Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], id=tupla[0])
     return list(map(cria_prop_lista, proprietarios))
-#corretor/
 
+#corretor/
 class cad_corretor_dao:
     def __init__(self, db):
         self.__db=db
@@ -55,10 +55,11 @@ class cad_corretor_dao:
         cursor = self.__db.connection.cursor()
 
         if (corretor._id_corr):
-            cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._imobil,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro,corretor._id_corr))
+            cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro,corretor._id_corr))
         else:
-            cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._imobil,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
-            cursor._id = cursor.lastrowid
+            cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,
+                                                 corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
+        cursor._id = cursor.lastrowid
 
         self.__db.connection.commit()
         del corretor
@@ -82,9 +83,9 @@ class cad_corretor_dao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_CORR_POR_ID, (id,))
         tupla = cursor.fetchone()
-        cidade = Cidade(id_cidade=tupla[12], cidade_nome=tupla[13])
-        bairro = Bairro(id_bairro=tupla[14], bairro_nome=tupla[15], id_cid=tupla[16],bairro_cidade_nome=tupla[13])
-        corretor = Corretores(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], tupla[9],cidade,bairro, id_corr=tupla[0])
+        cidade = Cidade(id_cidade=tupla[11], cidade_nome=tupla[12])
+        bairro = Bairro(id_bairro=tupla[13], bairro_nome=tupla[14], id_cid=tupla[15],bairro_cidade_nome=tupla[12])
+        corretor = Corretores(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8],cidade,bairro, id_corr=tupla[0])
         del cidade,bairro
         return corretor
 
@@ -94,15 +95,17 @@ class cad_corretor_dao:
 
 #cria objeto usuario
 def traduz_usuario(tupla):
-    return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],tupla[10],tupla[11], id_corr=tupla[0])
+    return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],tupla[10], id_corr=tupla[0])
 
 #tranforma dodos do bd em uma lista de objetos
 def traduz_corr(corretores):
     def cria_corr(tupla):
-        return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],tupla[10],tupla[11], id_corr=tupla[0])
-    return list(map(cria_corr, corretores))
-#imovel/
+        return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],tupla[10], id_corr=tupla[0])
+    lista_corr = list(map(cria_corr, corretores))
+    lista_corr.pop(0)
+    return lista_corr
 
+#imovel/
 class imovelDao:
     def __init__(self, db):
         self.__db = db
@@ -193,9 +196,13 @@ class financeiroDao:
     def salvar(self,finaceiro):
         cursor = self.__db.connection.cursor()
         if(finaceiro._id_fin):
-            cursor.execute(SQL_ATUALIZA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro._corr,finaceiro._imob,finaceiro._id_fin))
+            print(finaceiro._id_imob)
+            print(finaceiro._id_cor)
+            cursor.execute(SQL_ATUALIZA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
+                                             finaceiro._porcentagem_imob,finaceiro._id_cor,finaceiro._id_imob,finaceiro._id_fin))
         else:
-            cursor.execute(SQL_CRIA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro._corr,finaceiro._imob))
+            cursor.execute(SQL_CRIA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
+                                         finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._imob))
             cursor._id = cursor.lastrowid
         self.__db.connection.commit()
 
@@ -216,9 +223,10 @@ class financeiroDao:
 
     def traduz_fin(self,fin):
         def cria_lista_fin(tupla):
-            return Financeiro(tupla[1],tupla[2],tupla[4],tupla[3],tupla[0])
+            print(tupla[9])
+            print(tupla[10])
+            return Financeiro(tupla[1],tupla[2],tupla[3],tupla[4],tupla[8],tupla[7],tupla[6],tupla[5],tupla[0],tupla[10],tupla[9])
         return list(map(cria_lista_fin, fin))
-
 
 #tipos
 class tiposDao:

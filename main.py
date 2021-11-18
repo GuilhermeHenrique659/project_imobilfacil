@@ -31,8 +31,8 @@ def index():
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
     lista_cidades = CidadeDao.lista()
-
-    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades)
+    lista_bairro = BairroDao.lista()
+    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades,bairros=lista_bairro)
 
 #tipos,cidade e bairro
 
@@ -64,18 +64,42 @@ def novo_bairro():
 #financerio
 def cria_financeiro(imovel):
     FinDao.pocura_deleta(imovel._imob_id)
-    financeiro = Financeiro(imovel.honorarios, 1, imovel._imob_id, imovel._corretor)
+    financeiro = Financeiro((imovel.honorarios/2), 50,(imovel.honorarios/2),50, imob=imovel._imob_id, corr=imovel._corretor)
     if imovel._status == 'Vendido':
         FinDao.salvar(financeiro)
     else:
         return
 
+@app.route('/atualizar_finceiro', methods=['POST'])
+def atualizar_finceiro():
+    porcentagem_corr =  request.form['porcentagem_corr']
+    honorarios_corr = request.form['valor_corr']
+    porcentagem_imob = request.form['porcentagem_imob']
+    honorarios_imob = request.form['valor_imob']
+    id_corr = request.form['id_corr']
+    id_imob = request.form['id_imob']
+    id = request.form['id']
+    financeiro = Financeiro(honorarios_corr,porcentagem_corr,honorarios_imob,porcentagem_imob,id_fin=id,id_cor=id_corr,id_imob=id_imob)
+    FinDao.salvar(financeiro)
+    return redirect('/financeiro')
+
 @app.route('/financeiro')
 def financeiro():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=''')
+        return redirect('/login?proxima=/financeiro')
+    total_vendas = 0
+    total_honorarios = 0
+    total_honorarios_corr = 0
+    total_honorarios_imob = 0
     lista_fin = FinDao.lista()
-    return render_template('financeiro.html', financeiros = lista_fin)
+    for fin in lista_fin:
+        total_vendas = total_vendas + fin.valor_total
+        total_honorarios = total_honorarios + fin.honorarios_total
+        total_honorarios_corr = total_honorarios_corr + fin.get_honorarios_corr()
+        total_honorarios_imob = total_honorarios_imob + fin.get_honorarios_imob()
+
+    return render_template('financeiro.html', financeiros = lista_fin, total_vendas=total_vendas,total_honorarios = total_honorarios,
+                           total_honorarios_corr=total_honorarios_corr,total_honorarios_imob = total_honorarios_imob )
 
 #visualização do imovel
 @app.route('/view_imovel/<int:id>')
@@ -106,7 +130,8 @@ def filtro():
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
     lista_cidades = CidadeDao.lista()
-    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades)
+    lista_bairro = BairroDao.lista()
+    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades,bairros=lista_bairro)
 
 #exclui_imovel
 
@@ -254,7 +279,6 @@ def criar_Corretor():
     usuario = request.form['usuario_corr']
     email = request.form['email_corr']
     nome = request.form['nome_corr']
-    imobil = request.form['imobil_corr']
     creci = request.form['creci_corr']
     celular = request.form['celular_corr']
     cpf = request.form['cpf_corr']
@@ -263,7 +287,7 @@ def criar_Corretor():
     cidade = request.form['cidades_corr']
     bairro = request.form['bairros_corr']
     senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
-    corretor = Corretores(usuario,email, nome, imobil, creci, celular, cpf, endereco, senha, cidade, bairro)
+    corretor = Corretores(usuario,email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
     Corretores_dao.salvar(corretor)
     return redirect('/')
 
@@ -281,7 +305,6 @@ def atualizar_corretor():
     usuario = request.form['usuario_corr']
     email = request.form['email_corr']
     nome = request.form['nome_corr']
-    imobil = request.form['imobil_corr']
     creci = request.form['creci_corr']
     celular = request.form['celular_corr']
     cpf = request.form['cpf_corr']
@@ -291,7 +314,7 @@ def atualizar_corretor():
     bairro = request.form['bairros_corr']
     id = request.form['id_corr']
     senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
-    corretor = Corretores(usuario,email,nome,imobil,creci,celular,cpf,endereco,senha,cidade,bairro,id)
+    corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
     Corretores_dao.salvar(corretor)
     return redirect('/')
 

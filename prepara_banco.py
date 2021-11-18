@@ -47,7 +47,6 @@ criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
         `USUARIO` VARCHAR(45) NOT NULL,
         `EMAIL` VARCHAR(45) NULL,
         `NOME` VARCHAR(45) NULL,
-        `IMOBIL` VARCHAR(45) NULL,
         `CRECI` CHAR(15) NULL,
         `CELULAR` CHAR(25) NULL,
         `CPF` CHAR(25) NULL,
@@ -56,7 +55,6 @@ criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
         PRIMARY KEY (`ID_CORR`),
         UNIQUE INDEX `USUARIO_UNIQUE` (`USUARIO` ASC),
         UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC),
-        UNIQUE INDEX `CPF_UNIQUE` (`CPF` ASC),
         `ID_CIDADE` INT NULL,
         `ID_BAIRRO` INT NULL,
     CONSTRAINT `fk_CORRETOR_BAIRRO`
@@ -78,11 +76,10 @@ criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
         `NOME` VARCHAR(45) NOT NULL,
         `CPF` CHAR(25) NOT NULL,
         `RG` VARCHAR(20) NOT NULL,
-        `ENDERECO` VARCHAR(45) NOT NULL,
-        `TELEFONE` CHAR(25) NOT NULL,
-        `EMAIL` VARCHAR(45) NOT NULL,
+        `ENDERECO` VARCHAR(45) NULL,
+        `TELEFONE` CHAR(25) NULL,
+        `EMAIL` VARCHAR(45) NULL,
         PRIMARY KEY (`ID_PROP`),
-        UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC),
         `ID_CIDADE` INT NULL,
         `ID_BAIRRO` INT NULL,
     CONSTRAINT `fk_PROPRIETARIO_BAIRRO`
@@ -152,6 +149,8 @@ criar_tabela_financeiro = '''CREATE TABLE `FINANCEIRO` (
     `ID_FIN` INT NOT NULL AUTO_INCREMENT,
     `HONORARIOS_CORR` REAL NULL,
     `PORCENTAGEM_CORR` REAL NULL,
+    `HONORARIOS_IMOB` REAL NULL,
+    `PORCENTAGEM_IMOB` REAL NULL,
     `ID_CORR_FIN` INT NOT NULL,
     `ID_IMOB_FIN` INT NOT NULL,
     PRIMARY KEY (`ID_FIN`,`ID_CORR_FIN`,`ID_IMOB_FIN`),
@@ -175,22 +174,7 @@ cursor = conn.cursor()
 senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
 cursor.execute('INSERT INTO Projeto_DB.CORRETORES ( USUARIO, NOME, EMAIL, SENHA ) VALUES ( %s, %s, %s, %s)', (usuario,nome,email,senha) )
 
-cursor.executemany(
-      'INSERT INTO Projeto_DB.PROPRIETARIOS ( NOME, CPF, RG, ENDERECO, TELEFONE, EMAIL) VALUES ( %s, %s, %s, %s, %s, %s)',
-      [
-          ('teste','12345678912','MG123456789','rua rua123', '35999999999','teste@gmail.com'),
-          ('testsae2', '12345678912','MG123456489','rua rua343', '35999999999','teste123@gmail.com')
-
-      ])
-
-
-
-cursor.execute('select * from Projeto_DB.PROPRIETARIOS')
-print(' -------------  Usuários:  -------------')
-for user in cursor.fetchall():
-    print(user[0])
-
-
 # commitando senão nada tem efeito
+print('conexção completa!')
 conn.commit()
 cursor.close()

@@ -83,12 +83,11 @@ class Proprietario:
         self._bairro = bairro
 
 class Corretores:
-    def __init__(self, usuario, email, nome, imobil, creci, celular, cpf, endereco, senha, cidade=None, bairro=None, id_corr=None):
+    def __init__(self, usuario, email, nome, creci, celular, cpf, endereco, senha, cidade=None, bairro=None, id_corr=None):
         self._id_corr = id_corr
         self._usuario = usuario
         self._email = email
         self._nome = nome
-        self._imobil = imobil
         self._creci = creci
         self._celular = celular
         self._cpf = cpf
@@ -99,16 +98,32 @@ class Corretores:
         self._senha = senha
 
 class Financeiro:
-    def __init__(self, honorarios_corr, porcentagem_corr, imob=None,corr=None, id_fin=None):
+    def __init__(self, honorarios_corr, porcentagem_corr, honorarios_imob , porcentagem_imob,
+                 honorarios_total=None,valor_total=None, imob=None,corr=None, id_fin=None,id_cor=None,id_imob=None):
         self._honorarios_corr = honorarios_corr
         self._porcentagem_corr = porcentagem_corr
+        self._honorarios_imob = honorarios_imob
+        self._porcentagem_imob = porcentagem_imob
         self._imob = imob
         self._corr = corr
         self._id_fin = id_fin
+        self._valor_total = valor_total
+        self._honorarios_total = honorarios_total
+        self._id_cor = id_cor
+        self._id_imob = id_imob
+
+    @property
+    def honorarios_total(self):
+        return float(self._honorarios_total)
+
+    @property
+    def valor_total(self):
+        return float(self._valor_total)
 
     def get_honorarios_corr(self):
         return float(self._honorarios_corr)
 
-    def set_honorarios_corr(self):
-        self._honorarios_corr = self._honorarios_corr*self._porcentagem_corr
+    def get_honorarios_imob(self):
+        return float(self._honorarios_imob)
+
 

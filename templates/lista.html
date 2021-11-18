@@ -178,6 +178,37 @@
   </form>
 </div>
 
+<div class="modal fade" id="FiltroBairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
+    <input type="hidden" name="filtro" value="filtra_bairro">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="FiltroBairroModalLabel">Filtrar cidade</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="filtra_bairro">Bairros</label>
+          <select class="form-select" id="filtra_bairro" name="filtra_bairro" required>
+            <option value="" selected>Selecione o bairro</option>
+            {% for bairro in bairros %}
+            <option value="{{ bairro._id_bairro }}">{{ bairro._bairro_nome}} / {{bairro._bairro_cid_nome}}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">
+              Por favor insira um bairro.
+        </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-dark">Filtrar</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
 
 <div class="content-list">
   <nav>
@@ -203,7 +234,6 @@
           <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Imobiliária</th>
             <th>CRECI</th>
             <th>CPF</th>
             <th>Celular</th>
@@ -215,7 +245,6 @@
           <tr>
             <td>{{ corretor._id_corr }}</td>
             <td>{{ corretor._nome }}</td>
-            <td>{{ corretor._imobil }}</td>
             <td>{{ corretor._creci }}</td>
             <td>{{ corretor._cpf }}</td>
             <td>{{ corretor._celular }}</td>
@@ -262,11 +291,13 @@
             </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
               <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroCidadeModal">Filtrar por cidade</button></li>
+            <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroBairroModal">Filtrar por bairro</button></li>
                  <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroPropModal">Filtrar por proprietarios</button></li>
                    <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroStatusModal">Filtrar por status</button></li>
                     <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroQuartosModal">Filtrar por quartos</button></li>
                       <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroBanheiroModal">Filtrar por banheiro</button></li>
                       <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroGaragemModal">Filtrar por garagem</button></li>
+
             </ul>
             <a href="{{url_for('index')}}"><button class="btn btn-sm btn-outline-secondary" type="button">Limpar filtros</button></a>
           </div>

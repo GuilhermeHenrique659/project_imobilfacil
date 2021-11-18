@@ -151,7 +151,7 @@
             <select class="form-select" id="bairros" name="bairros" required>
                 <option value="" selected>Selecione o bairro</option>
                     {% for bairro in bairros %}
-                        <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+                        <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}}</option>
                     {% endfor %}
             </select>
                               <div class="invalid-feedback">
