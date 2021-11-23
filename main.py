@@ -62,7 +62,7 @@ def novo_bairro():
     BairroDao.salvar(bairro)
     return redirect('/novo_imovel')
 
-#financerio
+#financerio conda create --name Projeto --file requirements.txt
 def cria_financeiro(imovel):
     FinDao.pocura_deleta(imovel._imob_id)
     financeiro = Financeiro((imovel.honorarios/2), 50,(imovel.honorarios/2),50, imob=imovel._imob_id, corr=imovel._corretor)
