@@ -33,7 +33,9 @@ def index():
     lista_corr = Corretores_dao.listar()
     lista_cidades = CidadeDao.lista()
     lista_bairro = BairroDao.lista()
-    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades, bairros=lista_bairro)
+    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades, bairros=lista_bairro,
+                           lista_leght=len(lista_imob))
+
 #tipos,cidade e bairro
 #tipo
 @app.route('/novo_tipo', methods=['POST'])
