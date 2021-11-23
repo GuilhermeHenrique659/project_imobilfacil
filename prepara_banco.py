@@ -3,12 +3,14 @@ import bcrypt
 from user import *
 
 print('Conectando...')
-conn = MySQLdb.connect(user='root', passwd='root', host='127.0.0.1', port=3306, charset='utf8')
+conn = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7', host='de@us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
+
 
 # Descomente se quiser desfazer o banco...
+'''
 conn.cursor().execute("SET NAMES utf8;")
-conn.cursor().execute("DROP DATABASE `Projeto_DB`;")
-conn.cursor().execute("CREATE DATABASE `Projeto_DB`;")
+conn.cursor().execute("DROP DATABASE `Projeto_DB`;")'''
+conn.cursor().execute("CREATE DATABASE `heroku_7f17bca4c88d1c7`;")
 conn.commit()
 
 conn.cursor().execute("USE `Projeto_DB`;")
