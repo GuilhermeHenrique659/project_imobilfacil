@@ -1,5 +1,8 @@
 {% extends "template.html" %}
 {% block conteudo %}
+  <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
+
 
 <div class="modal fade" id="FiltroCidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
@@ -224,12 +227,7 @@
   <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
       <br>
-      <nav class="navbar navbar-light bg-light">
-      <form class="d-flex">
-            <input class="form-control me-2" type="text"  id="search_field_input_corr" placeholder="Search" aria-label="Search" onkeyup='search_table("TableCorr","search_field_input_corr")'>
-          </form>
-        </nav>
-      <table class="table table-striped table-responsive table-bordered" id="TableCorr">
+      <table class=" display" id="TableCorr">
         <thead class="thead-default" >
           <tr>
             <th>ID</th>
@@ -301,13 +299,11 @@
             </ul>
             <a href="{{url_for('index')}}"><button class="btn btn-sm btn-outline-secondary" type="button">Limpar filtros</button></a>
           </div>
-          <form class="d-flex">
-            <input class="form-control me-2" type="text"  id="search_field_input" placeholder="Search" aria-label="Search" onkeyup='search_table("TableImob","search_field_input")'>
-          </form>
         </div>
       </nav>
       <div>
-        <table class="table table-striped table-responsive table-bordered" id="TableImob">
+        <section>
+        <table class="display" id="TableImob">
           <thead class="thead-default">
             <tr>
               <th>ID</th>
@@ -365,17 +361,16 @@
             </tr>
             {% endfor %}
           </tbody>
+
         </table>
+          </section>
       </div>
     </div>
     <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
       <br>
           <nav class="navbar navbar-light bg-light">
-      <form class="d-flex">
-            <input class="form-control me-2" type="text"  id="search_field_input_prop" placeholder="Search" aria-label="Search" onkeyup='search_table("TableProp","search_field_input_prop")'>
-          </form>
         </nav>
-      <table class="table table-striped table-responsive table-bordered" id="TableProp">
+      <table class="display" id="TableProp">
         <thead class="thead-default">
           <tr>
             <th>ID</th>
@@ -430,4 +425,22 @@
   </div>
 </div>
 <script src="../static/js/script.js"></script>
+  <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('table.display').DataTable({
+       "language": {
+                "lengthMenu": "Mostrando _MENU_ registros por página",
+                "zeroRecords": "Nada encontrado",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Nenhum registro disponível",
+                "infoFiltered": "(filtrado de _MAX_ registros no total)",
+                "search": "Procurar"
+            }
+    });
+} );
+</script>
 {% endblock %}

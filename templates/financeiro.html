@@ -1,6 +1,25 @@
 {% extends "template.html" %}
 {% block conteudo %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
+<script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
+<script>
+  $(document).ready(function () {
+    $('#valor').mask('R$##0.000.000.000.000,00', {
+        reverse: true
+    });
+    $('.money').mask('000.000.000.000.000,00', {
+       reverse: true
+    });
 
+    $('.porcentagem').mask('##00.0%', {
+      reverse: true
+    });
+    $('#area').mask('##000m', {
+      reverse: true
+    });
+  });
+</script>
     <div class="container">
         <br>
         <div class="row row-cols-auto">
@@ -9,9 +28,11 @@
               <div class="card-body">
                   <div class="align-items-center row">
                       <div class="col"><h6 class="text-uppercase text-muted mb-2">Valor total de vendas:</h6>
-                          <span class="h2 mb-0">R$ {{total_vendas}}0</span><span class="mt-n1 ms-2 badge bg-success-soft"></span>
+                          <span class="h2 mb-0 text-success" id="valor">{{total_vendas}}0</span><span class="mt-n1 ms-2 badge bg-success-soft"></span>
                       </div>
+
                       <div class="col-auto">
+                           <br>
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign text-muted">
                       <g><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6">
 
@@ -26,7 +47,7 @@
         </nav>
                 </div>
             <div class="col-sm-9">
-    <table class="table table-striped table-responsive table-bordered">
+    <table class="table table-striped table-responsive table-bordered" id="minhaTabela">
         <thead class="thead-default" >
         <tr>
             <th>ID</th>
@@ -44,13 +65,13 @@
             {% for fin in financeiros %}
                 <tr>
                     <td>{{fin._id_fin}}</td>
-                    <td>R$ {{fin._honorarios_corr}}0</td>
-                    <td>{{fin._porcentagem_corr}} %</td>
-                    <td>R$ {{fin._honorarios_imob}}0</td>
-                    <td>{{fin._porcentagem_imob}} %</td>
+                    <td class="money">{{fin._honorarios_corr}}0</td>
+                    <td class="porcentagem">{{fin._porcentagem_corr}}</td>
+                    <td class="money">{{fin._honorarios_imob}}0</td>
+                    <td class="porcentagem">{{fin._porcentagem_imob}}</td>
                     <td>{{fin._corr}}</td>
                     <td>{{fin._imob}}</td>
-                    <td>R$ {{fin._honorarios_total}}0</td>
+                    <td class="money">{{fin._honorarios_total}}0</td>
                     <td><button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_fin{{ fin._id_fin}}"><i>
                     <img src="../static/img/icon/percent.svg"></i></button>
 
@@ -124,8 +145,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  // === include 'setup' then 'config' above ===
-
 const data = {
   labels: [
     'Valor dos corretores',
@@ -160,11 +179,25 @@ const data = {
     }
 };
 
-
   const myChart = new Chart(
     document.getElementById('myChart'),
     config
   );
+</script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+<script>
+      $(document).ready(function(){
+      $('#minhaTabela').DataTable({
+        	"language": {
+                "lengthMenu": "Mostrando _MENU_ registros por página",
+                "zeroRecords": "Nada encontrado",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Nenhum registro disponível",
+                "infoFiltered": "(filtrado de _MAX_ registros no total)",
+                "search": "Procurar"
+            }
+        });
+  });
 </script>
 
 {% endblock %}

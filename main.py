@@ -33,7 +33,8 @@ def index():
     lista_corr = Corretores_dao.listar()
     lista_cidades = CidadeDao.lista()
     lista_bairro = BairroDao.lista()
-    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades,bairros=lista_bairro)
+    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades, bairros=lista_bairro,
+                           lista_leght=len(lista_imob))
 
 #tipos,cidade e bairro
 #tipo
@@ -97,7 +98,6 @@ def financeiro():
         total_honorarios = total_honorarios + fin.honorarios_total
         total_honorarios_corr = total_honorarios_corr + fin.get_honorarios_corr()
         total_honorarios_imob = total_honorarios_imob + fin.get_honorarios_imob()
-
     return render_template('financeiro.html', financeiros = lista_fin, total_vendas=total_vendas,total_honorarios = total_honorarios,
                            total_honorarios_corr=total_honorarios_corr,total_honorarios_imob = total_honorarios_imob )
 
