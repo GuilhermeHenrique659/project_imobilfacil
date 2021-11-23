@@ -7,9 +7,9 @@ import bcrypt
 app = Flask(__name__)
 app.secret_key='LP2'
 
-app.config['MYSQL_HOST'] = 'de@us-cdbr-east-04.cleardb.com'
+app.config['MYSQL_HOST'] = 'us-cdbr-east-04.cleardb.com'
 app.config['MYSQL_USER'] = 'b8ab2bd3638752'
-app.config['MYSQL_PASSWORD'] = '7627e7'
+app.config['MYSQL_PASSWORD'] = '7627e7de'
 app.config['MYSQL_DB'] = 'heroku_7f17bca4c88d1c7'
 app.config['MYSQL_PORT'] = 3306
 db = MySQL(app)

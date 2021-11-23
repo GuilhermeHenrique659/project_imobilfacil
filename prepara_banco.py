@@ -3,8 +3,7 @@ import bcrypt
 from user import *
 
 print('Conectando...')
-conn = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7', host='de@us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
-
+conn = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
 
 # Descomente se quiser desfazer o banco...
 '''
