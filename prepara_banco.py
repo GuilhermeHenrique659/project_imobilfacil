@@ -8,11 +8,11 @@ conn = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-e
 # Descomente se quiser desfazer o banco...
 '''
 conn.cursor().execute("SET NAMES utf8;")
-conn.cursor().execute("DROP DATABASE `Projeto_DB`;")'''
+conn.cursor().execute("DROP DATABASE `heroku_7f17bca4c88d1c7`;")
 conn.cursor().execute("CREATE DATABASE `heroku_7f17bca4c88d1c7`;")
-conn.commit()
+conn.commit()'''
 
-conn.cursor().execute("USE `Projeto_DB`;")
+conn.cursor().execute("USE `heroku_7f17bca4c88d1c7`;")
 
 criar_tabela_tipo = '''CREATE TABLE `TIPOS` (
         `ID_TIPO` INT NOT NULL AUTO_INCREMENT,
@@ -173,7 +173,7 @@ conn.commit()
 # inserindo usuarios
 cursor = conn.cursor()
 senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
-cursor.execute('INSERT INTO Projeto_DB.CORRETORES ( USUARIO, NOME, EMAIL, SENHA ) VALUES ( %s, %s, %s, %s)', (usuario,nome,email,senha) )
+cursor.execute('INSERT INTO heroku_7f17bca4c88d1c7.CORRETORES ( USUARIO, NOME, EMAIL, SENHA ) VALUES ( %s, %s, %s, %s)', (usuario,nome,email,senha) )
 
 # commitando senão nada tem efeito
 print('conexção completa!')
