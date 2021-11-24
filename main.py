@@ -325,7 +325,10 @@ def login():
     proxima = request.args.get('proxima')
     if proxima == None:
         proxima = ''
-    return render_template('login.html', proxima=proxima)
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return render_template('login.html', proxima=proxima)
+    else:
+        return redirect('/')
 
 @app.route('/autenticar', methods=['POST'])
 def autenticar():
