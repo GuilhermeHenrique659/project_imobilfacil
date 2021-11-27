@@ -43,7 +43,7 @@
       <label for="celular" class="form-label">Celular</label>
       <input type="text" class="form-control" id="celular" name="celular_corr" required>
         <div class="invalid-feedback">
-              Por favor insira um Telefone.
+              Por favor insira um Celular.
         </div>
     </div>
     <br>
@@ -57,39 +57,30 @@
     <br>
     <div class="mb-3">
       <label for="endereco" class="form-label">Endereço</label>
-      <input type="text" class="form-control" id="endereco" name="endereco_corr" required>
-                <div class="invalid-feedback">
-              Por favor insira um endereço.
-        </div>
+      <input type="text" class="form-control" id="endereco" name="endereco_corr">
     </div>
     <br>
       <div class="row">
           <div class="col">
-            <label for="cidades_corr">Cidade</label>
-            <select class="form-select" id="cidades_corr" name="cidades_corr" required>
+            <label for="cidades">Cidade</label>
+            <select class="form-select" id="cidades" name="cidades">
                 <option value="" selected>Selecione a cidade</option>
                     {% for cidade in cidades %}
                         <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
                     {% endfor %}
             </select>
-              <div class="invalid-feedback">
-              Por favor insira uma cidade.
-              </div>
                   </div>
           </div>
       <br>
       <div class="row">
           <div class="col">
-              <label for="bairros_corr">Bairros</label>
-            <select class="form-select" id="bairros_corr" name="bairros_corr" required>
+              <label for="bairros">Bairros</label>
+            <select class="form-select" id="bairros" name="bairros">
                 <option value="" selected>Selecione o bairro</option>
                     {% for bairro in bairros %}
-                        <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+                        <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
                     {% endfor %}
             </select>
-              <div class="invalid-feedback">
-              Por favor insira um bairro.
-              </div>
                   </div>
           </div>
           <br>

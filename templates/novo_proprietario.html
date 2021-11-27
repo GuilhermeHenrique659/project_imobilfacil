@@ -34,10 +34,7 @@
     </div>
     <div class="mb-3">
       <label for="endereco" class="form-label">Endereço</label>
-      <input type="text" class="form-control" id="endereco" name="endereco" required>
-                <div class="invalid-feedback">
-              Por favor insira um endereço.
-        </div>
+      <input type="text" class="form-control" id="endereco" name="endereco" >
     </div>
     <div class="mb-3">
       <label for="telefone" class="form-label">Celular</label>
@@ -69,7 +66,7 @@
             <select class="form-select" id="bairros" name="bairros">
                 <option value="" selected>Selecione o bairro</option>
                     {% for bairro in bairros %}
-                        <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+                        <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
                     {% endfor %}
             </select>
 

@@ -27,27 +27,21 @@
 
     <div class="mb-3">
       <label for="cpf" class="form-label">CPF</label>
-      <input type="text" class="form-control" id="cpf" name="cpf" value="{{proprietario._cpf}}" required>
-      <div class="invalid-feedback">
-              Por favor insira um CPF.
-      </div>
+      <input type="text" class="form-control" id="cpf" name="cpf" value="{{proprietario._cpf}}">
     </div>
     <div class="mb-3">
       <label for="rg" class="form-label">RG</label>
-      <input type=text class="form-control" id="rg" name="rg" value="{{proprietario._rg}}" required>
-      <div class="invalid-feedback">
-              Por favor insira um RG.
-      </div>
+      <input type=text class="form-control" id="rg" name="rg" value="{{proprietario._rg}}">
     </div>
     <div class="mb-3">
       <label for="endereco" class="form-label">Endereço</label>
       <input type="text" class="form-control" id="endereco" name="endereco" value="{{proprietario._endereco_prop}}">
     </div>
     <div class="mb-3">
-        <label for="telefone" class="form-label">Telefone</label>
+        <label for="telefone" class="form-label">Celular</label>
         <input type="text" class="form-control" id="telefone" name="telefone" value="{{proprietario._telefone}} " required>
       <div class="invalid-feedback">
-              Por favor insira um Telefone.
+              Por favor insira um Celular.
       </div>
     </div>
     <div class="mb-3">
@@ -57,30 +51,24 @@
     <div class="row">
       <div class="col">
         <label for="cidades">Cidade</label>
-        <select class="form-select" id="cidades" name="cidades" required>
+        <select class="form-select" id="cidades" name="cidades">
           <option value="{{proprietario._cidade._id_cidade}}" selected>{{proprietario._cidade._cidade_nome}}</option>
             {% for cidade in cidades %}
               <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
           {% endfor %}
         </select>
-        <div class="invalid-feedback">
-              Por favor insira uma cidade.
-        </div>
       </div>
     </div>
       <br>
     <div class="row">
       <div class="col">
         <label for="bairros">Bairro</label>
-        <select class="form-select" id="bairros" name="bairros" required>
+        <select class="form-select" id="bairros" name="bairros">
           <option value="{{proprietario._bairro._id_bairro}}" selected>{{proprietario._bairro._bairro_nome}}</option>
             {% for bairro in bairros %}
-              <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+              <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
             {% endfor %}
         </select>
-        <div class="invalid-feedback">
-              Por favor insira um bairro.
-        </div>
       </div>
     </div>
       <br>

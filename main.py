@@ -188,6 +188,8 @@ def atualiza_imovel():
     quartos = request.form['quartos']
     garagem = request.form['garagem']
     id = request.form['id']
+    if corretor == 'None':
+        corretor = None
     imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem ,proprietario,corretor,
                     banheiro=banheiro, quartos=quartos, garagem=garagem, imob_id=id)
     Imovel_Dao.salvar(imovel)
@@ -204,7 +206,8 @@ def novo_imovel():
     lista_tipo = TiposDao.lista()
     lista_cidades = CidadeDao.lista()
     lista_bairro = BairroDao.lista()
-    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr,tipos=lista_tipo,cidades=lista_cidades,bairros=lista_bairro)
+    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr,
+                           tipos=lista_tipo,cidades=lista_cidades,bairros=lista_bairro)
 
 @app.route('/criar_imovel', methods=['POST'])
 def criar_imovel():
@@ -299,8 +302,8 @@ def criar_Corretor():
     cpf = request.form['cpf_corr']
     endereco = request.form['endereco_corr']
     senha = request.form['senha_corr']
-    cidade = request.form['cidades_corr']
-    bairro = request.form['bairros_corr']
+    cidade = request.form['cidades']
+    bairro = request.form['bairros']
     if usuario == '':
         usuario = None
     senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
@@ -327,8 +330,8 @@ def atualizar_corretor():
     cpf = request.form['cpf_corr']
     endereco = request.form['endereco_corr']
     senha = request.form['senha_corr']
-    cidade = request.form['cidades_corr']
-    bairro = request.form['bairros_corr']
+    cidade = request.form['cidades']
+    bairro = request.form['bairros']
     id = request.form['id_corr']
     if usuario == '' or 'None':
         usuario = None

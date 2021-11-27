@@ -153,7 +153,7 @@
               <option value="{{ imovel._bairro._id_bairro }}" selected>{{imovel._bairro._bairro_nome}} / {{imovel._bairro._bairro_cid_nome}}
               </option>
               {% for bairro in bairros %}
-              <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
+              <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
               {% endfor %}
             </select>
             <div class="invalid-feedback">
@@ -275,15 +275,6 @@
               Por favor insira um corretor.
               </div>
         </div>
-        <script>
-          $(document).ready(function () {
-            $('#corretor').select2();
-          });
-
-          $(document).ready(function () {
-            $('#proprietario').select2();
-          });
-        </script>
       </div>
     </div>
     <br>
