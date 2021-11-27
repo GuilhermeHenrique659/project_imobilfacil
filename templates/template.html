@@ -2,20 +2,20 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css') }}">
-  <style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css') }}">
+    <style>
     .logout img {
       background-color: #212529;
-      margin-right: 50px;
+      margin-right: 20%;
     }
 
     .container-fluid {
-      margin-left: -10px;
       width: 94%;
     }
 
@@ -26,88 +26,89 @@
     .block-conteudo {
       margin: 50px;
     }
-  </style>
+
+    </style>
 </head>
-
 <body>
-
-
-  <div class="collapse" id="navbarToggleExternalContent">
+<div class="collapse" id="navbarToggleExternalContent">
     <div class="bg-dark p-4">
-      <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="{{url_for('index')}}">Início</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
-            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{url_for('rota_corretor')}}">Cadastro de
-                  corretor</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="{{url_for('novo_imovel')}}">Cadastro de imovel</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="{{url_for('rota_proprietario')}}">Cadastro de proprietario</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="{{url_for('financeiro')}}">Financeiro</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{url_for('index')}}">Início</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarTogglerDemo02"
+                        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{url_for('rota_corretor')}}">Cadastro
+                                de
+                                corretor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{url_for('novo_imovel')}}">Cadastro de imovel</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{url_for('rota_proprietario')}}">Cadastro de
+                                proprietario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{url_for('financeiro')}}">Financeiro</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
-  </div>
-  <nav class="navbar navbar-dark bg-dark">
+</div>
+<nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
     <div class="logout">
-      <a href="/logout"><img src="../static/img/log-out.svg" alt=""></a>
+        <a href="/logout"><img src="../static/img/log-out.svg" alt=""></a>
     </div>
-  </nav>
-  <article>
+</nav>
+<article>
     <div class="block-conteudo">
-      <div class="shadow p-3 mb-5 bg-body rounded">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-          <strong> {{ message }}.</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-        {% block conteudo %}
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong> {{ message }}.</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% block conteudo %}
 
-        {% endblock %}
-      </div>
+            {% endblock %}
+        </div>
     </div>
-  </article>
-  <footer class="text-center text-lg-start bg-light text-muted">
+</article>
+<footer class="text-center text-lg-start bg-light text-muted">
     <br>
     <br>
     <br>
     <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-      © 2021 Copyright.All Ritgh Reserved
-      <a class="text-reset fw-bold" href="#">Nome da esmpresa</a>
+        © 2021 Copyright.All Ritgh Reserved
+        <a class="text-reset fw-bold" href="#">Nome da esmpresa</a>
     </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
-  </script>
-      <script>
-          (function () {
+</footer>
+<script type="text/javascript" src="../static/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+<script>
+(function () {
   'use strict'
 
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -126,7 +127,8 @@
       }, false)
     })
 })()
-      </script>
+
+</script>
 </body>
 
 </html>

@@ -137,7 +137,6 @@ class imovelDao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_IMOB_ID, (id,))
         tupla = cursor.fetchone()
-        print(tupla)
         tipo = Tipo(id_tipo=tupla[27], tipo_nome=tupla[28])
 
         cidade = Cidade(id_cidade=tupla[29], cidade_nome=tupla[30])
@@ -217,6 +216,12 @@ class financeiroDao:
     def lista(self):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_LISTA_FIN)
+        fin = self.traduz_fin(cursor.fetchall())
+        return fin
+
+    def filtro(self,filtro):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_LISTA_FIN_CORR, (filtro,))
         fin = self.traduz_fin(cursor.fetchall())
         return fin
 

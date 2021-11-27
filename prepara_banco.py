@@ -6,11 +6,11 @@ print('Conectando...')
 conn = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
 
 # Descomente se quiser desfazer o banco...
-'''
+
 conn.cursor().execute("SET NAMES utf8;")
 conn.cursor().execute("DROP DATABASE `heroku_7f17bca4c88d1c7`;")
 conn.cursor().execute("CREATE DATABASE `heroku_7f17bca4c88d1c7`;")
-conn.commit()'''
+conn.commit()
 
 conn.cursor().execute("USE `heroku_7f17bca4c88d1c7`;")
 
@@ -45,7 +45,7 @@ conn.cursor().execute(criar_tabela_bairro)
 conn.commit()
 criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
         `ID_CORR` INT NOT NULL AUTO_INCREMENT,
-        `USUARIO` VARCHAR(45) NOT NULL,
+        `USUARIO` VARCHAR(45) NULL,
         `EMAIL` VARCHAR(45) NULL,
         `NOME` VARCHAR(45) NULL,
         `CRECI` CHAR(15) NULL,
@@ -55,7 +55,6 @@ criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
         `SENHA` VARCHAR(128) NULL,
         PRIMARY KEY (`ID_CORR`),
         UNIQUE INDEX `USUARIO_UNIQUE` (`USUARIO` ASC),
-        UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC),
         `ID_CIDADE` INT NULL,
         `ID_BAIRRO` INT NULL,
     CONSTRAINT `fk_CORRETOR_BAIRRO`
@@ -74,9 +73,9 @@ conn.commit()
 
 criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
         `ID_PROP` INT NOT NULL AUTO_INCREMENT,
-        `NOME` VARCHAR(45) NOT NULL,
-        `CPF` CHAR(25) NOT NULL,
-        `RG` VARCHAR(20) NOT NULL,
+        `NOME` VARCHAR(45) NULL,
+        `CPF` CHAR(25) NULL,
+        `RG` VARCHAR(20) NULL,
         `ENDERECO` VARCHAR(45) NULL,
         `TELEFONE` CHAR(25) NULL,
         `EMAIL` VARCHAR(45) NULL,

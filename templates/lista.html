@@ -1,433 +1,482 @@
 {% extends "template.html" %}
 {% block conteudo %}
-  <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
 
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 
 <div class="modal fade" id="FiltroCidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-    <input type="hidden" name="filtro" value="filtra_cidade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="FiltroCidadeModalLabel">Filtrar cidade</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="filtra_cidade">Cidade</label>
-          <select class="form-select" id="filtra_cidade" name="filtra_cidade" required>
-            <option value="" selected>Selecione a cidade</option>
-            {% for cidade in cidades %}
-            <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
-            {% endfor %}
-          </select>
-          <div class="invalid-feedback">
-              Por favor insira uma cidade.
+    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
+        <input type="hidden" name="filtro" value="filtra_cidade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FiltroCidadeModalLabel">Filtrar cidade</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="filtra_cidade">Cidade</label>
+                        <select class="form-select" id="filtra_cidade" name="filtra_cidade" required>
+                            <option value="" selected>Selecione a cidade</option>
+                            {% for cidade in cidades %}
+                            <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor insira uma cidade.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-dark">Filtrar</button>
+                </div>
+            </div>
         </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-dark">Filtrar</button>
-      </div>
-    </div>
-  </div>
-  </form>
+    </form>
 </div>
 
 <div class="modal fade" id="FiltroPropModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-    <input type="hidden" name="filtro" value="filtra_prop">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="FiltroPropModalLabel">Filtrar proprietarios</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="filtra_prop">Proprietarios</label>
-          <select class="form-select" id="filtra_prop" name="filtra_prop" required>
-            <option value="" selected>Selecione o proprietario</option>
-          {% for proprietario in proprietarios %}
-            <option value="{{ proprietario._id }}">{{ proprietario._nome}}</option>
-            {% endfor %}
-          </select>
-          <div class="invalid-feedback">
-              Por favor insira um proprietario.
+    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
+        <input type="hidden" name="filtro" value="filtra_prop">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FiltroPropModalLabel">Filtrar proprietarios</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="filtra_prop">Proprietarios</label>
+                        <select class="form-select" id="filtra_prop" name="filtra_prop" required>
+                            <option value="" selected>Selecione o proprietario</option>
+                            {% for proprietario in proprietarios %}
+                            <option value="{{ proprietario._id }}">{{ proprietario._nome}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor insira um proprietario.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-dark">Filtrar</button>
+                </div>
+            </div>
         </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-dark">Filtrar</button>
-      </div>
-    </div>
-  </div>
-  </form>
+    </form>
 </div>
 
 <div class="modal fade" id="FiltroStatusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-    <input type="hidden" name="filtro" value="filtra_status">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="FiltroStatusModalLabel">Filtrar Status</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="filtra_status">Status</label>
-          <select class="form-select" id="filtra_status" name="filtra_status" required>
-            <option value="" selected>Selecione o status</option>
-                    <option value="Livre">Livre</option>
-                    <option value="Ocupado">Ocupado</option>
-                    <option value="Vendido">Vendido</option>
-          </select>
-          <div class="invalid-feedback">
-              Por favor insira um status.
+    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
+        <input type="hidden" name="filtro" value="filtra_status">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FiltroStatusModalLabel">Filtrar Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="filtra_status">Status</label>
+                        <select class="form-select" id="filtra_status" name="filtra_status" required>
+                            <option value="" selected>Selecione o status</option>
+                            <option value="Livre">Livre</option>
+                            <option value="Ocupado">Ocupado</option>
+                            <option value="Vendido">Vendido</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor insira um status.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-dark">Filtrar</button>
+                </div>
+            </div>
         </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-dark">Filtrar</button>
-      </div>
-    </div>
-  </div>
-  </form>
+    </form>
 </div>
 
 <div class="modal fade" id="FiltroBanheiroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-    <input type="hidden" name="filtro" value="filtra_banheiro">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="FiltroBanheiroModalLabel">Filtrar Quartos</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="filtra_banheiro">Numero de quartos</label>
-          <input type="number" class="form-select" id="filtra_banheiro" name="filtra_banheiro" value="0" required>
-          <div class="invalid-feedback">
-              Por favor insira o numero de banheiro.
+    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
+        <input type="hidden" name="filtro" value="filtra_banheiro">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FiltroBanheiroModalLabel">Filtrar Quartos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="filtra_banheiro">Numero de quartos</label>
+                        <input type="number" class="form-select" id="filtra_banheiro" name="filtra_banheiro" value="0"
+                               required>
+                        <div class="invalid-feedback">
+                            Por favor insira o numero de banheiro.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-dark">Filtrar</button>
+                </div>
+            </div>
         </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-dark">Filtrar</button>
-      </div>
-    </div>
-  </div>
-  </form>
+    </form>
 </div>
 
 <div class="modal fade" id="FiltroQuartosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-    <input type="hidden" name="filtro" value="filtra_quartos">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="FiltroQuartosModalLabel">Filtrar Quartos</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="filtra_quartos">Numero de quartos</label>
-          <input type="number" class="form-select" id="filtra_quartos" name="filtra_quartos" value="0" required>
-          <div class="invalid-feedback">
-              Por favor insira um numero de quartos.
+    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
+        <input type="hidden" name="filtro" value="filtra_quartos">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FiltroQuartosModalLabel">Filtrar Quartos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="filtra_quartos">Numero de quartos</label>
+                        <input type="number" class="form-select" id="filtra_quartos" name="filtra_quartos" value="0"
+                               required>
+                        <div class="invalid-feedback">
+                            Por favor insira um numero de quartos.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-dark">Filtrar</button>
+                </div>
+            </div>
         </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-dark">Filtrar</button>
-      </div>
-    </div>
-  </div>
-  </form>
+    </form>
 </div>
 
 <div class="modal fade" id="FiltroGaragemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-    <input type="hidden" name="filtro" value="filtra_garagem">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="FiltroGaragemModalLabel">Filtrar garagem</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="filtra_garagem">Numero de garagem</label>
-          <input type="number" class="form-select" id="filtra_garagem" name="filtra_garagem" value="0" required>
-          <div class="invalid-feedback">
-              Por favor insira um numero de garagem.
+    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
+        <input type="hidden" name="filtro" value="filtra_garagem">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FiltroGaragemModalLabel">Filtrar garagem</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="filtra_garagem">Numero de garagem</label>
+                        <input type="number" class="form-select" id="filtra_garagem" name="filtra_garagem" value="0"
+                               required>
+                        <div class="invalid-feedback">
+                            Por favor insira um numero de garagem.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-dark">Filtrar</button>
+                </div>
+            </div>
         </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-dark">Filtrar</button>
-      </div>
-    </div>
-  </div>
-  </form>
+    </form>
 </div>
 
 <div class="modal fade" id="FiltroBairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-    <input type="hidden" name="filtro" value="filtra_bairro">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="FiltroBairroModalLabel">Filtrar cidade</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="filtra_bairro">Bairros</label>
-          <select class="form-select" id="filtra_bairro" name="filtra_bairro" required>
-            <option value="" selected>Selecione o bairro</option>
-            {% for bairro in bairros %}
-            <option value="{{ bairro._id_bairro }}">{{ bairro._bairro_nome}} / {{bairro._bairro_cid_nome}}</option>
-            {% endfor %}
-          </select>
-          <div class="invalid-feedback">
-              Por favor insira um bairro.
+    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
+        <input type="hidden" name="filtro" value="filtra_bairro">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FiltroBairroModalLabel">Filtrar cidade</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="filtra_bairro">Bairros</label>
+                        <select class="form-select" id="filtra_bairro" name="filtra_bairro" required>
+                            <option value="" selected>Selecione o bairro</option>
+                            {% for bairro in bairros %}
+                            <option value="{{ bairro._id_bairro }}">{{ bairro._bairro_nome}} /
+                                {{bairro._bairro_cid_nome}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor insira um bairro.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-dark">Filtrar</button>
+                </div>
+            </div>
         </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-dark">Filtrar</button>
-      </div>
-    </div>
-  </div>
-  </form>
+    </form>
 </div>
 
 <div class="content-list">
-  <nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <a class="nav-link active" id="nav-corretor-tab" data-bs-toggle="tab" href="#nav-corretor" role="tab"
-        aria-controls="nav-corretor" aria-selected="true">Lista de Corretor</a>
-      <a class="nav-link" id="nav-imovel-tab" data-bs-toggle="tab" href="#nav-imovel" role="tab"
-        aria-controls="nav-imovel" aria-selected="false">Lista de Imovel</a>
-      <a class="nav-link" id="nav-prop-tab" data-bs-toggle="tab" href="#nav-prop" role="tab" aria-controls="nav-prop"
-        aria-selected="false">Lista de proprietario</a>
-    </div>
-  </nav>
-  <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
-      <br>
-      <table class=" display" id="TableCorr">
-        <thead class="thead-default" >
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>CRECI</th>
-            <th>CPF</th>
-            <th>Celular</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for corretor in corretores %}
-          <tr>
-            <td>{{ corretor._id_corr }}</td>
-            <td>{{ corretor._nome }}</td>
-            <td>{{ corretor._creci }}</td>
-            <td>{{ corretor._cpf }}</td>
-            <td>{{ corretor._celular }}</td>
-            <td><a href="{{url_for('editar_corretor', id=corretor._id_corr)}}"><button type="button" class="btn"><i>
-            <img src="../static/img/icon/pen.svg"></i></button></a>
-              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_corr{{ corretor._id_corr}}"><i>
-                    <img src="../static/img/icon/trash.svg"></i></button>
-
-                <div class="modal fade" id="modal_corr{{ corretor._id_corr}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                  aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel1">Deseja excluir o registro {{ corretor._id_corr }} </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <p>Você tem certeza que deseja excluir o corretor:</p>
-                        <p>Nome: {{ corretor._nome }}</p>
-                        <p>CPF: {{ corretor._cpf }}</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <a href="{{url_for('deletar_corr', id=corretor._id_corr)}}"><button type="button"
-                            class="btn btn-danger">Deletar corretor</button></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
-      <br>
-
-      <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-          <div class="dropdown">
-            <button class="btn btn-outline-success me-2" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-              filtros
-            </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroCidadeModal">Filtrar por cidade</button></li>
-            <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroBairroModal">Filtrar por bairro</button></li>
-                 <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroPropModal">Filtrar por proprietarios</button></li>
-                   <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroStatusModal">Filtrar por status</button></li>
-                    <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroQuartosModal">Filtrar por quartos</button></li>
-                      <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroBanheiroModal">Filtrar por banheiro</button></li>
-                      <li> <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FiltroGaragemModal">Filtrar por garagem</button></li>
-
-            </ul>
-            <a href="{{url_for('index')}}"><button class="btn btn-sm btn-outline-secondary" type="button">Limpar filtros</button></a>
-          </div>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-link active" id="nav-corretor-tab" data-bs-toggle="tab" href="#nav-corretor" role="tab"
+               aria-controls="nav-corretor" aria-selected="true">Lista de Corretor</a>
+            <a class="nav-link" id="nav-imovel-tab" data-bs-toggle="tab" href="#nav-imovel" role="tab"
+               aria-controls="nav-imovel" aria-selected="false">Lista de Imovel</a>
+            <a class="nav-link" id="nav-prop-tab" data-bs-toggle="tab" href="#nav-prop" role="tab"
+               aria-controls="nav-prop"
+               aria-selected="false">Lista de proprietario</a>
         </div>
-      </nav>
-      <div>
-        <section>
-        <table class="display" id="TableImob">
-          <thead class="thead-default">
-            <tr>
-              <th>ID</th>
-              <th>Tipo</th>
-              <th>Cidade</th>
-              <th>Bairro</th>
-              <th>Endereço</th>
-              <th>Proprietario</th>
-              <th>Telefone</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for l in lista %}
-            <tr>
-              <td>{{ l._imob_id}}</td>
-              <td>{{ l._tipo._tipo_nome}}</td>
-              <td>{{ l._cidade._cidade_nome}}</td>
-              <td>{{ l._bairro._bairro_nome}}</td>
-              <td>{{ l._endereco}}</td>
-              <td>{{ l._proprietario._nome}}</td>
-              <td>{{ l._proprietario._telefone}}</td>
-              <td>{{ l._status }}</td>
-              <td><a href="{{url_for('view_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i>
-                      <img src="../static/img/icon/eye.svg"></i></button></a>
-                <a href="{{url_for('editar_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i>
-                      <img src="../static/img/icon/pen.svg"></i></button></a>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
+            <br>
+            <table class="display" id="TableCorr">
+                <thead class="thead-default">
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CRECI</th>
+                    <th>CPF</th>
+                    <th>Celular</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for corretor in corretores %}
+                <tr>
+                    <td>{{ corretor._id_corr }}</td>
+                    <td>{{ corretor._nome }}</td>
+                    <td>{{ corretor._creci }}</td>
+                    <td>{{ corretor._cpf }}</td>
+                    <td>{{ corretor._celular }}</td>
+                    <td><a href="{{url_for('editar_corretor', id=corretor._id_corr)}}"><button type="button" class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
+                        <button type="button" class="btn" data-bs-toggle="modal"
+                                data-bs-target="#modal_corr{{ corretor._id_corr}}"><i>
+                            <img src="../static/img/icon/trash.svg"></i></button>
+                        <div class="modal fade" id="modal_corr{{ corretor._id_corr}}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel1">Deseja excluir o registro {{
+                                            corretor._id_corr }} </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Você tem certeza que deseja excluir o corretor:</p>
+                                        <p>Nome: {{ corretor._nome }}</p>
+                                        <p>CPF: {{ corretor._cpf }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar
+                                        </button>
+                                        <a href="{{url_for('deletar_corr', id=corretor._id_corr)}}">
+                                            <button type="button"
+                                                    class="btn btn-danger">Deletar corretor
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="nav-imovel" role="tabpanel" aria-labelledby="nav-imovel-tab">
+            <br>
 
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-success me-2" type="button" id="dropdownMenu2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            filtros
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#FiltroCidadeModal">Filtrar por cidade
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#FiltroBairroModal">Filtrar por bairro
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#FiltroPropModal">Filtrar por proprietarios
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#FiltroStatusModal">Filtrar por status
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#FiltroQuartosModal">Filtrar por quartos
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#FiltroBanheiroModal">Filtrar por banheiro
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#FiltroGaragemModal">Filtrar por garagem
+                                </button>
+                            </li>
 
-                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_imob{{ l._imob_id}}"><i>
-                    <img src="../static/img/icon/trash.svg"></i></button>
-
-                <div class="modal fade" id="modal_imob{{ l._imob_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                  aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Deseja excluir o registro {{ l._imob_id }} </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <p>Você tem certeza que deseja excluir o imovel:</p>
-                        <p>{{ l._endereco }}</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <a href="{{url_for('deleta_imovel', id=l._imob_id)}}"><button type="button"
-                            class="btn btn-danger">Deletar imovel</button></a>
-                      </div>
+                        </ul>
+                        <a href="{{url_for('index')}}">
+                            <button class="btn btn-sm btn-outline-secondary" type="button">Limpar filtros</button>
+                        </a>
                     </div>
-                  </div>
                 </div>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
+            </nav>
+            <div>
+                <section>
+                    <table class="display" id="TableImob">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>ID</th>
+                            <th>Tipo</th>
+                            <th>Cidade</th>
+                            <th>Bairro</th>
+                            <th>Endereço</th>
+                            <th>Proprietario</th>
+                            <th>Telefone</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for l in lista %}
+                        <tr>
+                            <td>{{ l._imob_id}}</td>
+                            <td>{{ l._tipo._tipo_nome}}</td>
+                            <td>{{ l._cidade._cidade_nome}}</td>
+                            <td>{{ l._bairro._bairro_nome}}</td>
+                            <td>{{ l._endereco}}</td>
+                            <td>{{ l._proprietario._nome}}</td>
+                            <td>{{ l._proprietario._telefone}}</td>
+                            <td>{{ l._status }}</td>
+                            <td><a href="{{url_for('view_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i><img src="../static/img/icon/eye.svg"></i></button></a>
+                                <a href="{{url_for('editar_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
+                                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_imob{{ l._imob_id}}"><i><img src="../static/img/icon/trash.svg"></i></button>
+                                <div class="modal fade" id="modal_imob{{ l._imob_id}}" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Deseja excluir o registro
+                                                    {{ l._imob_id }} </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Você tem certeza que deseja excluir o imovel:</p>
+                                                <p>{{ l._endereco }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Fechar
+                                                </button>
+                                                <a href="{{url_for('deleta_imovel', id=l._imob_id)}}">
+                                                    <button type="button"
+                                                            class="btn btn-danger">Deletar imovel
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
 
-        </table>
-          </section>
-      </div>
+                    </table>
+                </section>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
+            <br>
+            <nav class="navbar navbar-light bg-light">
+            </nav>
+            <table class="display" id="TableProp">
+                <thead class="thead-default">
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th>E-mail</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for proprietario in proprietarios %}
+                <tr>
+                    <td>{{ proprietario._id }}</td>
+                    <td>{{ proprietario._nome }}</td>
+                    <td>{{ proprietario._cpf }}</td>
+                    <td>{{ proprietario._telefone }}</td>
+                    <td>{{ proprietario._email }}</td>
+                    <td><a href="{{url_for('editar_proprietario', id=proprietario._id)}}"><button type="button" class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
+                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_prop{{ proprietario._id}}"><i><img src="../static/img/icon/trash.svg"></i></button>
+                        <div class="modal fade" id="modal_prop{{ proprietario._id}}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel2">Deseja excluir o registro {{
+                                            proprietario._id }} </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Você tem certeza que deseja excluir o proprietário:</p>
+                                        <p>Nome: {{ proprietario._nome }}</p>
+                                        <p>CPF: {{ proprietario._cpf }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar
+                                        </button>
+                                        <a href="{{url_for('deletar_prop', id=proprietario._id)}}">
+                                            <button type="button"
+                                                    class="btn btn-danger">Deletar proprietário
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
-      <br>
-          <nav class="navbar navbar-light bg-light">
-        </nav>
-      <table class="display" id="TableProp">
-        <thead class="thead-default">
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Telefone</th>
-            <th>E-mail</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for proprietario in proprietarios %}
-          <tr>
-            <td>{{ proprietario._id }}</td>
-            <td>{{ proprietario._nome }}</td>
-            <td>{{ proprietario._cpf }}</td>
-            <td>{{ proprietario._telefone }}</td>
-            <td>{{ proprietario._email }}</td>
-            <td><a href="{{url_for('editar_proprietario', id=proprietario._id)}}"><button type="button" class="btn"><i>
-              <img src="../static/img/icon/pen.svg"></i></button></a>
-              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_prop{{ proprietario._id}}"><i>
-                    <img src="../static/img/icon/trash.svg"></i></button>
-
-                <div class="modal fade" id="modal_prop{{ proprietario._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                  aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel2">Deseja excluir o registro {{ proprietario._id }} </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <p>Você tem certeza que deseja excluir o proprietário:</p>
-                        <p>Nome: {{ proprietario._nome }}</p>
-                        <p>CPF: {{ proprietario._cpf }}</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <a href="{{url_for('deletar_prop', id=proprietario._id)}}"><button type="button"
-                            class="btn btn-danger">Deletar proprietário</button></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
 </div>
-<script src="../static/js/script.js"></script>
-  <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
 
 <script>
   $(document).ready(function() {
@@ -442,5 +491,14 @@
             }
     });
 } );
+
 </script>
+
+<!-- Lembrar de rafatorar os modals
+<script type="text/javascript">
+
+
+</script>
+-->
+
 {% endblock %}

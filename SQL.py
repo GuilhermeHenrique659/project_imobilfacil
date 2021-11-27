@@ -65,6 +65,11 @@ SQL_LISTA_FIN = 'SELECT financeiro.ID_FIN, financeiro.HONORARIOS_CORR, financeir
                 'inner join corretores on financeiro.ID_CORR_FIN = ID_CORR ' \
                 'inner join imoveis on financeiro.ID_IMOB_FIN = imoveis.ID_IMOB'
 
+SQL_LISTA_FIN_CORR = 'SELECT financeiro.ID_FIN, financeiro.HONORARIOS_CORR, financeiro.PORCENTAGEM_CORR,financeiro.HONORARIOS_IMOB, financeiro.PORCENTAGEM_IMOB, ' \
+                'corretores.NOME, imoveis.ENDERECO_IMOVEL , imoveis.VALOR_VENDA, imoveis.HONORARIOS FROM financeiro ' \
+                'inner join corretores on financeiro.ID_CORR_FIN = ID_CORR ' \
+                'inner join imoveis on financeiro.ID_IMOB_FIN = imoveis.ID_IMOB where financeiro.ID_CORR_FIN = %s'
+
 #TIPOS
 SQL_CRIA_TIPOS = 'INSERT into tipos (ID_TIPO,TIPO) values(%s,%s)'
 SQL_LISTA_TIPOS = 'SELECT * FROM tipos'

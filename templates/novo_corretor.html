@@ -15,18 +15,12 @@
     <br>
     <div class="mb-3">
       <label for="usuario" class="form-label">Usuário</label>
-      <input type=text class="form-control" id="usuario" name="usuario_corr" required>
-        <div class="invalid-feedback">
-              Por favor insira um Usuário.
-        </div>
+      <input type=text class="form-control" id="usuario" name="usuario_corr">
     </div>
     <br>
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
-      <input type="email" class="form-control" id="email" name="email_corr" required>
-                <div class="invalid-feedback">
-              Por favor insira um E-mail.
-        </div>
+      <input type="email" class="form-control" id="email" name="email_corr">
     </div>
     <br>
     <div class="mb-3">
@@ -93,7 +87,7 @@
                         <option value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
                     {% endfor %}
             </select>
-                              <div class="invalid-feedback">
+              <div class="invalid-feedback">
               Por favor insira um bairro.
               </div>
                   </div>
@@ -101,10 +95,7 @@
           <br>
     <div class="mb-3">
       <label for="senha" class="form-label">Senha</label>
-      <input type="password" class="form-control" id="senha" name="senha_corr" required>
-        <div class="invalid-feedback">
-              Por favor insira uma senha.
-        </div>
+      <input type="password" class="form-control" id="senha" name="senha_corr">
     </div>
     <button type="submit" class="btn btn-dark">Salvar</button>
     <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
