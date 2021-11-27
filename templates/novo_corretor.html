@@ -87,10 +87,22 @@
     <div class="mb-3">
       <label for="senha" class="form-label">Senha</label>
       <input type="password" class="form-control" id="senha" name="senha_corr">
+                <input type="checkbox" id="senha_mostrar" name="Senha_mostrar" onclick="Mostrar_senha()">
+        <label for="senha_mostrar"> Mostrar senha!</label><br>
     </div>
     <button type="submit" class="btn btn-dark">Salvar</button>
     <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
   </fieldset>
 </form>
+<script>
+    function Mostrar_senha(){
+        var tipo = document.getElementById("senha")
+        if(tipo.type == "password"){
+            tipo.type = "text"
+        }else{
+            tipo.type = "password"
+        }
+    }
+</script>
 
 {% endblock %}

@@ -250,7 +250,6 @@ const data = {
             var button = $(event.relatedTarget)
             var id = button.data('id')
             var total = button.data('total')
-            console.log(id)
             var modal = $(this)
             modal.find('.modal-title').text('Insira os valores para o registro: ' + id)
             modal.find('#id_fin').val(id)

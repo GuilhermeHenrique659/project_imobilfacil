@@ -294,21 +294,26 @@ def rota_corretor():
 
 @app.route('/cad_corretor', methods=['POST'])
 def criar_Corretor():
-    usuario = request.form['usuario_corr']
-    email = request.form['email_corr']
-    nome = request.form['nome_corr']
-    creci = request.form['creci_corr']
-    celular = request.form['celular_corr']
-    cpf = request.form['cpf_corr']
-    endereco = request.form['endereco_corr']
-    senha = request.form['senha_corr']
-    cidade = request.form['cidades']
-    bairro = request.form['bairros']
-    if usuario == '':
-        usuario = None
-    senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
-    corretor = Corretores(usuario,email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
-    Corretores_dao.salvar(corretor)
+    corretor = Corretores_dao.buscar_por_id(request.form['usuario_corr'])
+    if corretor:
+        flash('usuário já existe')
+    else:
+        usuario = request.form['usuario_corr']
+        email = request.form['email_corr']
+        nome = request.form['nome_corr']
+        creci = request.form['creci_corr']
+        celular = request.form['celular_corr']
+        cpf = request.form['cpf_corr']
+        endereco = request.form['endereco_corr']
+        senha = request.form['senha_corr']
+        cidade = request.form['cidades']
+        bairro = request.form['bairros']
+        if usuario == '':
+            usuario = None
+        senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
+        corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
+        Corretores_dao.salvar(corretor)
+
     return redirect('/')
 
 @app.route('/editar_corretor/<int:id>')
@@ -322,6 +327,8 @@ def editar_corretor(id):
 
 @app.route('/atualizar_corretor', methods=['POST'])
 def atualizar_corretor():
+    corretor_busq = Corretores_dao.buscar_por_id(request.form['usuario_corr'])
+    usuario_verifc = request.form['ussuario_verif']
     usuario = request.form['usuario_corr']
     email = request.form['email_corr']
     nome = request.form['nome_corr']
@@ -333,11 +340,17 @@ def atualizar_corretor():
     cidade = request.form['cidades']
     bairro = request.form['bairros']
     id = request.form['id_corr']
-    if usuario == '' or 'None':
-        usuario = None
     senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
-    corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
-    Corretores_dao.salvar(corretor)
+    if usuario_verifc == usuario:
+        corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
+        Corretores_dao.salvar(corretor)
+    elif corretor_busq:
+        flash('usuário já existe')
+    else:
+        if usuario == '':
+            usuario = None
+        corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
+        Corretores_dao.salvar(corretor)
     return redirect('/')
 
 @app.route('/deletar_corr/<int:id>')

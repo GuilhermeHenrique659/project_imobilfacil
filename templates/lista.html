@@ -1,8 +1,9 @@
 {% extends "template.html" %}
 {% block conteudo %}
 
-
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
 <div class="modal fade" id="FiltroCidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
@@ -186,7 +187,7 @@
 
 <div class="modal fade" id="FiltroBairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-        <input type="hidden" name="filtro" value="filtra_bairro">
+        <input type="hidden" name="filtro" value="bairros">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -195,11 +196,19 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="filtra_bairro">Bairros</label>
-                        <select class="form-select" id="filtra_bairro" name="filtra_bairro" required>
+                        <label for="cidades">Cidade</label>
+                        <select class="form-select" id="cidades" name="cidades">
+                            <option value="" selected>Selecione o cidade</option>
+                            {% for cidade in cidades %}
+                            <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+                            {% endfor %}
+                        </select>
+
+                        <label for="bairros">Bairros</label>
+                        <select class="form-select" id="bairros" name="bairros" required>
                             <option value="" selected>Selecione o bairro</option>
                             {% for bairro in bairros %}
-                            <option value="{{ bairro._id_bairro }}">{{ bairro._bairro_nome}} /
+                            <option data-cid="{{ bairro._id_cid }}" value="{{ bairro._id_bairro }}">{{ bairro._bairro_nome}} /
                                 {{bairro._bairro_cid_nome}}
                             </option>
                             {% endfor %}
@@ -253,8 +262,7 @@
                     <td>{{ corretor._cpf }}</td>
                     <td>{{ corretor._celular }}</td>
                     <td><a href="{{url_for('editar_corretor', id=corretor._id_corr)}}"><button type="button" class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
-                        <button type="button" class="btn" data-bs-toggle="modal"
-                                data-bs-target="#modal_corr{{ corretor._id_corr}}"><i>
+                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_corr{{ corretor._id_corr}}"><i>
                             <img src="../static/img/icon/trash.svg"></i></button>
                         <div class="modal fade" id="modal_corr{{ corretor._id_corr}}" tabindex="-1"
                              aria-labelledby="exampleModalLabel"
@@ -474,8 +482,6 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
 
 <script>
@@ -494,11 +500,5 @@
 
 </script>
 
-<!-- Lembrar de rafatorar os modals
-<script type="text/javascript">
-
-
-</script>
--->
 
 {% endblock %}

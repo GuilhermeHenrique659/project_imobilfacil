@@ -162,7 +162,7 @@ class imovelDao:
             "filtra_quartos": SQL_FILTRO_QUARTO,
             "filtra_banheiro": SQL_FILTRO_BANHEIRO,
             "filtra_garagem": SQL_FILTRO_GARAGEM,
-            "filtra_bairro": SQL_FILTRO_BAIRRO
+            "bairros": SQL_FILTRO_BAIRRO
         }
         cursor = self.__db.connection.cursor()
         cursor.execute(filtros_dic[filtro], (id,))
