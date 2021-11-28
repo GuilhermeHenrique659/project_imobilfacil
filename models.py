@@ -82,6 +82,17 @@ class Proprietario:
         self._cidade = cidade
         self._bairro = bairro
 
+    def set_bairro(self,bairro):
+        self._bairro = bairro
+
+    def set_cidade(self,cidade):
+        self._cidade = cidade
+
+    def valida(self, data):
+        if data == "":
+            data = None
+        return data
+
 class Corretores:
     def __init__(self, usuario, email, nome, creci, celular, cpf, endereco, senha, cidade=None, bairro=None, id_corr=None):
         self._id_corr = id_corr
@@ -96,6 +107,20 @@ class Corretores:
         self._cidade = cidade
         self._bairro = bairro
         self._senha = senha
+
+    def set_bairro(self,bairro):
+        self._bairro = bairro
+
+    def set_cidade(self,cidade):
+        self._cidade = cidade
+
+    def set_user(self,user):
+        self._usuario = user
+
+    def valida(self,data):
+        if data == "" or data == "None":
+            data = None
+        return data
 
 class Financeiro:
     def __init__(self, honorarios_corr, porcentagem_corr, honorarios_imob , porcentagem_imob,

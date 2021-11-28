@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session, flash
+from flask import Flask, request, redirect, render_template, session, flash, url_for
 from models import Imovel, Proprietario, Corretores,Tipo,Cidade,Bairro, Financeiro
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao,tiposDao,ciadadeDao,bairroDao,financeiroDao
 from flask_mysqldb import MySQL
@@ -160,7 +160,7 @@ def deleta_imovel(id):
 @app.route('/editar_imovel/<int:id>')
 def editar_imovel(id):
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=editar_imovel/id')
+        return redirect('/login?proxima=''')
     Imovel = Imovel_Dao.busca_imob_id(id)
     lista_prop = Proprietario_dao.listar()
     lista_corr = Corretores_dao.listar()
@@ -253,12 +253,14 @@ def criar_proprietario():
     cidade = request.form['cidades']
     bairro = request.form['bairros']
     proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, cidade, bairro)
+    proprietario.set_cidade(proprietario.valida(cidade))
+    proprietario.set_bairro(proprietario.valida(bairro))
     Proprietario_dao.salvar(proprietario)
     return redirect('/')
 @app.route('/editar_prop/<int:id>')
 def editar_proprietario(id):
     if 'usuario_logado' not in session or session['usuario_logado']==None:
-        return redirect('/login?proxima=editar_prop.html')
+        return redirect('/login?proxima=''')
     lista_cidades = CidadeDao.lista()
     lista_bairro = BairroDao.lista()
     proprietario = Proprietario_dao.busca_por_id(id)
@@ -287,7 +289,7 @@ def deletar_prop(id):
 @app.route('/Corretor')
 def rota_corretor():
     if 'usuario_logado' not in session or session['usuario_logado']==None:
-        return redirect('/login?proxima=novo_proprietario.html')
+        return redirect('/login?proxima=novo_corretor.html')
     lista_cidades = CidadeDao.lista()
     lista_bairro = BairroDao.lista()
     return render_template('novo_corretor.html',cidades=lista_cidades,bairros=lista_bairro)
@@ -297,6 +299,7 @@ def criar_Corretor():
     corretor = Corretores_dao.buscar_por_id(request.form['usuario_corr'])
     if corretor:
         flash('usuário já existe')
+        return redirect(url_for('rota_corretor'))
     else:
         usuario = request.form['usuario_corr']
         email = request.form['email_corr']
@@ -308,10 +311,11 @@ def criar_Corretor():
         senha = request.form['senha_corr']
         cidade = request.form['cidades']
         bairro = request.form['bairros']
-        if usuario == '':
-            usuario = None
         senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
+        corretor.set_user(corretor.valida(usuario))
+        corretor.set_cidade(corretor.valida(bairro))
+        corretor.set_bairro(corretor.valida(cidade))
         Corretores_dao.salvar(corretor)
 
     return redirect('/')
@@ -319,7 +323,7 @@ def criar_Corretor():
 @app.route('/editar_corretor/<int:id>')
 def editar_corretor(id):
     if 'usuario_logado' not in session or session['usuario_logado']==None:
-        return redirect('/login?proxima=editar-corr.html')
+        return redirect('/login?proxima=''')
     lista_cidades = CidadeDao.lista()
     lista_bairro = BairroDao.lista()
     corretor = Corretores_dao.busca_por_id_edit(id)
@@ -343,13 +347,18 @@ def atualizar_corretor():
     senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
     if usuario_verifc == usuario:
         corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
+        corretor.set_user(corretor.valida(usuario))
+        corretor.set_cidade(corretor.valida(bairro))
+        corretor.set_bairro(corretor.valida(cidade))
         Corretores_dao.salvar(corretor)
     elif corretor_busq:
         flash('usuário já existe')
+        return redirect(url_for('editar_corretor',id=id))
     else:
-        if usuario == '':
-            usuario = None
         corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
+        corretor.set_user(corretor.valida(usuario))
+        corretor.set_cidade(corretor.valida(bairro))
+        corretor.set_bairro(corretor.valida(cidade))
         Corretores_dao.salvar(corretor)
     return redirect('/')
 
