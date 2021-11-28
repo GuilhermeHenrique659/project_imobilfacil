@@ -10,9 +10,11 @@ class cad_proprietario_dao:
         cursor = self.__db.connection.cursor()
 
         if (Proprietario._id):
-            cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (Proprietario._nome, Proprietario._cpf,Proprietario._rg, Proprietario._endereco_prop, Proprietario._telefone,Proprietario._email,Proprietario._cidade,Proprietario._bairro, Proprietario._id))
+            cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (Proprietario._nome, Proprietario._cpf,Proprietario._rg, Proprietario._endereco_prop, Proprietario._telefone,
+                                                       Proprietario._email,Proprietario._cidade,Proprietario._bairro, Proprietario._id))
         else:
-            cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco_prop, Proprietario._telefone, Proprietario._email,Proprietario._cidade,Proprietario._bairro))
+            cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco_prop, Proprietario._telefone,
+                                                   Proprietario._email,Proprietario._cidade,Proprietario._bairro))
             cursor._id = cursor.lastrowid
         self.__db.connection.commit()
 

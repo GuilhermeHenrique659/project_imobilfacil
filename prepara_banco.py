@@ -60,13 +60,13 @@ criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
     CONSTRAINT `fk_CORRETOR_BAIRRO`
         FOREIGN KEY (`ID_BAIRRO`)
         REFERENCES `BAIRRO` (`ID_BAIRRO`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
     CONSTRAINT `fk_CORRETOR_CIDADE`
         FOREIGN KEY (`ID_CIDADE`)
         REFERENCES `CIDADE` (`ID_CID`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
    ) ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_corretor)
 conn.commit()
@@ -85,13 +85,13 @@ criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
     CONSTRAINT `fk_PROPRIETARIO_BAIRRO`
         FOREIGN KEY (`ID_BAIRRO`)
         REFERENCES `BAIRRO` (`ID_BAIRRO`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
     CONSTRAINT `fk_PROPRIETARIO_CIDADE`
         FOREIGN KEY (`ID_CIDADE`)
         REFERENCES `CIDADE` (`ID_CID`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
     ) ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_proprietario)
 conn.commit()

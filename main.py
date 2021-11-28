@@ -278,6 +278,8 @@ def atualizar_proprietario():
     bairro = request.form['bairros']
     id = request.form['id']
     proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, cidade ,bairro, id)
+    proprietario.set_cidade(proprietario.valida(cidade))
+    proprietario.set_bairro(proprietario.valida(bairro))
     Proprietario_dao.salvar(proprietario)
     return redirect('/')
 

@@ -89,7 +89,7 @@ class Proprietario:
         self._cidade = cidade
 
     def valida(self, data):
-        if data == "":
+        if data == "" or data == "None":
             data = None
         return data
 
