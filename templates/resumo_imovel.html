@@ -33,10 +33,15 @@
             </tr>
         </thead>
     </table>
+        <br>
+    <br>
+    <p>
+    <hr width="50%" color="black">
+    </p>
 </div>
 <br>
-<button type="button" class="btn btn-primary" onclick="CriaPDF()">Imprimir </button>
-<a href="{{url_for('view_imovel', id=imovel._imob_id)}}"><button type="button" class="btn btn-primary">Voltar</button></a>
+<button type="button" class="btn btn-dark" onclick="CriaPDF()">Imprimir </button>
+<a href="{{url_for('view_imovel', id=imovel._imob_id)}}"><button type="button" class="btn btn-danger">Voltar</button></a>
 <script>
     function CriaPDF() {
         var minhaTabela = document.getElementById('View_imovel').innerHTML;

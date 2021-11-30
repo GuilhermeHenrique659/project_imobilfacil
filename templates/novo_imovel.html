@@ -15,15 +15,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="TipoModalLabel">Criar tipo</h5>
+        <h5 class="modal-title" id="TipoModalLabel">Criar categoria</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
           <div class="form-group">
-            <label for="tipo">Tipo</label>
+            <label for="tipo">Categoria</label>
             <input type="text" id="tipo" name="tipo" class="form-control" required>
               <div class="invalid-feedback">
-              Por favor insira uma tipo.
+              Por favor insira uma categoria.
               </div>
           </div>
       </div>
@@ -39,14 +39,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Criar tipo</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Criar bairro</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
           <div class="form-group">
             <label for="cidade_bairro">Cidade</label>
             <select class="form-select" id="cidade_bairro" name="cidade_bairro" required>
-                <option value="0" selected>Selecione a tipo</option>
+                <option value="" selected>Selecione a tipo</option>
                     {% for cidade in cidades %}
                         <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
                     {% endfor %}
@@ -74,7 +74,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="CidadeModalLabel">Criar tipo</h5>
+        <h5 class="modal-title" id="CidadeModalLabel">Criar cidade</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -110,19 +110,19 @@
       <br>
           <div class="row">
               <div class="col">
-            <label for="tipos">Tipos</label>
+            <label for="tipos">Categoria</label>
             <select class="form-select" id="tipos" name="tipos" required>
-                <option value="" selected>Selecione o tipo</option>
+                <option value="" selected>Selecione a categoria</option>
                     {% for tipo in tipos %}
                         <option value="{{ tipo._id_tipo }}">{{ tipo._tipo_nome}}</option>
                     {% endfor %}
             </select><div class="invalid-feedback">
-              Por favor insira um tipo.
+              Por favor insira um categoria.
               </div>
                   </div>
-              <div class="col-md-1">
+              <div class="col-md-2">
                   <br>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TipoModal">Criar tipo</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#TipoModal">Criar categoria</button>
               </div>
           </div>
       <br>
@@ -139,9 +139,9 @@
               Por favor insira uma cidade.
               </div>
                   </div>
-              <div class="col-md-1">
+              <div class="col-md-2">
                   <br>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CidadeModal">Criar cidade</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#CidadeModal">Criar cidade</button>
               </div>
           </div>
       <br>
@@ -159,9 +159,9 @@
               Por favor insira um bairro.
               </div>
                   </div>
-              <div class="col-md-1">
+              <div class="col-md-2">
                   <br>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#BairroModal">Criar bairro</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#BairroModal">Criar bairro</button>
               </div>
           </div>
       <br>

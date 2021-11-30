@@ -1,4 +1,4 @@
 usuario = 'admin'
-nome = 'Teste'
-email = ' 1@gmail.com'
-senha = '123456'
+nome = 'Administrador'
+email = 'appimobilfacil@gmail.com'
+senha = 'imobilfacil'
