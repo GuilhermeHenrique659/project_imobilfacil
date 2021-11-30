@@ -251,7 +251,7 @@
       <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
         <br>
         <div class="mb-3">
-          <select class="form-select" name="proprietario" id="proprietario" required>
+          <select class="js-example-responsive" style="width: 50%" name="proprietario" id="proprietario" required>
             <option value="{{ imovel._proprietario._id }}" selected>{{ imovel._proprietario._nome }}</option>
             {% for proprietario in proprietarios %}
             <option value="{{ proprietario._id }}">{{ proprietario._nome }}</option>
@@ -264,7 +264,7 @@
         </div>
         <br>
         <div class="mb-3">
-          <select class="form-select" name="corretor" id="corretor" required>
+          <select class="js-example-responsive" style="width: 50%" name="corretor" id="corretor" required>
             <option value="{{ imovel._corretor._id_corr}}" selected>{{ imovel._corretor._nome}}</option>
             {% for corretor in corretores %}
             <option value="{{ corretor._id_corr }}">{{ corretor._nome }}</option>
@@ -275,6 +275,19 @@
               Por favor insira um corretor.
               </div>
         </div>
+           <script>
+        $(document).ready(function() {
+            $('#corretor').select2({
+                width: 'resolve'
+            });
+        });
+
+        $(document).ready(function() {
+            $('#proprietario').select2({
+                width: 'resolve'
+            });
+        });
+    </script>
       </div>
     </div>
     <br>

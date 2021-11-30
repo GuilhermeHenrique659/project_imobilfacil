@@ -62,7 +62,7 @@ def novo_bairro():
     BairroDao.salvar(bairro)
     return redirect('/novo_imovel')
 
-#financerio conda create --name Projeto --file requirements.txt
+#financerio
 def cria_financeiro(imovel):
     FinDao.pocura_deleta(imovel._imob_id)
     financeiro = Financeiro((imovel.honorarios/2), 50,(imovel.honorarios/2),50, imob=imovel._imob_id, corr=imovel._corretor)
@@ -257,6 +257,7 @@ def criar_proprietario():
     proprietario.set_bairro(proprietario.valida(bairro))
     Proprietario_dao.salvar(proprietario)
     return redirect('/')
+
 @app.route('/editar_prop/<int:id>')
 def editar_proprietario(id):
     if 'usuario_logado' not in session or session['usuario_logado']==None:
