@@ -387,13 +387,13 @@ def autenticar():
     if usuario:
         if bcrypt.hashpw(request.form['senha'].encode(), usuario._senha.encode()) == usuario._senha.encode():
             session['usuario_logado']=request.form['usuario']
-            flash(request.form['usuario'] + ' logou com sucesso!')
+            flash(usuario._nome + ' logou com sucesso!')
             proxima_pagina = request.form['proxima']
             return redirect('/{}'.format(proxima_pagina))
         else:
             flash('Senha incorreta!')
             return redirect('/login')
-    flash('Usuario incorreto!')
+    flash('Usuario não encontrado!')
     return redirect('/login')
 
 @app.route('/logout')

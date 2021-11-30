@@ -77,8 +77,14 @@ class cad_corretor_dao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_CORR_ID, (usuario,))
         dados = cursor.fetchone()
-        usuario = traduz_usuario(dados) if dados else None
-        return usuario
+        if dados:
+            usuario = traduz_usuario(dados) if dados else None
+            return usuario
+        else:
+            cursor.execute(SQL_BUSCA_CORR_EMAIL, (usuario,))
+            dados = cursor.fetchone()
+            usuario = traduz_usuario(dados) if dados else None
+            return usuario
 
     # busca um unico corretor pelo id
     def busca_por_id_edit(self, id):

@@ -46,6 +46,9 @@ SQL_BUSCA_LISTA_CORRETORES = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,CRECI,CELULAR,
 
 SQL_BUSCA_CORR_ID = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,CRECI,CELULAR,CPF,ENDERECO,SENHA,ID_CIDADE, ID_BAIRRO from corretores where USUARIO=%s'
 
+SQL_BUSCA_CORR_EMAIL = 'SELECT ID_CORR, USUARIO, EMAIL,NOME,CRECI,CELULAR,CPF,ENDERECO,SENHA,ID_CIDADE, ID_BAIRRO from corretores where EMAIL=%s'
+
+
 SQL_BUSCA_CORR_POR_ID = 'SELECT * from corretores ' \
                         'left join cidade on corretores.ID_CIDADE = cidade.ID_CID ' \
                         'left join bairro on corretores.ID_BAIRRO = bairro.ID_BAIRRO where ID_CORR=%s'
