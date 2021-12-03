@@ -31,11 +31,10 @@ class cad_proprietario_dao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_PROP_POR_ID, (id,))
         tupla = cursor.fetchone()
-        cidade = Cidade(id_cidade=tupla[9], cidade_nome=tupla[10])
-
-        bairro = Bairro(id_bairro=tupla[11], bairro_nome=tupla[12], id_cid=tupla[13],bairro_cidade_nome=tupla[10])
-
-        proprietario = Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], cidade, bairro, id=tupla[0])
+        cidade = Cidade(tupla['ID_CIDADE'], tupla['CIDADE'])
+        bairro = Bairro(tupla['BAIRRO'],tupla['CIDADE_ID_CID'],tupla['bairro.ID_BAIRRO'],tupla['CIDADE'])
+        proprietario = Proprietario(tupla['NOME'], tupla['CPF'], tupla['RG'], tupla['ENDERECO'],
+                                    tupla['TELEFONE'], tupla['EMAIL'], cidade, bairro, tupla['ID_PROP'])
         del cidade,bairro
         return proprietario
     def deletar_prop(self,id):
@@ -57,7 +56,8 @@ class cad_corretor_dao:
         cursor = self.__db.connection.cursor()
 
         if (corretor._id_corr):
-            cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro,corretor._id_corr))
+            cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,corretor._celular,corretor._cpf,
+                                                     corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro,corretor._id_corr))
         else:
             cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,
                                                  corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
@@ -65,6 +65,7 @@ class cad_corretor_dao:
 
         self.__db.connection.commit()
         del corretor
+
     # faz lista de corretores para mostrar no index
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -91,9 +92,10 @@ class cad_corretor_dao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_CORR_POR_ID, (id,))
         tupla = cursor.fetchone()
-        cidade = Cidade(id_cidade=tupla[11], cidade_nome=tupla[12])
-        bairro = Bairro(id_bairro=tupla[13], bairro_nome=tupla[14], id_cid=tupla[15],bairro_cidade_nome=tupla[12])
-        corretor = Corretores(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8],cidade,bairro, id_corr=tupla[0])
+        cidade = Cidade(tupla['ID_CIDADE'], tupla['CIDADE'])
+        bairro = Bairro(tupla['BAIRRO'],tupla['CIDADE_ID_CID'],tupla['bairro.ID_BAIRRO'],tupla['CIDADE'])
+        corretor = Corretores(tupla['USUARIO'], tupla['EMAIL'], tupla['NOME'], tupla['CRECI'], tupla['CELULAR'],
+                              tupla['CPF'], tupla['ENDERECO'], tupla['SENHA'],cidade,bairro,tupla['ID_CORR'])
         del cidade,bairro
         return corretor
 
@@ -147,20 +149,21 @@ class imovelDao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_IMOB_ID, (id,))
         tupla = cursor.fetchone()
-        tipo = Tipo(id_tipo=tupla[27], tipo_nome=tupla[28])
+        tipo = Tipo(tupla['TIPO'], tupla['ID_TIPO'])
 
-        cidade = Cidade(id_cidade=tupla[29], cidade_nome=tupla[30])
+        cidade = Cidade(tupla['CIDADE'], tupla['ID_CID'])
 
-        bairro = Bairro(id_bairro=tupla[31], bairro_nome=tupla[32], id_cid=tupla[33], bairro_cidade_nome=tupla[30])
+        bairro = Bairro(tupla['BAIRRO'], tupla['CIDADE_ID_CID'], tupla['bairro.ID_BAIRRO'], tupla['CIDADE'])
 
-        proprietario = Proprietario(tupla[19], tupla[20], tupla[21], tupla[22], tupla[23], tupla[24], id=tupla[18])
+        proprietario = Proprietario(tupla['NOME'], tupla['CPF'], tupla['RG'], tupla['ENDERECO'], tupla['TELEFONE'],
+                                    tupla['EMAIL'], tupla['proprietarios.ID_PROP'])
 
-        corretor = Corretores(tupla[35],tupla[36],tupla[37],tupla[38],tupla[39],tupla[40],tupla[41],tupla[42],tupla[43], id_corr=tupla[34])
+        imovel = Imovel(tipo, tupla['FINALIDADE'], cidade, bairro, tupla['ENDERECO_IMOVEL'], tupla['AREA'],
+                        tupla['DETALHES'], tupla['VALOR_IMOVEL'], tupla['STATUS'],
+                        tupla['PORCENTAGEM'], proprietario, tupla['ID_CORR'], tupla['VALOR_VENDA'], tupla['HONORARIOS'],
+                        tupla['BANHEIRO'], tupla['QUARTOS'], tupla['GARAGEM'], tupla['ID_IMOB'])
 
-        imovel = Imovel(tipo, tupla[4], cidade, bairro, tupla[7], tupla[8], tupla[9], tupla[10], tupla[12], tupla[13],
-                        proprietario, corretor, tupla[11], tupla[14], tupla[15], tupla[16], tupla[17], imob_id=tupla[0])
-
-        del tipo, cidade, bairro, proprietario, corretor
+        del tipo, cidade, bairro, proprietario
         return imovel
 
 
@@ -185,16 +188,17 @@ class imovelDao:
 
     def traduz_imob(self,imoveis):
         def cria_imob_lista(tupla):
-            tipo = Tipo(tupla['tipos.ID_TIPO'], tupla['TIPO'])
+            tipo = Tipo(tupla['TIPO'], tupla['ID_TIPO'])
 
-            cidade = Cidade(tupla['ID_CID'], tupla['CIDADE'])
+            cidade = Cidade(tupla['CIDADE'], tupla['ID_CID'])
 
-            bairro = Bairro(tupla['bairro.ID_BAIRRO'], tupla['BAIRRO'], tupla['CIDADE_ID_CID'], tupla['CIDADE'])
+            bairro = Bairro(tupla['BAIRRO'], tupla['CIDADE_ID_CID'], tupla['bairro.ID_BAIRRO'], tupla['CIDADE'])
 
             proprietario = Proprietario(tupla['NOME'],tupla['CPF'],tupla['RG'],tupla['ENDERECO'],tupla['TELEFONE'],tupla['EMAIL'], tupla['proprietarios.ID_PROP'])
 
-            imovel = Imovel(tipo,tupla['FINALIDADE'],cidade,bairro,tupla['ENDERECO_IMOVEL'],tupla['AREA'],tupla['DETALHES'],tupla['VALOR_IMOVEL'],tupla['STATUS'],
-                            tupla['PORCENTAGEM'],proprietario,tupla['ID_CORR'],tupla['VALOR_VENDA'],tupla['HONORARIOS'],tupla['BANHEIRO'],tupla['QUARTOS'],tupla['GARAGEM'],tupla['ID_IMOB'])
+            imovel = Imovel(tipo,tupla['FINALIDADE'],cidade,bairro,tupla['ENDERECO_IMOVEL'],tupla['AREA'],tupla['DETALHES'],tupla['VALOR_IMOVEL'],
+                            tupla['STATUS'],tupla['PORCENTAGEM'],proprietario,tupla['ID_CORR'],tupla['VALOR_VENDA'],tupla['HONORARIOS'],tupla['BANHEIRO'],
+                            tupla['QUARTOS'],tupla['GARAGEM'],tupla['ID_IMOB'])
 
             del tipo,cidade,bairro,proprietario
             return imovel
@@ -213,6 +217,8 @@ class financeiroDao:
                                          finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._imob))
             cursor._id = cursor.lastrowid
         self.__db.connection.commit()
+        del finaceiro
+        return cursor._id
 
     def pocura_deleta(self, id):
         fin = self.__db.connection.cursor().execute(SQL_BUSCA_FIN_ID, (id,))
@@ -237,7 +243,8 @@ class financeiroDao:
 
     def traduz_fin(self,fin):
         def cria_lista_fin(tupla):
-            return Financeiro(tupla[1],tupla[2],tupla[3],tupla[4],tupla[8],tupla[7],tupla[6],tupla[5],tupla[0])
+            return Financeiro(tupla['HONORARIOS_CORR'],tupla['PORCENTAGEM_CORR'],tupla['HONORARIOS_IMOB'],tupla['PORCENTAGEM_IMOB'],
+                              tupla['HONORARIOS'],tupla['VALOR_VENDA'],tupla['ENDERECO_IMOVEL'],tupla['NOME'],tupla['ID_FIN'])
         return list(map(cria_lista_fin, fin))
 
 #tipos
@@ -306,4 +313,3 @@ class bairroDao:
         def cria_bairro_lista(tupla):
             return Bairro(tupla['BAIRRO'],tupla['CIDADE_ID_CID'], tupla['ID_BAIRRO'], tupla['CIDADE'])
         return list(map(cria_bairro_lista, bairros))
-
