@@ -23,7 +23,7 @@ class cad_proprietario_dao:
     def listar(self):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCAR_LISTA_PROP)
-        proprietarios = traduz_prop(cursor.fetchall())
+        proprietarios = self.traduz_prop(cursor.fetchall())
         return proprietarios
 
     # busca um unico proprietario pelo id
@@ -43,10 +43,10 @@ class cad_proprietario_dao:
         self.__db.connection.commit()
 
 
-def traduz_prop(proprietarios):
-    def cria_prop_lista(tupla):
-        return Proprietario(tupla[1], tupla[2], tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], id=tupla[0])
-    return list(map(cria_prop_lista, proprietarios))
+    def traduz_prop(self,proprietarios):
+        def cria_prop_lista(tupla):
+            return Proprietario(tupla['NOME'], tupla['CPF'], tupla['RG'], tupla['ENDERECO'], tupla['TELEFONE'],None,tupla['ID_CIDADE'],tupla['ID_BAIRRO'],tupla['ID_PROP'])
+        return list(map(cria_prop_lista, proprietarios))
 
 #corretor/
 class cad_corretor_dao:
@@ -69,7 +69,7 @@ class cad_corretor_dao:
     def listar(self):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_LISTA_CORRETORES)
-        corretores = traduz_corr(cursor.fetchall())
+        corretores = self.traduz_corr(cursor.fetchall())
         return corretores
 
     # busca um unico corretor pelo usuario no login
@@ -78,12 +78,12 @@ class cad_corretor_dao:
         cursor.execute(SQL_BUSCA_CORR_ID, (usuario,))
         dados = cursor.fetchone()
         if dados:
-            usuario = traduz_usuario(dados) if dados else None
+            usuario = self.traduz_usuario(dados) if dados else None
             return usuario
         else:
             cursor.execute(SQL_BUSCA_CORR_EMAIL, (usuario,))
             dados = cursor.fetchone()
-            usuario = traduz_usuario(dados) if dados else None
+            usuario = self.traduz_usuario(dados) if dados else None
             return usuario
 
     # busca um unico corretor pelo id
@@ -102,16 +102,18 @@ class cad_corretor_dao:
         self.__db.connection.commit()
 
 #cria objeto usuario
-def traduz_usuario(tupla):
-    return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],tupla[10], id_corr=tupla[0])
+    def traduz_usuario(self,tupla):
+        return Corretores(tupla['USUARIO'],tupla['EMAIL'],tupla['NOME'],tupla['CRECI'],tupla['CELULAR'],
+                      tupla['CPF'],tupla['ENDERECO'],tupla['SENHA'],tupla['ID_CIDADE'],tupla['ID_BAIRRO'], tupla['ID_CORR'])
 
 #tranforma dodos do bd em uma lista de objetos
-def traduz_corr(corretores):
-    def cria_corr(tupla):
-        return Corretores(tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],tupla[10], id_corr=tupla[0])
-    lista_corr = list(map(cria_corr, corretores))
-    lista_corr.pop(0)
-    return lista_corr
+    def traduz_corr(self,corretores):
+        def cria_corr(tupla):
+            return Corretores(tupla['USUARIO'],tupla['EMAIL'],tupla['NOME'],tupla['CRECI'],tupla['CELULAR'],
+                      tupla['CPF'],tupla['ENDERECO'],tupla['SENHA'],tupla['ID_CIDADE'],tupla['ID_BAIRRO'], tupla['ID_CORR'])
+        lista_corr = list(map(cria_corr, corretores))
+        lista_corr.pop(0)
+        return lista_corr
 
 #imovel/
 class imovelDao:
@@ -183,16 +185,16 @@ class imovelDao:
 
     def traduz_imob(self,imoveis):
         def cria_imob_lista(tupla):
-            tipo = Tipo(id_tipo=tupla[27], tipo_nome=tupla[28])
+            tipo = Tipo(tupla['tipos.ID_TIPO'], tupla['TIPO'])
 
-            cidade = Cidade(id_cidade=tupla[29], cidade_nome=tupla[30])
+            cidade = Cidade(tupla['ID_CID'], tupla['CIDADE'])
 
-            bairro = Bairro(id_bairro=tupla[31], bairro_nome=tupla[32], id_cid=tupla[33], bairro_cidade_nome=tupla[30])
+            bairro = Bairro(tupla['bairro.ID_BAIRRO'], tupla['BAIRRO'], tupla['CIDADE_ID_CID'], tupla['CIDADE'])
 
-            proprietario = Proprietario(tupla[19],tupla[20],tupla[21],tupla[22],tupla[23],tupla[24], id=tupla[18])
+            proprietario = Proprietario(tupla['NOME'],tupla['CPF'],tupla['RG'],tupla['ENDERECO'],tupla['TELEFONE'],tupla['EMAIL'], tupla['proprietarios.ID_PROP'])
 
-            imovel = Imovel(tipo,tupla[4], cidade , bairro, tupla[7],tupla[8],tupla[9],tupla[10],tupla[12],tupla[13],
-                            proprietario,tupla[2], tupla[11],tupla[14],tupla[15],tupla[16],tupla[17],imob_id=tupla[0])
+            imovel = Imovel(tipo,tupla['FINALIDADE'],cidade,bairro,tupla['ENDERECO_IMOVEL'],tupla['AREA'],tupla['DETALHES'],tupla['VALOR_IMOVEL'],tupla['STATUS'],
+                            tupla['PORCENTAGEM'],proprietario,tupla['ID_CORR'],tupla['VALOR_VENDA'],tupla['HONORARIOS'],tupla['BANHEIRO'],tupla['QUARTOS'],tupla['GARAGEM'],tupla['ID_IMOB'])
 
             del tipo,cidade,bairro,proprietario
             return imovel
@@ -256,10 +258,10 @@ class tiposDao:
         tipos = self.traduz_tipos(cursor.fetchall())
         return tipos
 
-    def traduz_tipos(self, tipos):
-        def cria_tipo_lista(tupla):
-                return Tipo(tupla[1],tupla[0])
-        return list(map(cria_tipo_lista, tipos))
+    def traduz_tipos(self, tipo):
+        def cria_tipos_lista(dados):
+            return Tipo(dados['TIPO'],dados['ID_TIPO'])
+        return list(map(cria_tipos_lista,tipo))
 
 class ciadadeDao:
     def __init__(self, db):
@@ -275,13 +277,13 @@ class ciadadeDao:
     def lista(self):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_LISTA_CIDADE)
-        cidades = self.traduz_tipos(cursor.fetchall())
+        cidades = self.traduz_cidades(cursor.fetchall())
         return cidades
 
-    def traduz_tipos(self, cidades):
-        def cria_tipo_lista(tupla):
-                return Cidade(tupla[1],tupla[0])
-        return list(map(cria_tipo_lista, cidades))
+    def traduz_cidades(self, cidades):
+        def cria_cidade_lista(tupla):
+                return Cidade(tupla['CIDADE'],tupla['ID_CID'])
+        return list(map(cria_cidade_lista, cidades))
 
 class bairroDao:
     def __init__(self, db):
@@ -297,11 +299,11 @@ class bairroDao:
     def lista(self):
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_LISTA_BAIRRO)
-        bairros = self.traduz_tipos(cursor.fetchall())
+        bairros = self.traduz_bairros(cursor.fetchall())
         return bairros
 
-    def traduz_tipos(self, bairros):
-        def cria_tipo_lista(tupla):
-            return Bairro(tupla[1],tupla[2], id_bairro = tupla[0], bairro_cidade_nome = tupla[4])
-        return list(map(cria_tipo_lista, bairros))
+    def traduz_bairros(self, bairros):
+        def cria_bairro_lista(tupla):
+            return Bairro(tupla['BAIRRO'],tupla['CIDADE_ID_CID'], tupla['ID_BAIRRO'], tupla['CIDADE'])
+        return list(map(cria_bairro_lista, bairros))
 
