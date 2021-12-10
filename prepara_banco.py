@@ -3,22 +3,27 @@ import bcrypt
 from user import *
 
 print('Conectando...')
-#conn = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
-conn = MySQLdb.connect(user='bdbbbc8d2b231a', passwd='5deebf3c', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
+
+#Bancos de dados do Heroku de teste
+
+conn = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
+
+#Bancos de dados do Heroku de produção
+#conn = MySQLdb.connect(user='bdbbbc8d2b231a', passwd='5deebf3c', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
 # Descomente se quiser desfazer o banco...
-'''
 conn.cursor().execute("SET NAMES utf8;")
 conn.cursor().execute("DROP DATABASE `heroku_7f17bca4c88d1c7`;")
 conn.cursor().execute("CREATE DATABASE `heroku_7f17bca4c88d1c7`;")
 conn.commit()
-'''
 
+'''
 conn.cursor().execute("SET NAMES utf8;")
 conn.cursor().execute("DROP DATABASE `heroku_405b84a0ef05c35`;")
 conn.cursor().execute("CREATE DATABASE `heroku_405b84a0ef05c35`;")
 conn.commit()
 
 conn.cursor().execute("USE `heroku_405b84a0ef05c35`;")
+'''
 
 criar_tabela_tipo = '''CREATE TABLE `TIPOS` (
         `ID_TIPO` INT NOT NULL AUTO_INCREMENT,
@@ -178,7 +183,7 @@ conn.commit()
 # inserindo usuarios
 cursor = conn.cursor()
 senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
-cursor.execute('INSERT INTO heroku_405b84a0ef05c35.CORRETORES ( USUARIO, NOME, EMAIL, SENHA ) VALUES ( %s, %s, %s, %s)', (usuario,nome,email,senha) )
+cursor.execute('INSERT INTO CORRETORES ( USUARIO, NOME, EMAIL, SENHA ) VALUES ( %s, %s, %s, %s)', (usuario,nome,email,senha) )
 
 # commitando senão nada tem efeito
 print('conexção completa!')

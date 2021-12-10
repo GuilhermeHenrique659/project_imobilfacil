@@ -106,7 +106,6 @@ class Corretores:
         self._senha = senha
         self._cidade = cidade
         self._bairro = bairro
-        self._senha = senha
 
     def set_bairro(self,bairro):
         self._bairro = bairro
