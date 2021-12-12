@@ -31,7 +31,7 @@ class cad_proprietario_dao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_PROP_POR_ID, (id,))
         tupla = cursor.fetchone()
-        cidade = Cidade(tupla['ID_CIDADE'], tupla['CIDADE'])
+        cidade = Cidade(tupla['CIDADE'], tupla['ID_CIDADE'])
         bairro = Bairro(tupla['BAIRRO'],tupla['CIDADE_ID_CID'],tupla['bairro.ID_BAIRRO'],tupla['CIDADE'])
         proprietario = Proprietario(tupla['NOME'], tupla['CPF'], tupla['RG'], tupla['ENDERECO'],
                                     tupla['TELEFONE'], tupla['EMAIL'], cidade, bairro, tupla['ID_PROP'])
@@ -44,7 +44,7 @@ class cad_proprietario_dao:
 
     def traduz_prop(self,proprietarios):
         def cria_prop_lista(tupla):
-            return Proprietario(tupla['NOME'], tupla['CPF'], tupla['RG'], tupla['ENDERECO'], tupla['TELEFONE'],None,tupla['ID_CIDADE'],tupla['ID_BAIRRO'],tupla['ID_PROP'])
+            return Proprietario(tupla['NOME'], tupla['CPF'], tupla['RG'], tupla['ENDERECO'], tupla['TELEFONE'], None,tupla['ID_CIDADE'],tupla['ID_BAIRRO'],tupla['ID_PROP'])
         return list(map(cria_prop_lista, proprietarios))
 
 #corretor/
@@ -155,12 +155,15 @@ class imovelDao:
 
         bairro = Bairro(tupla['BAIRRO'], tupla['CIDADE_ID_CID'], tupla['bairro.ID_BAIRRO'], tupla['CIDADE'])
 
+        corretor = Corretores(tupla['USUARIO'],tupla['EMAIL'],tupla['corretores.NOME'],tupla['CRECI'],tupla['CELULAR'],
+                      tupla['CPF'],tupla['ENDERECO'],tupla['SENHA'],tupla['ID_CIDADE'],tupla['ID_BAIRRO'], tupla['ID_CORR'])
+
         proprietario = Proprietario(tupla['NOME'], tupla['CPF'], tupla['RG'], tupla['ENDERECO'], tupla['TELEFONE'],
-                                    tupla['EMAIL'], tupla['proprietarios.ID_PROP'])
+                                    tupla['EMAIL'], tupla['CIDADE'],tupla['BAIRRO'],tupla['proprietarios.ID_PROP'])
 
         imovel = Imovel(tipo, tupla['FINALIDADE'], cidade, bairro, tupla['ENDERECO_IMOVEL'], tupla['AREA'],
                         tupla['DETALHES'], tupla['VALOR_IMOVEL'], tupla['STATUS'],
-                        tupla['PORCENTAGEM'], proprietario, tupla['ID_CORR'], tupla['VALOR_VENDA'], tupla['HONORARIOS'],
+                        tupla['PORCENTAGEM'], proprietario, corretor, tupla['VALOR_VENDA'], tupla['HONORARIOS'],
                         tupla['BANHEIRO'], tupla['QUARTOS'], tupla['GARAGEM'], tupla['ID_IMOB'])
 
         del tipo, cidade, bairro, proprietario
@@ -215,7 +218,7 @@ class financeiroDao:
         else:
             cursor.execute(SQL_CRIA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
                                          finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._imob))
-            cursor._id = cursor.lastrowid
+        cursor._id = cursor.lastrowid
         self.__db.connection.commit()
         del finaceiro
         return cursor._id

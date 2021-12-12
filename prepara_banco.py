@@ -9,8 +9,10 @@ print('Conectando...')
 conn = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
 
 #Bancos de dados do Heroku de produção
+
 #conn = MySQLdb.connect(user='bdbbbc8d2b231a', passwd='5deebf3c', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
 # Descomente se quiser desfazer o banco...
+
 conn.cursor().execute("SET NAMES utf8;")
 conn.cursor().execute("DROP DATABASE `heroku_7f17bca4c88d1c7`;")
 conn.cursor().execute("CREATE DATABASE `heroku_7f17bca4c88d1c7`;")
@@ -24,6 +26,7 @@ conn.commit()
 
 conn.cursor().execute("USE `heroku_405b84a0ef05c35`;")
 '''
+conn.cursor().execute("USE `heroku_7f17bca4c88d1c7`;")
 
 criar_tabela_tipo = '''CREATE TABLE `TIPOS` (
         `ID_TIPO` INT NOT NULL AUTO_INCREMENT,
@@ -65,7 +68,6 @@ criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
         `ENDERECO` VARCHAR(45) NULL,
         `SENHA` VARCHAR(128) NULL,
         PRIMARY KEY (`ID_CORR`),
-        UNIQUE INDEX `USUARIO_UNIQUE` (`USUARIO` ASC),
         `ID_CIDADE` INT NULL,
         `ID_BAIRRO` INT NULL,
     CONSTRAINT `fk_CORRETOR_BAIRRO`
