@@ -54,7 +54,6 @@ class cad_corretor_dao:
 
     def salvar(self, corretor):
         cursor = self.__db.connection.cursor()
-
         if (corretor._id_corr):
             cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,corretor._celular,corretor._cpf,
                                                      corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro,corretor._id_corr))
@@ -92,7 +91,7 @@ class cad_corretor_dao:
         cursor = self.__db.connection.cursor()
         cursor.execute(SQL_BUSCA_CORR_POR_ID, (id,))
         tupla = cursor.fetchone()
-        cidade = Cidade(tupla['ID_CIDADE'], tupla['CIDADE'])
+        cidade = Cidade(tupla['CIDADE'], tupla['ID_CIDADE'])
         bairro = Bairro(tupla['BAIRRO'],tupla['CIDADE_ID_CID'],tupla['bairro.ID_BAIRRO'],tupla['CIDADE'])
         corretor = Corretores(tupla['USUARIO'], tupla['EMAIL'], tupla['NOME'], tupla['CRECI'], tupla['CELULAR'],
                               tupla['CPF'], tupla['ENDERECO'], tupla['SENHA'],cidade,bairro,tupla['ID_CORR'])
@@ -202,7 +201,6 @@ class imovelDao:
             imovel = Imovel(tipo,tupla['FINALIDADE'],cidade,bairro,tupla['ENDERECO_IMOVEL'],tupla['AREA'],tupla['DETALHES'],tupla['VALOR_IMOVEL'],
                             tupla['STATUS'],tupla['PORCENTAGEM'],proprietario,tupla['ID_CORR'],tupla['VALOR_VENDA'],tupla['HONORARIOS'],tupla['BANHEIRO'],
                             tupla['QUARTOS'],tupla['GARAGEM'],tupla['ID_IMOB'])
-
             del tipo,cidade,bairro,proprietario
             return imovel
         return list(map(cria_imob_lista, imoveis))

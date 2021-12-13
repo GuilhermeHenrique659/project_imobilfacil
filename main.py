@@ -65,7 +65,9 @@ def novo_bairro():
     return redirect('/novo_imovel')
 
 #financerio
-def cria_financeiro(imovel):
+def cria_financeiro(imovel,PreviousStatus):
+    if PreviousStatus=="Vendido":
+        return
     FinDao.pocura_deleta(imovel._imob_id)
     financeiro = Financeiro((imovel.honorarios/2), 50,(imovel.honorarios/2),50, imob=imovel._imob_id, corr=imovel._corretor)
     if imovel._status == 'Vendido':
@@ -174,6 +176,7 @@ def editar_imovel(id):
 #atualiza_imovel
 @app.route('/atualizar_imovel', methods=['POST'])
 def atualiza_imovel():
+    previousStatus = request.form['PreviousStatus']
     tipo = request.form['tipos']
     finalidade = request.form['finalidade']
     cidade = request.form['cidades']
@@ -195,7 +198,7 @@ def atualiza_imovel():
     imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem ,proprietario,corretor,
                     banheiro=banheiro, quartos=quartos, garagem=garagem, imob_id=id)
     Imovel_Dao.salvar(imovel)
-    cria_financeiro(imovel)
+    cria_financeiro(imovel,previousStatus)
     return redirect('/')
 
 #criar_imovel
@@ -232,7 +235,7 @@ def criar_imovel():
                     banheiro=banheiro,quartos=quartos,garagem=garagem)
     id = Imovel_Dao.salvar(imovel)
     imovel.set_id(id)
-    cria_financeiro(imovel)
+    cria_financeiro(imovel,None)
     return redirect('/')
 
 #Criar Proprietario
@@ -349,22 +352,25 @@ def atualizar_corretor():
     cidade = request.form['cidades']
     bairro = request.form['bairros']
     id = request.form['id_corr']
-    senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
+    if(senha!=""):
+        senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
     if usuario_verifc == usuario:
         corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
         corretor.set_user(corretor.valida(usuario))
-        corretor.set_cidade(corretor.valida(bairro))
-        corretor.set_bairro(corretor.valida(cidade))
+        corretor.set_cidade(corretor.valida(cidade))
+        corretor.set_bairro(corretor.valida(bairro))
         Corretores_dao.salvar(corretor)
+
     elif corretor_busq:
         flash('usuário já existe')
         return redirect(url_for('editar_corretor',id=id))
     else:
         corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
         corretor.set_user(corretor.valida(usuario))
-        corretor.set_cidade(corretor.valida(bairro))
-        corretor.set_bairro(corretor.valida(cidade))
+        corretor.set_cidade(corretor.valida(cidade))
+        corretor.set_bairro(corretor.valida(bairro))
         Corretores_dao.salvar(corretor)
+
     return redirect('/')
 
 @app.route('/deletar_corr/<int:id>')
