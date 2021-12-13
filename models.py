@@ -107,6 +107,9 @@ class Corretores:
         self._cidade = cidade
         self._bairro = bairro
 
+    def set_email(self,email):
+        self._email = email
+
     def set_bairro(self,bairro):
         self._bairro = bairro
 
@@ -147,5 +150,11 @@ class Financeiro:
 
     def get_honorarios_imob(self):
         return float(self._honorarios_imob)
+
+    def get_porcetagem_corr(self):
+        return float(self._porcentagem_corr/100)
+
+    def get_porcetagem_imob(self):
+        return float(self._porcentagem_imob/100)
 
 

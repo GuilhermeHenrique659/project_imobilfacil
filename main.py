@@ -6,7 +6,7 @@ import bcrypt
 
 app = Flask(__name__)
 app.secret_key='LP2'
-'''
+
 #banco para teste
 app.config['MYSQL_HOST'] = 'us-cdbr-east-04.cleardb.com'
 app.config['MYSQL_USER'] = 'b8ab2bd3638752'
@@ -14,6 +14,7 @@ app.config['MYSQL_PASSWORD'] = '7627e7de'
 app.config['MYSQL_DB'] = 'heroku_7f17bca4c88d1c7'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+db = MySQL(app)
 '''
 #banco para produção
 app.config['MYSQL_HOST'] = 'us-cdbr-east-04.cleardb.com'
@@ -22,7 +23,7 @@ app.config['MYSQL_PASSWORD'] = '5deebf3c'
 app.config['MYSQL_DB'] = 'heroku_405b84a0ef05c35'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-db = MySQL(app)
+'''
 
 #DAO
 Imovel_Dao = imovelDao(db)
@@ -73,10 +74,16 @@ def novo_bairro():
     return redirect('/novo_imovel')
 
 #financerio
-def cria_financeiro(imovel,PreviousStatus):
-    if PreviousStatus=="Vendido":
-        return
-    FinDao.pocura_deleta(imovel._imob_id)
+def cria_financeiro(imovel):
+    fin = FinDao.pocurar(imovel._imob_id)
+    if fin:
+        if imovel._status == "Vendido":
+            financeiro = Financeiro((imovel._honorarios*fin.get_porcetagem_corr()), fin._porcentagem_corr, (imovel._honorarios*fin.get_porcetagem_imob()),
+                                fin._porcentagem_imob, imob=imovel._imob_id, corr=imovel._corretor, id_fin=fin._id_fin)
+            FinDao.salvar(financeiro)
+            return
+        else:
+            FinDao.deletar(imovel._imob_id)
     financeiro = Financeiro((imovel.honorarios/2), 50,(imovel.honorarios/2),50, imob=imovel._imob_id, corr=imovel._corretor)
     if imovel._status == 'Vendido':
         FinDao.salvar(financeiro)
@@ -184,7 +191,6 @@ def editar_imovel(id):
 #atualiza_imovel
 @app.route('/atualizar_imovel', methods=['POST'])
 def atualiza_imovel():
-    previousStatus = request.form['PreviousStatus']
     tipo = request.form['tipos']
     finalidade = request.form['finalidade']
     cidade = request.form['cidades']
@@ -206,7 +212,7 @@ def atualiza_imovel():
     imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem ,proprietario,corretor,
                     banheiro=banheiro, quartos=quartos, garagem=garagem, imob_id=id)
     Imovel_Dao.salvar(imovel)
-    cria_financeiro(imovel,previousStatus)
+    cria_financeiro(imovel)
     return redirect('/')
 
 #criar_imovel
@@ -243,7 +249,7 @@ def criar_imovel():
                     banheiro=banheiro,quartos=quartos,garagem=garagem)
     id = Imovel_Dao.salvar(imovel)
     imovel.set_id(id)
-    cria_financeiro(imovel,None)
+    cria_financeiro(imovel)
     return redirect('/')
 
 #Criar Proprietario
@@ -332,6 +338,7 @@ def criar_Corretor():
         corretor.set_user(corretor.valida(usuario))
         corretor.set_cidade(corretor.valida(bairro))
         corretor.set_bairro(corretor.valida(cidade))
+        corretor.set_email(corretor.valida(email))
         Corretores_dao.salvar(corretor)
 
     return redirect('/')
@@ -367,6 +374,7 @@ def atualizar_corretor():
         corretor.set_user(corretor.valida(usuario))
         corretor.set_cidade(corretor.valida(cidade))
         corretor.set_bairro(corretor.valida(bairro))
+        corretor.set_email(corretor.valida(email))
         Corretores_dao.salvar(corretor)
 
     elif corretor_busq:
@@ -377,6 +385,7 @@ def atualizar_corretor():
         corretor.set_user(corretor.valida(usuario))
         corretor.set_cidade(corretor.valida(cidade))
         corretor.set_bairro(corretor.valida(bairro))
+        corretor.set_email(corretor.valida(email))
         Corretores_dao.salvar(corretor)
 
     return redirect('/')

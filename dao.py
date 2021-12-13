@@ -80,11 +80,13 @@ class cad_corretor_dao:
         if dados:
             usuario = self.traduz_usuario(dados) if dados else None
             return usuario
-        else:
-            cursor.execute(SQL_BUSCA_CORR_EMAIL, (usuario,))
-            dados = cursor.fetchone()
+        cursor.execute(SQL_BUSCA_CORR_EMAIL, (usuario,))
+        dados = cursor.fetchone()
+        if dados:
+            print(dados)
             usuario = self.traduz_usuario(dados) if dados else None
             return usuario
+        return None
 
     # busca um unico corretor pelo id
     def busca_por_id_edit(self, id):
@@ -221,14 +223,20 @@ class financeiroDao:
         del finaceiro
         return cursor._id
 
-    def pocura_deleta(self, id):
-        fin = self.__db.connection.cursor().execute(SQL_BUSCA_FIN_ID, (id,))
-        if fin:
-            self.__db.connection.cursor().execute(SQL_DELETA_FIN, (id,))
-            self.__db.connection.commit()
+    def pocurar(self, id):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_BUSCA_FIN_ID, (id,))
+        tupla = cursor.fetchone()
+        if tupla:
+            fin = Financeiro(tupla['HONORARIOS_CORR'],tupla['PORCENTAGEM_CORR'],
+                         tupla['HONORARIOS_IMOB'],tupla['PORCENTAGEM_IMOB'], id_fin=tupla['ID_FIN'])
+            return fin
         else:
-            fin = None
-        return fin
+            return None
+
+    def deletar(self,id):
+        self.__db.connection.cursor().execute(SQL_DELETA_FIN, (id,))
+        self.__db.connection.commit()
 
     def lista(self):
         cursor = self.__db.connection.cursor()
