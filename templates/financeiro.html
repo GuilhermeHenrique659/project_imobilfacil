@@ -34,6 +34,7 @@
                         <div class="container">
                             <input type="hidden" name="id" id="id_fin">
                             <input type="hidden" name="total" id="total">
+                            <input type="hidden" name="corretor" id="corretor">
                             <div class="row row-cols-2">
                                 <div class="col">
                                     <div class="form-group">
@@ -168,7 +169,7 @@
                     <td class="money">{{fin._honorarios_total}}0</td>
                     <td>
                         <button type="button" class="btn" data-bs-toggle="modal" data-id="{{fin._id_fin}}"
-                                data-total="{{fin._honorarios_total}}" data-bs-target="#modal_fin"><i>
+                                data-total="{{fin._honorarios_total}}" data-corretor="{{fin._corr_id}}" data-bs-target="#modal_fin"><i>
                             <img src="../static/img/icon/percent.svg"></i></button>
 
                     </td>
@@ -250,10 +251,12 @@ const data = {
             var button = $(event.relatedTarget)
             var id = button.data('id')
             var total = button.data('total')
+            var corretor = button.data('corretor')
             var modal = $(this)
             modal.find('.modal-title').text('Insira os valores para o registro: ' + id)
             modal.find('#id_fin').val(id)
             modal.find('#total').val(total)
+            modal.find('#corretor').val(corretor)
 
         })
    function Porcentagem_corretor() {

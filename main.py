@@ -6,7 +6,7 @@ import bcrypt
 
 app = Flask(__name__)
 app.secret_key='LP2'
-'''
+
 #banco para teste
 app.config['MYSQL_HOST'] = 'us-cdbr-east-04.cleardb.com'
 app.config['MYSQL_USER'] = 'b8ab2bd3638752'
@@ -25,6 +25,7 @@ app.config['MYSQL_DB'] = 'heroku_405b84a0ef05c35'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 db = MySQL(app)
+'''
 
 #DAO
 Imovel_Dao = imovelDao(db)
@@ -94,12 +95,13 @@ def cria_financeiro(imovel):
 #atualiza_financeiro
 @app.route('/atualizar_finceiro', methods=['POST'])
 def atualizar_finceiro():
+    corretor = request.form['corretor']
     porcentagem_corr =  request.form['porcentagem_corr']
     honorarios_corr = request.form['valor_corr']
     porcentagem_imob = request.form['porcentagem_imob']
     honorarios_imob = request.form['valor_imob']
     id = request.form['id']
-    financeiro = Financeiro(honorarios_corr,porcentagem_corr,honorarios_imob,porcentagem_imob,id_fin=id)
+    financeiro = Financeiro(honorarios_corr,porcentagem_corr,honorarios_imob,porcentagem_imob,corr=corretor,id_fin=id)
     FinDao.salvar(financeiro)
     return redirect('/financeiro')
 
