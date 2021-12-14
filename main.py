@@ -7,6 +7,7 @@ import bcrypt
 app = Flask(__name__)
 app.secret_key='LP2'
 '''
+
 #banco para teste
 app.config['MYSQL_HOST'] = 'us-cdbr-east-04.cleardb.com'
 app.config['MYSQL_USER'] = 'b8ab2bd3638752'

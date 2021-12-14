@@ -213,6 +213,7 @@ class financeiroDao:
     def salvar(self,finaceiro):
         cursor = self.__db.connection.cursor()
         if(finaceiro._id_fin):
+            print(finaceiro._corr)
             cursor.execute(SQL_ATUALIZA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
                                              finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._id_fin))
         else:
@@ -253,7 +254,7 @@ class financeiroDao:
     def traduz_fin(self,fin):
         def cria_lista_fin(tupla):
             return Financeiro(tupla['HONORARIOS_CORR'],tupla['PORCENTAGEM_CORR'],tupla['HONORARIOS_IMOB'],tupla['PORCENTAGEM_IMOB'],
-                              tupla['HONORARIOS'],tupla['VALOR_VENDA'],tupla['ENDERECO_IMOVEL'],tupla['NOME'],tupla['ID_FIN'],tupla['ID_CORR_FIN'])
+                              tupla['HONORARIOS'],tupla['VALOR_VENDA'],tupla['ENDERECO_IMOVEL'],tupla['NOME'],corr_id=tupla['ID_CORR_FIN'],id_fin=tupla['ID_FIN'])
         return list(map(cria_lista_fin, fin))
 
 #tipos
