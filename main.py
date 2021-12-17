@@ -1,12 +1,16 @@
-from flask import Flask, request, redirect, render_template, session, flash, url_for
-from models import Imovel, Proprietario, Corretores,Tipo,Cidade,Bairro, Financeiro
+from flask import Flask
 from dao import imovelDao, cad_proprietario_dao, cad_corretor_dao,tiposDao,ciadadeDao,bairroDao,financeiroDao
 from flask_mysqldb import MySQL
-import bcrypt
+from controllers.controller import IndexController
+from controllers.CorretorController import CorretorController
+from controllers.ProprietarioController import ProprietarioController
+from controllers.ImovelController import ImovelController
+from controllers.FinanceiroController import FinanceiroController
+from controllers.OthersController import OthersController
 
 app = Flask(__name__)
 app.secret_key='LP2'
-'''
+
 
 #banco para teste
 app.config['MYSQL_HOST'] = 'us-cdbr-east-04.cleardb.com'
@@ -16,8 +20,8 @@ app.config['MYSQL_DB'] = 'heroku_7f17bca4c88d1c7'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 db = MySQL(app)
-'''
 
+'''
 #banco para produção
 app.config['MYSQL_HOST'] = 'us-cdbr-east-04.cleardb.com'
 app.config['MYSQL_USER'] = 'bdbbbc8d2b231a'
@@ -26,7 +30,7 @@ app.config['MYSQL_DB'] = 'heroku_405b84a0ef05c35'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 db = MySQL(app)
-
+'''
 
 
 #DAO
@@ -38,399 +42,96 @@ CidadeDao = ciadadeDao(db)
 BairroDao = bairroDao(db)
 FinDao = financeiroDao(db)
 
+index_controller = IndexController(Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao)
+
+corretor_controller = CorretorController(Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao)
+
+proprietario_controller = ProprietarioController(Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao)
+
+imovel_controller = ImovelController(Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao,TiposDao,FinDao)
+
+financeiro_controller = FinanceiroController(FinDao,Corretores_dao)
+
+other_controller = OthersController(TiposDao,CidadeDao,BairroDao)
+
+
 #index
-@app.route('/')
-def index():
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=''')
-    lista_imob = Imovel_Dao.listar()
-    lista_prop = Proprietario_dao.listar()
-    lista_corr = Corretores_dao.listar()
-    lista_cidades = CidadeDao.lista()
-    lista_bairro = BairroDao.lista()
-    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades, bairros=lista_bairro,
-                           lista_leght=len(lista_imob))
+app.add_url_rule('/',endpoint='index',view_func=index_controller.index, methods=['GET'])
 
 #tipos,cidade e bairro
 #tipo
-@app.route('/novo_tipo', methods=['POST'])
-def novo_tipo():
-    Tipo_nome= request.form['tipo']
-    tipo = Tipo(Tipo_nome)
-    TiposDao.salvar(tipo)
-    return redirect('/novo_imovel')
+app.add_url_rule('/novo_tipo', view_func=other_controller.novo_tipo, methods=['POST'])
 
 #cidade
-@app.route('/nova_cidade', methods=['POST'])
-def nova_cidade():
-    cidade_nome = request.form['cidade']
-    cidade = Cidade(cidade_nome)
-    CidadeDao.salvar(cidade)
-    return redirect('/novo_imovel')
+app.add_url_rule('/nova_cidade', view_func=other_controller.nova_cidade, methods=['POST'])
 
 #bairro
-@app.route('/novo_bairro', methods=['POST'])
-def novo_bairro():
-    cidade = request.form['cidade_bairro']
-    bairro_nome = request.form['bairro']
-    bairro = Bairro(bairro_nome,cidade)
-    BairroDao.salvar(bairro)
-    return redirect('/novo_imovel')
+app.add_url_rule('/novo_bairro', view_func=OthersController.novo_bairro, methods=['POST'])
 
 #financerio
-def cria_financeiro(imovel):
-    fin = FinDao.pocurar(imovel._imob_id)
-    if fin:
-        if imovel._status == "Vendido":
-            financeiro = Financeiro((imovel._honorarios*fin.get_porcetagem_corr()), fin._porcentagem_corr, (imovel._honorarios*fin.get_porcetagem_imob()),
-                                fin._porcentagem_imob, imob=imovel._imob_id, corr=imovel._corretor, id_fin=fin._id_fin)
-            FinDao.salvar(financeiro)
-            return
-        else:
-            FinDao.deletar(imovel._imob_id)
-    financeiro = Financeiro((imovel.honorarios/2), 50,(imovel.honorarios/2),50, imob=imovel._imob_id, corr=imovel._corretor)
-    if imovel._status == 'Vendido':
-        FinDao.salvar(financeiro)
-    else:
-        return
+
 
 #atualiza_financeiro
-@app.route('/atualizar_finceiro', methods=['POST'])
-def atualizar_finceiro():
-    corretor = request.form['corretor']
-    porcentagem_corr =  request.form['porcentagem_corr']
-    honorarios_corr = request.form['valor_corr']
-    porcentagem_imob = request.form['porcentagem_imob']
-    honorarios_imob = request.form['valor_imob']
-    id = request.form['id']
-    financeiro = Financeiro(honorarios_corr,porcentagem_corr,honorarios_imob,porcentagem_imob,corr=corretor,id_fin=id)
-    FinDao.salvar(financeiro)
-    return redirect('/financeiro')
+app.add_url_rule('/atualizar_finceiro', endpoint='atualizar_finceiro', view_func=financeiro_controller.atualizar_finceiro, methods=['POST'])
 
 #mostrar lista de vendas
-@app.route('/financeiro')
-def financeiro():
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=/financeiro')
-    lista_corr = Corretores_dao.listar()
-    total_vendas = 0
-    total_honorarios = 0
-    total_honorarios_corr = 0
-    total_honorarios_imob = 0
-    lista_fin = FinDao.lista()
-    for fin in lista_fin:
-        total_vendas = total_vendas + fin.valor_total
-        total_honorarios = total_honorarios + fin.honorarios_total
-        total_honorarios_corr = total_honorarios_corr + fin.get_honorarios_corr()
-        total_honorarios_imob = total_honorarios_imob + fin.get_honorarios_imob()
-    return render_template('financeiro.html', financeiros = lista_fin, total_vendas=total_vendas,total_honorarios = total_honorarios,
-                           total_honorarios_corr=total_honorarios_corr,total_honorarios_imob = total_honorarios_imob,corretores=lista_corr)
+app.add_url_rule('/financeiro', endpoint='financeiro', view_func=financeiro_controller.financeiro, methods=['GET'])
 
-@app.route('/financeiro/<int:filtro>')
-def finaceiro_filtro(filtro):
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=/financeiro')
-    lista_corr = Corretores_dao.listar()
-    total_vendas = 0
-    total_honorarios = 0
-    total_honorarios_corr = 0
-    total_honorarios_imob = 0
-    lista_fin = FinDao.filtro(filtro)
-    for fin in lista_fin:
-        total_vendas = total_vendas + fin.valor_total
-        total_honorarios = total_honorarios + fin.honorarios_total
-        total_honorarios_corr = total_honorarios_corr + fin.get_honorarios_corr()
-        total_honorarios_imob = total_honorarios_imob + fin.get_honorarios_imob()
-    return render_template('financeiro.html', financeiros = lista_fin, total_vendas=total_vendas,total_honorarios = total_honorarios,
-                           total_honorarios_corr=total_honorarios_corr,total_honorarios_imob = total_honorarios_imob,corretores=lista_corr)
+app.add_url_rule('/financeiro/<int:filtro>',view_func=financeiro_controller.finaceiro_filtro)
+
 
 #visualização do imovel
-@app.route('/view_imovel/<int:id>')
-def view_imovel(id):
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=view_imovel/<int:id>')
-    imovel = Imovel_Dao.busca_imob_id(id)
-    return render_template('view_imovel.html', imovel=imovel)
+app.add_url_rule('/view_imovel/<int:id>',view_func=imovel_controller.view_imovel,methods=['GET'])
 
-@app.route('/resumo_imovel/<int:id>')
-def resumo_imovel(id):
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=view_imovel/<int:id>')
-    imovel = Imovel_Dao.busca_imob_id(id)
-    return render_template('resumo_imovel.html', imovel=imovel)
+app.add_url_rule('/resumo_imovel/<int:id>',view_func=imovel_controller.resumo_imovel, methods=['GET'])
 
 #exclui_imovel
-@app.route('/filtro', methods=['POST'])
-def filtro():
-    filtro = request.form['filtro']
-    id = request.form[filtro]
-    lista_imob = Imovel_Dao.filtra(id,filtro)
-    if len(lista_imob) == 0:
-        flash("Nao foi encontrado nenhum imovel com esse filtro!")
-        return redirect('/')
-    lista_prop = Proprietario_dao.listar()
-    lista_corr = Corretores_dao.listar()
-    lista_cidades = CidadeDao.lista()
-    lista_bairro = BairroDao.lista()
-    return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop, cidades=lista_cidades,bairros=lista_bairro)
+app.add_url_rule('/filtro',view_func=imovel_controller.filtro, methods=['POST'])
 
 #exclui_imovel
-@app.route('/deleta_imovel/<int:id>')
-def deleta_imovel(id):
-    Imovel_Dao.deletar_imob(id)
-    return redirect('/')
+app.add_url_rule('/deleta_imovel/<int:id>',view_func=imovel_controller.deleta_imovel)
 
 #editar_imovel
-@app.route('/editar_imovel/<int:id>')
-def editar_imovel(id):
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect('/login?proxima=''')
-    Imovel = Imovel_Dao.busca_imob_id(id)
-    lista_prop = Proprietario_dao.listar()
-    lista_corr = Corretores_dao.listar()
-    lista_tipo = TiposDao.lista()
-    lista_cidades = CidadeDao.lista()
-    lista_bairro = BairroDao.lista()
-    return render_template('editar_imovel.html', imovel=Imovel, proprietarios=lista_prop, corretores=lista_corr,tipos=lista_tipo,cidades=lista_cidades,bairros=lista_bairro)
+app.add_url_rule('/editar_imovel/<int:id>', view_func=imovel_controller.editar_imovel,methods=['GET'])
 
-#atualiza_imovel
-@app.route('/atualizar_imovel', methods=['POST'])
-def atualiza_imovel():
-    tipo = request.form['tipos']
-    finalidade = request.form['finalidade']
-    cidade = request.form['cidades']
-    bairro = request.form['bairros']
-    endereco = request.form['endereco']
-    area = request.form['area']
-    descriacao = request.form['detalhes']
-    valor = request.form['valor']
-    status = request.form['status']
-    porcentagem = request.form['porcentagem']
-    proprietario = request.form['proprietario']
-    corretor = request.form['corretor']
-    banheiro = request.form['banheiro']
-    quartos = request.form['quartos']
-    garagem = request.form['garagem']
-    id = request.form['id']
-    if corretor == 'None':
-        corretor = None
-    imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem ,proprietario,corretor,
-                    banheiro=banheiro, quartos=quartos, garagem=garagem, imob_id=id)
-    Imovel_Dao.salvar(imovel)
-    cria_financeiro(imovel)
-    return redirect('/')
+app.add_url_rule('/atualizar_imovel',view_func=imovel_controller.atualiza_imovel,methods=['POST'])
 
 #criar_imovel
-@app.route('/novo_imovel')
-def novo_imovel():
-    if 'usuario_logado' not in session or session['usuario_logado']==None:
-        return redirect('/login?proxima=novo_imovel')
-    lista_prop = Proprietario_dao.listar()
-    lista_corr = Corretores_dao.listar()
-    lista_tipo = TiposDao.lista()
-    lista_cidades = CidadeDao.lista()
-    lista_bairro = BairroDao.lista()
-    return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr,
-                           tipos=lista_tipo,cidades=lista_cidades,bairros=lista_bairro)
+app.add_url_rule('/novo_imovel',view_func=imovel_controller.novo_imovel,methods=['GET'])
 
-@app.route('/criar_imovel', methods=['POST'])
-def criar_imovel():
-    tipo = request.form['tipos']
-    finalidade = request.form['finalidade']
-    cidade = request.form['cidades']
-    bairro = request.form['bairros']
-    endereco = request.form['endereco']
-    area = request.form['area']
-    descriacao = request.form['detalhes']
-    valor = request.form['valor']
-    status = request.form['status']
-    porcentagem = request.form['porcentagem']
-    proprietario = request.form['proprietario']
-    corretor = request.form['corretor']
-    banheiro = request.form['banheiro']
-    quartos = request.form['quartos']
-    garagem = request.form['garagem']
-    imovel = Imovel(tipo,finalidade,cidade,bairro,endereco,area,descriacao,valor,status,porcentagem,proprietario, corretor,
-                    banheiro=banheiro,quartos=quartos,garagem=garagem)
-    id = Imovel_Dao.salvar(imovel)
-    imovel.set_id(id)
-    cria_financeiro(imovel)
-    return redirect('/')
+app.add_url_rule('/criar_imovel',view_func=imovel_controller.criar_imovel,methods=['POST'])
+
 
 #Criar Proprietario
-@app.route('/Proprietario')
-def rota_proprietario():
-    if 'usuario_logado' not in session or session['usuario_logado']==None:
-        return redirect('/login?proxima=novo_proprietario.html')
-    lista_cidades = CidadeDao.lista()
-    lista_bairro = BairroDao.lista()
-    return render_template('novo_proprietario.html', cidades=lista_cidades, bairros=lista_bairro)
+app.add_url_rule('/Proprietario', endpoint='Proprietario',view_func=proprietario_controller.rota_proprietario,methods=['GET'])
 
-@app.route('/cad_prop', methods=['POST'])
-def criar_proprietario():
-    nome = request.form['nome']
-    cpf = request.form['cpf']
-    rg = request.form['rg']
-    endereco = request.form['endereco']
-    telefone = request.form['telefone']
-    email = request.form['email']
-    cidade = request.form['cidades']
-    bairro = request.form['bairros']
-    proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, cidade, bairro)
-    proprietario.set_cidade(proprietario.valida(cidade))
-    proprietario.set_bairro(proprietario.valida(bairro))
-    Proprietario_dao.salvar(proprietario)
-    return redirect('/')
+app.add_url_rule('/cad_prop',endpoint='cad_prop',view_func=proprietario_controller.criar_proprietario, methods=['POST'])
 
-@app.route('/editar_prop/<int:id>')
-def editar_proprietario(id):
-    if 'usuario_logado' not in session or session['usuario_logado']==None:
-        return redirect('/login?proxima=''')
-    lista_cidades = CidadeDao.lista()
-    lista_bairro = BairroDao.lista()
-    proprietario = Proprietario_dao.busca_por_id(id)
-    return render_template('editar_prop.html', proprietario=proprietario,cidades=lista_cidades ,bairros=lista_bairro)
+app.add_url_rule('/editar_prop/<int:id>',view_func=proprietario_controller.editar_proprietario, methods=['GET'])
 
-@app.route('/atualizar_prop', methods=['POST'])
-def atualizar_proprietario():
-    nome = request.form['nome']
-    cpf = request.form['cpf']
-    rg = request.form['rg']
-    endereco = request.form['endereco']
-    telefone = request.form['telefone']
-    email = request.form['email']
-    cidade = request.form['cidades']
-    bairro = request.form['bairros']
-    id = request.form['id']
-    proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, cidade ,bairro, id)
-    proprietario.set_cidade(proprietario.valida(cidade))
-    proprietario.set_bairro(proprietario.valida(bairro))
-    Proprietario_dao.salvar(proprietario)
-    return redirect('/')
+app.add_url_rule('/atualizar_proprietario',endpoint='atualizar_proprietario',view_func=proprietario_controller.atualizar_proprietario, methods=['POST'])
 
-@app.route('/deletar_prop/<int:id>')
-def deletar_prop(id):
-    Proprietario_dao.deletar_prop(id)
-    return redirect('/')
+app.add_url_rule('/deletar_prop/<int:id>',view_func=proprietario_controller.deletar_prop)
+
+
 #corretor
-@app.route('/Corretor')
-def rota_corretor():
-    if 'usuario_logado' not in session or session['usuario_logado']==None:
-        return redirect('/login?proxima=novo_corretor.html')
-    lista_cidades = CidadeDao.lista()
-    lista_bairro = BairroDao.lista()
-    return render_template('novo_corretor.html',cidades=lista_cidades,bairros=lista_bairro)
+app.add_url_rule('/Corretor',endpoint='Corretor',view_func=corretor_controller.rota_corretor)
 
-@app.route('/cad_corretor', methods=['POST'])
-def criar_Corretor():
-    corretor = Corretores_dao.buscar_por_id(request.form['usuario_corr'])
-    if corretor:
-        flash('usuário já existe')
-        return redirect(url_for('rota_corretor'))
-    else:
-        usuario = request.form['usuario_corr']
-        email = request.form['email_corr']
-        nome = request.form['nome_corr']
-        creci = request.form['creci_corr']
-        celular = request.form['celular_corr']
-        cpf = request.form['cpf_corr']
-        endereco = request.form['endereco_corr']
-        senha = request.form['senha_corr']
-        cidade = request.form['cidades']
-        bairro = request.form['bairros']
-        senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
-        corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
-        corretor.set_user(corretor.valida(usuario))
-        corretor.set_cidade(corretor.valida(bairro))
-        corretor.set_bairro(corretor.valida(cidade))
-        corretor.set_email(corretor.valida(email))
-        Corretores_dao.salvar(corretor)
+app.add_url_rule('/cad_corretor', endpoint='cad_corretor', view_func=corretor_controller.criar_Corretor, methods=['POST'])
 
-    return redirect('/')
+app.add_url_rule('/editar_corretor/<int:id>',view_func=corretor_controller.editar_corretor)
 
-@app.route('/editar_corretor/<int:id>')
-def editar_corretor(id):
-    if 'usuario_logado' not in session or session['usuario_logado']==None:
-        return redirect('/login?proxima=''')
-    lista_cidades = CidadeDao.lista()
-    lista_bairro = BairroDao.lista()
-    corretor = Corretores_dao.busca_por_id_edit(id)
-    return render_template('editar_corr.html', corretor=corretor, cidades=lista_cidades, bairros=lista_bairro)
+app.add_url_rule('/atualizar_corretor', endpoint='atualizar_corretor',view_func=corretor_controller.atualizar_corretor,methods=['POST'])
 
-@app.route('/atualizar_corretor', methods=['POST'])
-def atualizar_corretor():
-    corretor_busq = Corretores_dao.buscar_por_id(request.form['usuario_corr'])
-    usuario_verifc = request.form['ussuario_verif']
-    usuario = request.form['usuario_corr']
-    email = request.form['email_corr']
-    nome = request.form['nome_corr']
-    creci = request.form['creci_corr']
-    celular = request.form['celular_corr']
-    cpf = request.form['cpf_corr']
-    endereco = request.form['endereco_corr']
-    senha = request.form['senha_corr']
-    cidade = request.form['cidades']
-    bairro = request.form['bairros']
-    id = request.form['id_corr']
-    if(senha!=""):
-        senha = bcrypt.hashpw(senha.encode(),bcrypt.gensalt())
-    if usuario_verifc == usuario:
-        corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
-        corretor.set_user(corretor.valida(usuario))
-        corretor.set_cidade(corretor.valida(cidade))
-        corretor.set_bairro(corretor.valida(bairro))
-        corretor.set_email(corretor.valida(email))
-        Corretores_dao.salvar(corretor)
+app.add_url_rule('/deletar_corr/<int:id>', view_func=corretor_controller.deletar_corr)
 
-    elif corretor_busq:
-        flash('usuário já existe')
-        return redirect(url_for('editar_corretor',id=id))
-    else:
-        corretor = Corretores(usuario,email,nome,creci,celular,cpf,endereco,senha,cidade,bairro,id)
-        corretor.set_user(corretor.valida(usuario))
-        corretor.set_cidade(corretor.valida(cidade))
-        corretor.set_bairro(corretor.valida(bairro))
-        corretor.set_email(corretor.valida(email))
-        Corretores_dao.salvar(corretor)
-
-    return redirect('/')
-
-@app.route('/deletar_corr/<int:id>')
-def deletar_corr(id):
-    Corretores_dao.deletar_corr(id)
-    return redirect('/')
 
 #login, autenticar, logout#
-@app.route('/login')
-def login():
-    proxima = request.args.get('proxima')
-    if proxima == None:
-        proxima = ''
-    if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return render_template('login.html', proxima=proxima)
-    else:
-        return redirect('/')
+app.add_url_rule('/login',endpoint='login',view_func=index_controller.login,methods=['GET'])
 
-@app.route('/autenticar', methods=['POST'])
-def autenticar():
-    usuario = Corretores_dao.buscar_por_id(request.form['usuario'])
-    if usuario:
-        if bcrypt.hashpw(request.form['senha'].encode(), usuario._senha.encode()) == usuario._senha.encode():
-            session['usuario_logado']=request.form['usuario']
-            flash(usuario._nome + ' logou com sucesso!')
-            proxima_pagina = request.form['proxima']
-            return redirect('/{}'.format(proxima_pagina))
-        else:
-            flash('Senha incorreta!')
-            return redirect('/login')
-    flash('Usuario não encontrado!')
-    return redirect('/login')
+app.add_url_rule('/autenticar',endpoint='autenticar',view_func=index_controller.autenticar,methods=['POST'])
 
-@app.route('/logout')
-def logout():
-    session['usuario_logado'] = None
-    flash('Usuario deslogado')
-    return redirect('/login')
+app.add_url_rule('/logout',endpoint='logout',view_func=index_controller.logout)
 
 if __name__ == '__main__':
     app.run(debug=True)
