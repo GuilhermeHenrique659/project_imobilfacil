@@ -99,8 +99,8 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                             {% for corr in corretores %}
-                            <li><a href="{{url_for('finaceiro_filtro', filtro=corr._id_corr)}}">
-                                <button type="button" class="btn">{{corr._nome}}</button>
+                            <li><a class="dropdown-item"  href="{{url_for('finaceiro_filtro', filtro=corr._id_corr)}}">
+                                {{corr._nome}}
                             </a>
                                 </li>
                             {%endfor%}

@@ -3,7 +3,7 @@ from models import Imovel, Financeiro
 
 class ImovelController(Controller):
     def __init__(self,Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao,TiposDao,FinDao):
-        super(ImovelController, self).__init__(Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao)
+        super().__init__(Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao)
         self._TiposDao = TiposDao
         self._FinDao = FinDao
 

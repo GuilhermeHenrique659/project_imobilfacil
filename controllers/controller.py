@@ -38,6 +38,8 @@ class IndexController(Controller):
         if usuario:
             if bcrypt.hashpw(request.form['senha'].encode(), usuario._senha.encode()) == usuario._senha.encode():
                 session['usuario_logado'] = request.form['usuario']
+                session['nome_usuario'] = usuario._nome
+                session['usuario_id'] = usuario._id_corr
                 flash(usuario._nome + ' logou com sucesso!')
                 proxima_pagina = request.form['proxima']
                 return redirect('/{}'.format(proxima_pagina))

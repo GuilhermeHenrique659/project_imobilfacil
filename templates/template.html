@@ -30,53 +30,64 @@
     </style>
 </head>
 <body>
-<div class="collapse" id="navbarToggleExternalContent">
-    <div class="bg-dark p-4">
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{url_for('index')}}">Início</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarTogglerDemo02"
-                        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{url_for('Corretor')}}">Cadastro
-                                de
-                                corretor</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{url_for('novo_imovel')}}">Cadastro de imovel</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{url_for('Proprietario')}}">Cadastro de
-                                proprietario</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{url_for('financeiro')}}">Financeiro</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{url_for('index')}}"><img src="../static/img/icon/icon.png" class="rounded float-start" alt=""></a>
+      <div>
+<div class="dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+     <strong> {{session['nome_usuario']}}</strong>
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      <li><a class="dropdown-item" href="{{url_for('editar_corretor', id=session['usuario_id'])}}"><button type="button" class="btn"><i><img src="../static/img/icon/gear.svg"></i></button>Configurar</a></li>
+
+      <li><a class="dropdown-item" href="{{url_for('logout')}}"><button type="button" class="btn"><i><img src="../static/img/icon/logout.svg"></i></button>Sair</a></li>
+  </ul>
 </div>
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
     </div>
-    <div class="logout">
-        <a href="/logout"><img src="../static/img/icon/log-out.svg" alt=""></a>
-    </div>
+  </div>
 </nav>
 <article>
+
+
+    <nav class="navbar navbar-light bg-success">
+
+  <div class="container-fluid">
+    <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h3 class="offcanvas-title" id="offcanvasNavbarLabel">
+            <a class="navbar-brand" href="{{url_for('index')}}"><img src="../static/img/icon/icon_menu.png"  class="rounded-circle" alt=""></a>
+            <h4>Imobilfacil</h4>
+        </h3>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{url_for('index')}}"><i><img src="../static/img/icon/home.svg" alt=""></i>Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{{url_for('Corretor')}}"><i><img src="../static/img/icon/salerman.svg" alt=""></i>Cadastrar corretor</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link active" href="{{url_for('novo_imovel')}}"><i><img src="../static/img/icon/imovel.svg" alt=""></i>Cadastrar imovel</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link active" href="{{url_for('Proprietario')}}"><i><img src="../static/img/icon/person.svg" alt=""></i>Cadastrar proprietario</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link active" href="{{url_for('financeiro')}}"><i><img src="../static/img/icon/finance.svg" alt=""></i>Financeiro</a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</nav>
+
     <div class="block-conteudo">
         <div class="shadow p-3 mb-5 bg-body rounded">
             {% with messages = get_flashed_messages() %}
