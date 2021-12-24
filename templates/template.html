@@ -39,8 +39,9 @@
      <strong> {{session['nome_usuario']}}</strong>
   </a>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      {% if session['usuario_logado'] != "admin" %}
       <li><a class="dropdown-item" href="{{url_for('editar_corretor', id=session['usuario_id'])}}"><button type="button" class="btn"><i><img src="../static/img/icon/gear.svg"></i></button>Configurar</a></li>
-
+        {% endif %}
       <li><a class="dropdown-item" href="{{url_for('logout')}}"><button type="button" class="btn"><i><img src="../static/img/icon/logout.svg"></i></button>Sair</a></li>
   </ul>
 </div>
