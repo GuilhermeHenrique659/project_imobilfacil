@@ -25,6 +25,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <input type="hidden" name="previous" value="/editar_imovel/{{imovel._imob_id}}">
           <div class="form-group">
             <label for="tipo">Categoria</label>
             <input type="text" id="tipo" name="tipo" class="form-control" required>
@@ -49,6 +50,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+                  <input type="hidden" name="previous" value="/editar_imovel/{{imovel._imob_id}}">
           <div class="form-group">
             <label for="cidade_bairro">Cidade</label>
             <select class="form-select" id="cidade_bairro" name="cidade_bairro" required>
@@ -85,6 +87,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+                  <input type="hidden" name="previous" value="/editar_imovel/{{imovel._imob_id}}">
           <div class="form-group">
             <label for="cidade">Cidade</label>
             <input type="text" id="cidade" name="cidade" class="form-control" required>
@@ -118,65 +121,58 @@
       <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
         <input type="hidden" name="id" value="{{imovel._imob_id}}">
         <br>
-        <div class="row">
-          <div class="col">
-            <label for="tipos">Categoria</label>
+
+<div class="input-group">
+            <label class="input-group-text" for="tipos">Categoria</label>
             <select class="form-select" id="tipos" name="tipos" required>
-              <option value="{{ imovel._tipo._id_tipo }}" selected>{{ imovel._tipo._tipo_nome}}</option>
-              {% for tipo in tipos %}
-              <option value="{{ tipo._id_tipo }}">{{ tipo._tipo_nome}}</option>
-              {% endfor %}
-            </select>
-            <div class="invalid-feedback">
+                <option value="{{ imovel._tipo._id_tipo }}" selected>{{ imovel._tipo._tipo_nome}}</option>
+                    {% for tipo in tipos %}
+                        <option value="{{ tipo._id_tipo }}">{{ tipo._tipo_nome}}</option>
+                    {% endfor %}
+            </select><div class="invalid-feedback">
               Por favor insira um categoria.
               </div>
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#TipoModal"><i><img
+                      src="../static/img/icon/plus.svg" alt=""></i> Criar Categoria </button>
           </div>
-          <div class="col-md-2">
-            <br>
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#TipoModal">Criar categoria</button>
-          </div>
-        </div>
         <br>
-        <div class="row">
-          <div class="col">
-            <label for="cidades">Cidade</label>
+<div class="input-group">
+            <label class="input-group-text" for="cidades">Cidade</label>
             <select class="form-select" id="cidades" name="cidades" required>
-              <option value="{{imovel._cidade._id_cidade}}" selected>{{ imovel._cidade._cidade_nome }}</option>
-              {% for cidade in cidades %}
-              <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
-              {% endfor %}
+                              <option value="{{imovel._cidade._id_cidade}}" selected>{{ imovel._cidade._cidade_nome }}</option>
+
+                    {% for cidade in cidades %}
+                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+                    {% endfor %}
             </select>
-            <div class="invalid-feedback">
+                              <div class="invalid-feedback">
               Por favor insira uma cidade.
               </div>
+
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CidadeModal"><i><img
+                      src="../static/img/icon/plus.svg" alt=""></i> Criar cidade </button>
+
           </div>
-          <div class="col-md-2">
-            <br>
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#CidadeModal">Criar
-              cidade</button>
-          </div>
-        </div>
         <br>
-        <div class="row">
-          <div class="col">
-            <label for="bairros">Bairros</label>
+
+
+<div class="input-group">
+            <label class="input-group-text" for="bairros">Bairros</label>
             <select class="form-select" id="bairros" name="bairros" required>
-              <option value="{{ imovel._bairro._id_bairro }}" selected>{{imovel._bairro._bairro_nome}} / {{imovel._bairro._bairro_cid_nome}}
-              </option>
-              {% for bairro in bairros %}
-              <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}} </option>
-              {% endfor %}
+                <option value="{{ imovel._bairro._id_bairro }}" selected>{{imovel._bairro._bairro_nome}} / {{imovel._bairro._bairro_cid_nome}}
+                    {% for bairro in bairros %}
+
+                        <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}}</option>
+                    {% endfor %}
             </select>
-            <div class="invalid-feedback">
+                              <div class="invalid-feedback">
               Por favor insira um bairro.
               </div>
+
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#BairroModal"><i><img
+                      src="../static/img/icon/plus.svg" alt=""></i> Criar bairro </button>
+
           </div>
-          <div class="col-md-2">
-            <br>
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#BairroModal">Criar
-              bairro</button>
-          </div>
-        </div>
         <br>
 
         <div class="form-group">

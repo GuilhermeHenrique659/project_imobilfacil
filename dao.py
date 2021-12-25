@@ -44,7 +44,7 @@ class cad_proprietario_dao:
 
     def traduz_prop(self,proprietarios):
         def cria_prop_lista(tupla):
-            return Proprietario(tupla['NOME'], tupla['CPF'], tupla['RG'], tupla['ENDERECO'], tupla['TELEFONE'], None,tupla['ID_CIDADE'],tupla['ID_BAIRRO'],tupla['ID_PROP'])
+            return Proprietario(tupla['NOME'], tupla['CPF'], tupla['RG'], tupla['ENDERECO'], tupla['TELEFONE'], tupla['EMAIL'],tupla['ID_CIDADE'],tupla['ID_BAIRRO'],tupla['ID_PROP'])
         return list(map(cria_prop_lista, proprietarios))
 
 #corretor/

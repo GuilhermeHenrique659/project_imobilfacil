@@ -245,7 +245,7 @@
             <table class="display" id="TableCorr">
                 <thead class="thead-default">
                 <tr>
-                    <th>ID</th>
+                    <th style="width:3%">#</th>
                     <th>Nome</th>
                     <th>CRECI</th>
                     <th>CPF</th>
@@ -256,7 +256,7 @@
                 <tbody>
                 {% for corretor in corretores %}
                 <tr>
-                    <td>{{ corretor._id_corr }}</td>
+                    <td  style="width:3%">{{ corretor._id_corr }}</td>
                     <td>{{ corretor._nome }}</td>
                     <td>{{ corretor._creci }}</td>
                     <td>{{ corretor._cpf }}</td>
@@ -357,8 +357,8 @@
                     <table class="display" id="TableImob">
                         <thead class="thead-default">
                         <tr>
-                            <th>ID</th>
-                            <th>Tipo</th>
+                            <th style="width:3%">#</th>
+                            <th style="width:8%">Tipo</th>
                             <th>Cidade</th>
                             <th>Bairro</th>
                             <th>Endereço</th>
@@ -371,8 +371,8 @@
                         <tbody>
                         {% for l in lista %}
                         <tr>
-                            <td>{{ l._imob_id}}</td>
-                            <td>{{ l._tipo._tipo_nome}}</td>
+                            <td style="width:3%">{{ l._imob_id}}</td>
+                            <td style="width:8%">{{ l._tipo._tipo_nome}}</td>
                             <td>{{ l._cidade._cidade_nome}}</td>
                             <td>{{ l._bairro._bairro_nome}}</td>
                             <td>{{ l._endereco}}</td>
@@ -426,7 +426,7 @@
             <table class="display" id="TableProp">
                 <thead class="thead-default">
                 <tr>
-                    <th>ID</th>
+                    <th style="width:3%">#</th>
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Telefone</th>
@@ -437,7 +437,7 @@
                 <tbody>
                 {% for proprietario in proprietarios %}
                 <tr>
-                    <td>{{ proprietario._id }}</td>
+                    <td style="width:3%">{{ proprietario._id }}</td>
                     <td>{{ proprietario._nome }}</td>
                     <td>{{ proprietario._cpf }}</td>
                     <td>{{ proprietario._telefone }}</td>

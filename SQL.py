@@ -28,7 +28,7 @@ SQL_CRIA_PROPRIETARIO = 'INSERT into proprietarios (NOME, CPF, RG, ENDERECO, TEL
 
 SQL_ATUALIZA_PROPRIETARIO = 'UPDATE proprietarios SET NOME=%s, CPF=%s, RG=%s, ENDERECO=%s, TELEFONE=%s, EMAIL=%s, ID_CIDADE=%s, ID_BAIRRO=%s   where ID_PROP=%s'
 
-SQL_BUSCAR_LISTA_PROP = 'SELECT ID_PROP, NOME, CPF, RG, ENDERECO, TELEFONE, EMAIl, ID_CIDADE, ID_BAIRRO from proprietarios'
+SQL_BUSCAR_LISTA_PROP = 'SELECT ID_PROP, NOME, CPF, RG, ENDERECO, TELEFONE, EMAIL, ID_CIDADE, ID_BAIRRO from proprietarios'
 
 SQL_PROP_POR_ID = 'SELECT * from proprietarios ' \
                   'left join cidade on proprietarios.ID_CIDADE = cidade.ID_CID ' \

@@ -10,21 +10,16 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css') }}">
     <style>
-    .logout img {
-      background-color: #212529;
-      margin-right: 20%;
-    }
-
     .container-fluid {
       width: 94%;
     }
 
-    .redes-sociais {
-      margin-right: 150px;
-    }
-
     .block-conteudo {
       margin: 50px;
+    }
+    .content-block {
+      margin-top: 15px;
+      margin-left: 0px;
     }
 
     </style>
@@ -101,9 +96,11 @@
             {% endfor %}
             {% endif %}
             {% endwith %}
+            <div class="content-block">
             {% block conteudo %}
 
             {% endblock %}
+                </div>
         </div>
     </div>
 </article>
