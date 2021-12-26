@@ -10,7 +10,6 @@ from controllers.OthersController import OthersController
 
 app = Flask(__name__)
 app.secret_key='LP2'
-'''
 #banco para teste
 app.config['MYSQL_HOST'] = 'us-cdbr-east-04.cleardb.com'
 app.config['MYSQL_USER'] = 'b8ab2bd3638752'
@@ -19,8 +18,8 @@ app.config['MYSQL_DB'] = 'heroku_7f17bca4c88d1c7'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 db = MySQL(app)
-'''
 
+'''
 #banco para produção
 app.config['MYSQL_HOST'] = 'us-cdbr-east-04.cleardb.com'
 app.config['MYSQL_USER'] = 'bdbbbc8d2b231a'
@@ -29,7 +28,7 @@ app.config['MYSQL_DB'] = 'heroku_405b84a0ef05c35'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 db = MySQL(app)
-
+'''
 
 
 

@@ -1,9 +1,6 @@
 {% extends "template.html" %}
 {% block conteudo %}
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
 <div class="modal fade" id="FiltroCidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
@@ -242,7 +239,7 @@
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-corretor" role="tabpanel" aria-labelledby="nav-corretor-tab">
             <br>
-            <table class="display" id="TableCorr">
+            <table class="table table-striped table-responsive table-bordered" id="TableCorr">
                 <thead class="thead-default">
                 <tr>
                     <th style="width:3%">#</th>
@@ -354,7 +351,7 @@
             </nav>
             <div>
                 <section>
-                    <table class="display" id="TableImob">
+                    <table class="table table-striped table-responsive table-bordered" id="TableImob">
                         <thead class="thead-default">
                         <tr>
                             <th style="width:3%">#</th>
@@ -423,7 +420,7 @@
             <br>
             <nav class="navbar navbar-light bg-light">
             </nav>
-            <table class="display" id="TableProp">
+            <table class="table table-striped table-responsive table-bordered" id="TableProp">
                 <thead class="thead-default">
                 <tr>
                     <th style="width:3%">#</th>
@@ -484,21 +481,30 @@
 
 
 
+
+
+
 <script>
   $(document).ready(function() {
-    $('table.display').DataTable({
-       "language": {
-                "lengthMenu": " _MENU_",
+    $("table[id^='Table']").DataTable({
+        	"language": {
+                "lengthMenu": "Mostrando  _MENU_  registros por página",
                 "zeroRecords": "Nada encontrado",
                 "info": "Mostrando página _PAGE_ de _PAGES_",
                 "infoEmpty": "Nenhum registro disponível",
                 "infoFiltered": "(filtrado de _MAX_ registros no total)",
-                "search": "Procurar"
+                "search": "Procurar",
+                "paginate": {
+                    "first": "Primeiro",
+                    "last": "Ultimo",
+                    "next":  "Proximo",
+                    "previous": "Anterior"
+                }
             }
+
     });
 } );
 
 </script>
-
 
 {% endblock %}

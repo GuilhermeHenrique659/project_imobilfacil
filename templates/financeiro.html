@@ -1,6 +1,5 @@
 {% extends "template.html" %}
 {% block conteudo %}
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
 <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
 <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
 <script>
@@ -223,7 +222,6 @@ const data = {
   );
 
 </script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
 <script>
       $(document).ready(function(){
       $('#minhaTabela').DataTable({
@@ -233,7 +231,13 @@ const data = {
                 "info": "Mostrando página _PAGE_ de _PAGES_",
                 "infoEmpty": "Nenhum registro disponível",
                 "infoFiltered": "(filtrado de _MAX_ registros no total)",
-                "search": "Procurar"
+                "search": "Procurar",
+                "paginate": {
+                    "first": "Primeiro",
+                    "last": "Ultimo",
+                    "next":  "Proximo",
+                    "previous": "Anterior"
+                   },
             }
         });
   });
