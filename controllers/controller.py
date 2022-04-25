@@ -1,26 +1,18 @@
 from flask import request, redirect, render_template, session, flash,url_for
 import bcrypt
+from daofactory import dao
+from config import server
 
-class Controller:
-    def __init__(self, Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao):
-        self._Imovel_Dao = Imovel_Dao
-        self._Proprietario_dao = Proprietario_dao
-        self._Corretores_dao = Corretores_dao
-        self._CidadeDao = CidadeDao
-        self._BairroDao = BairroDao
 
-class IndexController(Controller):
-    def __init__(self, Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao):
-        super().__init__(Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao)
+class IndexController():
 
+    @server.loggin_required
     def index(self):
-        if 'usuario_logado' not in session or session['usuario_logado'] == None:
-            return redirect('/login?proxima=''')
-        lista_imob = self._Imovel_Dao.listar()
-        lista_prop = self._Proprietario_dao.listar()
-        lista_corr = self._Corretores_dao.listar()
-        lista_cidades = self._CidadeDao.lista()
-        lista_bairro = self._BairroDao.lista()
+        lista_imob = dao.imovel.listar()
+        lista_prop = dao.proprietario.listar()
+        lista_corr = dao.corretor.listar()
+        lista_cidades = dao.cidade.lista()
+        lista_bairro = dao.bairro.lista()
         return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop,
                                cidades=lista_cidades, bairros=lista_bairro)
 
@@ -34,7 +26,7 @@ class IndexController(Controller):
             return redirect('/')
 
     def autenticar(self):
-        usuario = self._Corretores_dao.buscar_por_id(request.form['usuario'])
+        usuario = dao.corretor.buscar_por_id(request.form['usuario'])
         if usuario:
             if bcrypt.hashpw(request.form['senha'].encode(), usuario._senha.encode()) == usuario._senha.encode():
                 session['usuario_logado'] = request.form['usuario']

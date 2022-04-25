@@ -1,32 +1,32 @@
-from controllers.controller import *
+from flask import request, redirect, render_template, session, flash,url_for
 from models import Tipo,Cidade,Bairro
+from daofactory import dao
+from config import server
 
 class OthersController:
-    def __init__(self,TiposDao,CidadeDao,BairroDao):
-        self._TiposDao = TiposDao
-        self._CidadeDao = CidadeDao
-        self._BairroDao = BairroDao
-
+    @server.loggin_required
     def novo_tipo(self):
         Tipo_nome = request.form['tipo']
         previous = request.form['previous']
         tipo = Tipo(Tipo_nome)
-        self._TiposDao.salvar(tipo)
+        dao.tipo.salvar(tipo)
         return redirect(previous)
 
+    @server.loggin_required
     def nova_cidade(self):
         cidade_nome = request.form['cidade']
         cidade = Cidade(cidade_nome)
         previous = request.form['previous']
-        self._CidadeDao.salvar(cidade)
+        dao.cidade.salvar(cidade)
         return redirect(previous)
 
+    @server.loggin_required
     def novo_bairro(self):
         cidade = request.form['cidade_bairro']
         bairro_nome = request.form['bairro']
         bairro = Bairro(bairro_nome, cidade)
         previous = request.form['previous']
-        self._BairroDao.salvar(bairro)
+        dao.bairro.salvar(bairro)
         return redirect(previous)
 
 

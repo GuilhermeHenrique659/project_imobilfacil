@@ -59,8 +59,8 @@ conn.cursor().execute(criar_tabela_bairro)
 conn.commit()
 criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
         `ID_CORR` INT NOT NULL AUTO_INCREMENT,
-        `USUARIO` VARCHAR(45) NULL,
-        `EMAIL` VARCHAR(45) NULL,
+        `USUARIO` VARCHAR(45) NOT NULL UNIQUE,
+        `EMAIL` VARCHAR(45) NOT NULL UNIQUE,
         `NOME` VARCHAR(45) NULL,
         `CRECI` CHAR(15) NULL,
         `CELULAR` CHAR(25) NULL,

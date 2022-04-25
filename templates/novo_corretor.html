@@ -10,7 +10,7 @@
   });
 </script>
       <div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3 needs-validation" action="/novo_bairro" method="post" novalidate>
+          <form class="row g-3 needs-validation" action="{{url_for('novo_bairro')}}" method="post" novalidate>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -46,7 +46,7 @@
   </div></form>
 </div>
       <div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3 needs-validation" action="/nova_cidade" method="post" novalidate>
+          <form class="row g-3 needs-validation" action="{{url_for('nova_cidade')}}" method="post" novalidate>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

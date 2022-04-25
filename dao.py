@@ -1,8 +1,9 @@
+import MySQLdb
 from models import Imovel,Proprietario, Corretores, Tipo, Cidade, Bairro, Financeiro
 from SQL import *
 
 #proprietarios
-class cad_proprietario_dao:
+class ProprietarioDao:
     def __init__(self, db):
         self.__db=db
 
@@ -17,7 +18,6 @@ class cad_proprietario_dao:
                                                    Proprietario._email,Proprietario._cidade,Proprietario._bairro))
             cursor._id = cursor.lastrowid
         self.__db.connection.commit()
-
         del Proprietario
 
     def listar(self):
@@ -48,22 +48,27 @@ class cad_proprietario_dao:
         return list(map(cria_prop_lista, proprietarios))
 
 #corretor/
-class cad_corretor_dao:
+class CorretorDao:
     def __init__(self, db):
         self.__db=db
 
     def salvar(self, corretor):
         cursor = self.__db.connection.cursor()
-        if (corretor._id_corr):
-            cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,corretor._celular,corretor._cpf,
+        try:
+            if (corretor._id_corr):
+                cursor.execute(SQL_ATUALIZA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,corretor._celular,corretor._cpf,
                                                      corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro,corretor._id_corr))
-        else:
-            cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,
+            else:
+                cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,
                                                  corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
-        cursor._id = cursor.lastrowid
-
+            cursor._id = cursor.lastrowid
+        except MySQLdb.IntegrityError as error:
+            print(error)
+            return None
         self.__db.connection.commit()
         del corretor
+        print(cursor)
+        return cursor._id
 
     # faz lista de corretores para mostrar no index
     def listar(self):
