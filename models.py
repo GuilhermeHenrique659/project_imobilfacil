@@ -88,10 +88,6 @@ class Proprietario:
     def set_cidade(self,cidade):
         self._cidade = cidade
 
-    def valida(self, data):
-        if data == "" or data == "None":
-            data = None
-        return data
 
 class Corretores:
     def __init__(self, usuario, email, nome, creci, celular, cpf, endereco, senha, cidade=None, bairro=None, id_corr=None):
@@ -119,10 +115,6 @@ class Corretores:
     def set_user(self,user):
         self._usuario = user
 
-    def valida(self,data):
-        if data == "" or data == "None":
-            data = None
-        return data
 
 class Financeiro:
     def __init__(self, honorarios_corr, porcentagem_corr, honorarios_imob , porcentagem_imob,

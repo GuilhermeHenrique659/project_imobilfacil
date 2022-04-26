@@ -29,10 +29,6 @@ class CorretorController():
         bairro = request.form['bairros']
         senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
-        corretor.set_user(corretor.valida(usuario))
-        corretor.set_cidade(corretor.valida(bairro))
-        corretor.set_bairro(corretor.valida(cidade))
-        corretor.set_email(corretor.valida(email))
         result = dao.corretor.salvar(corretor)
         if not result:
             flash('email ou usuario nao disponivel')
@@ -66,12 +62,7 @@ class CorretorController():
             senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, 
                                     endereco, senha, cidade, bairro, id)
-        corretor.set_user(corretor.valida(usuario))
-        corretor.set_cidade(corretor.valida(bairro))
-        corretor.set_bairro(corretor.valida(cidade))
-        corretor.set_email(corretor.valida(email))
         result = dao.corretor.salvar(corretor)
-        print(result)
         if not result:
             flash('email ou usuario nao disponivel')
             return redirect(url_for('editar_corretor', id=id))

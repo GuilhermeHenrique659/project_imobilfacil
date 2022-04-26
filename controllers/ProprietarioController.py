@@ -22,8 +22,6 @@ class ProprietarioController():
         cidade = request.form['cidades']
         bairro = request.form['bairros']
         proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, cidade, bairro)
-        proprietario.set_cidade(proprietario.valida(cidade))
-        proprietario.set_bairro(proprietario.valida(bairro))
         dao.proprietario.salvar(proprietario)
         return redirect('/')
 
@@ -47,8 +45,6 @@ class ProprietarioController():
         bairro = request.form['bairros']
         id = request.form['id']
         proprietario = Proprietario(nome, cpf, rg, endereco, telefone, email, cidade, bairro, id)
-        proprietario.set_cidade(proprietario.valida(cidade))
-        proprietario.set_bairro(proprietario.valida(bairro))
         dao.proprietario.salvar(proprietario)
         return redirect('/')
 

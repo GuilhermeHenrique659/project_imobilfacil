@@ -61,13 +61,12 @@ class CorretorDao:
             else:
                 cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,
                                                  corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
-            cursor._id = cursor.lastrowid
         except MySQLdb.IntegrityError as error:
             print(error)
             return None
+        cursor._id = cursor.lastrowid
         self.__db.connection.commit()
         del corretor
-        print(cursor)
         return cursor._id
 
     # faz lista de corretores para mostrar no index
@@ -80,18 +79,10 @@ class CorretorDao:
     # busca um unico corretor pelo usuario no login
     def buscar_por_id(self,usuario):
         cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_BUSCA_CORR_ID, (usuario,))
+        cursor.execute(SQL_BUSCA_CORR_ID, (usuario,usuario,))
         dados = cursor.fetchone()
-        if dados:
-            usuario = self.traduz_usuario(dados) if dados else None
-            return usuario
-        cursor.execute(SQL_BUSCA_CORR_EMAIL, (usuario,))
-        dados = cursor.fetchone()
-        if dados:
-            print(dados)
-            usuario = self.traduz_usuario(dados) if dados else None
-            return usuario
-        return None
+        usuario = self.traduz_usuario(dados) if dados else None
+        return usuario
 
     # busca um unico corretor pelo id
     def busca_por_id_edit(self, id):
