@@ -62,12 +62,10 @@ class CorretorDao:
                 cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,
                                                  corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
         except MySQLdb.IntegrityError as error:
-            print(error)
-            return None
-        cursor._id = cursor.lastrowid
+            return error.args[0]
         self.__db.connection.commit()
         del corretor
-        return cursor._id
+        return cursor.lastrowid
 
     # faz lista de corretores para mostrar no index
     def listar(self):
@@ -209,7 +207,6 @@ class financeiroDao:
     def salvar(self,finaceiro):
         cursor = self.__db.connection.cursor()
         if(finaceiro._id_fin):
-            print(finaceiro._corr)
             cursor.execute(SQL_ATUALIZA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
                                              finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._id_fin))
         else:

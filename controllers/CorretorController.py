@@ -30,7 +30,7 @@ class CorretorController():
         senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
         result = dao.corretor.salvar(corretor)
-        if not result:
+        if result == 1062:
             flash('email ou usuario nao disponivel')
             return redirect(url_for('Corretor'))
         return redirect('/')
@@ -63,7 +63,7 @@ class CorretorController():
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, 
                                     endereco, senha, cidade, bairro, id)
         result = dao.corretor.salvar(corretor)
-        if not result:
+        if result == 1062:
             flash('email ou usuario nao disponivel')
             return redirect(url_for('editar_corretor', id=id))
         return redirect('/')
