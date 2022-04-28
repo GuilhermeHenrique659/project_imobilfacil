@@ -1,23 +1,21 @@
-from controllers.controller import *
+from flask import request, redirect, render_template, session, flash,url_for
 from models import Imovel, Financeiro
+from daofactory import dao
+from config import server
 
-class ImovelController(Controller):
-    def __init__(self,Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao,TiposDao,FinDao):
-        super().__init__(Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao)
-        self._TiposDao = TiposDao
-        self._FinDao = FinDao
+class ImovelController():
 
+    @server.loggin_required
     def novo_imovel(self):
-        if 'usuario_logado' not in session or session['usuario_logado'] == None:
-            return redirect('/login?proxima=novo_imovel')
-        lista_prop = self._Proprietario_dao.listar()
-        lista_corr = self._Corretores_dao.listar()
-        lista_tipo = self._TiposDao.lista()
-        lista_cidades = self._CidadeDao.lista()
-        lista_bairro = self._BairroDao.lista()
+        lista_prop = dao.proprietario.listar()
+        lista_corr = dao.corretor.listar()
+        lista_cidades = dao.cidade.lista()
+        lista_bairro = dao.bairro.lista()
+        lista_tipo = dao.tipo.lista()
         return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr,
                                tipos=lista_tipo, cidades=lista_cidades, bairros=lista_bairro)
 
+    @server.loggin_required
     def criar_imovel(self):
         tipo = request.form['tipos']
         finalidade = request.form['finalidade']
@@ -37,24 +35,24 @@ class ImovelController(Controller):
         imovel = Imovel(tipo, finalidade, cidade, bairro, endereco, area, descriacao, valor, status, porcentagem,
                         proprietario, corretor,
                         banheiro=banheiro, quartos=quartos, garagem=garagem)
-        id = self._Imovel_Dao.salvar(imovel)
+        id = dao.imovel.salvar(imovel)
         imovel.set_id(id)
         self.cria_financeiro(imovel)
 
         return redirect('/')
 
+    @server.loggin_required
     def editar_imovel(self, id):
-        if 'usuario_logado' not in session or session['usuario_logado'] == None:
-            return redirect('/login?proxima=''')
-        Imovel = self._Imovel_Dao.busca_imob_id(id)
-        lista_prop = self._Proprietario_dao.listar()
-        lista_corr = self._Corretores_dao.listar()
-        lista_tipo = self._TiposDao.lista()
-        lista_cidades = self._CidadeDao.lista()
-        lista_bairro = self._BairroDao.lista()
+        Imovel = dao.imovel.busca_imob_id(id)
+        lista_prop = dao.proprietario.listar()
+        lista_corr = dao.corretor.listar()
+        lista_cidades = dao.cidade.lista()
+        lista_bairro = dao.bairro.lista()
+        lista_tipo = dao.tipo.lista()
         return render_template('editar_imovel.html', imovel=Imovel, proprietarios=lista_prop, corretores=lista_corr,
                                tipos=lista_tipo, cidades=lista_cidades, bairros=lista_bairro)
 
+    @server.loggin_required
     def atualiza_imovel(self):
         tipo = request.form['tipos']
         finalidade = request.form['finalidade']
@@ -77,55 +75,58 @@ class ImovelController(Controller):
         imovel = Imovel(tipo, finalidade, cidade, bairro, endereco, area, descriacao, valor, status, porcentagem,
                         proprietario, corretor,
                         banheiro=banheiro, quartos=quartos, garagem=garagem, imob_id=id)
-        self._Imovel_Dao.salvar(imovel)
+        dao.imovel.salvar(imovel)
         self.cria_financeiro(imovel)
         return redirect('/')
 
+    @server.loggin_required
     def deleta_imovel(self,id):
-        self._Imovel_Dao.deletar_imob(id)
+        dao.imovel.deletar_imob(id)
         return redirect('/')
 
+    @server.loggin_required
     def resumo_imovel(self,id):
-        if 'usuario_logado' not in session or session['usuario_logado'] == None:
-            return redirect('/login?proxima=view_imovel/<int:id>')
-        imovel = self._Imovel_Dao.busca_imob_id(id)
+        imovel = dao.imovel.busca_imob_id(id)
         return render_template('resumo_imovel.html', imovel=imovel)
 
+    @server.loggin_required
     def view_imovel(self,id):
-        if 'usuario_logado' not in session or session['usuario_logado'] == None:
-            return redirect('/login?proxima=view_imovel/<int:id>')
-        imovel = self._Imovel_Dao.busca_imob_id(id)
+        imovel = dao.imovel.busca_imob_id(id)
         return render_template('view_imovel.html', imovel=imovel)
 
+
+    @server.loggin_required
     def filtro(self):
         filtro = request.form['filtro']
         id = request.form[filtro]
-        lista_imob = self._Imovel_Dao.filtra(id, filtro)
+        lista_imob = dao.imovel.filtra(id, filtro)
         if len(lista_imob) == 0:
             flash("Nao foi encontrado nenhum imovel com esse filtro!")
             return redirect('/')
-        lista_prop = self._Proprietario_dao.listar()
-        lista_corr = self._Corretores_dao.listar()
-        lista_cidades = self._CidadeDao.lista()
-        lista_bairro = self._BairroDao.lista()
+        lista_prop = dao.proprietario.listar()
+        lista_corr = dao.corretor.listar()
+        lista_cidades = dao.cidade.lista()
+        lista_bairro = dao.bairro.lista()
         return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop,
                                cidades=lista_cidades, bairros=lista_bairro)
 
+
+    @server.loggin_required
     def cria_financeiro(self,imovel):
-        fin = self._FinDao.pocurar(imovel._imob_id)
+        fin = dao.financeiro.pocurar(imovel._imob_id)
         if fin:
             if imovel._status == "Vendido":
                 financeiro = Financeiro((imovel._honorarios * fin.get_porcetagem_corr()), fin._porcentagem_corr,
                                         (imovel._honorarios * fin.get_porcetagem_imob()),
                                         fin._porcentagem_imob, imob=imovel._imob_id, corr=imovel._corretor,
                                         id_fin=fin._id_fin)
-                self._FinDao.salvar(financeiro)
+                dao.financeiro.salvar(financeiro)
                 return
             else:
-                self._FinDao.deletar(imovel._imob_id)
+                dao.financeiro.deletar(imovel._imob_id)
         financeiro = Financeiro((imovel.honorarios / 2), 50, (imovel.honorarios / 2), 50, imob=imovel._imob_id,
                                 corr=imovel._corretor)
         if imovel._status == 'Vendido':
-            self._FinDao.salvar(financeiro)
+            dao.financeiro.salvar(financeiro)
         else:
             return

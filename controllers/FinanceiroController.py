@@ -1,20 +1,18 @@
-from controllers.controller import *
+from flask import request, redirect, render_template, session, flash,url_for
 from models import Financeiro
+from daofactory import dao
+from config import server
 
 class FinanceiroController:
-    def __init__(self, FinDao, Corretores_dao):
-        self._Corretores_dao = Corretores_dao
-        self._FinDao = FinDao
 
+    @server.loggin_required
     def financeiro(self):
-        if 'usuario_logado' not in session or session['usuario_logado'] == None:
-            return redirect('/login?proxima=/financeiro')
-        lista_corr = self._Corretores_dao.listar()
+        lista_corr = dao.corretor.listar()
         total_vendas = 0
         total_honorarios = 0
         total_honorarios_corr = 0
         total_honorarios_imob = 0
-        lista_fin = self._FinDao.lista()
+        lista_fin = dao.financeiro.lista()
         for fin in lista_fin:
             total_vendas = total_vendas + fin.valor_total
             total_honorarios = total_honorarios + fin.honorarios_total
@@ -25,6 +23,8 @@ class FinanceiroController:
                                total_honorarios_corr=total_honorarios_corr, total_honorarios_imob=total_honorarios_imob,
                                corretores=lista_corr)
 
+                               
+    @server.loggin_required
     def atualizar_finceiro(self):
         corretor = request.form['corretor']
         porcentagem_corr = request.form['porcentagem_corr']
@@ -34,18 +34,17 @@ class FinanceiroController:
         id = request.form['id']
         financeiro = Financeiro(honorarios_corr, porcentagem_corr, honorarios_imob, porcentagem_imob, corr=corretor,
                                 id_fin=id)
-        self._FinDao.salvar(financeiro)
+        dao.financeiro.salvar(financeiro)
         return redirect('/financeiro')
 
+    @server.loggin_required
     def finaceiro_filtro(self,filtro):
-        if 'usuario_logado' not in session or session['usuario_logado'] == None:
-            return redirect('/login?proxima=/financeiro')
-        lista_corr = self._Corretores_dao.listar()
+        lista_corr = dao.corretor.listar()
         total_vendas = 0
         total_honorarios = 0
         total_honorarios_corr = 0
         total_honorarios_imob = 0
-        lista_fin = self._FinDao.filtro(filtro)
+        lista_fin = dao.financeiro.filtro(filtro)
         for fin in lista_fin:
             total_vendas = total_vendas + fin.valor_total
             total_honorarios = total_honorarios + fin.honorarios_total

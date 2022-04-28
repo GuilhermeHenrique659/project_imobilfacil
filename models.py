@@ -71,16 +71,31 @@ class Imovel:
         return float(self._valor_venda)
 
 class Proprietario:
-    def __init__(self, nome, cpf, rg, endereco, telefone, email, cidade=None, bairro=None, id = None ):
+    def __init__(self, nome, cpf_cnpj, rg_insc_estadual, endereco, numero, cep,
+                celular, email, cidade=None, bairro=None, id = None, atividade = None,
+                telefone = None, razao = None, capital = None, patrimonio = None, 
+                whatsapp = None, data_cad = None, tipo_pessoa = None, codigo = None, sexo = None):
         self._id = id
         self._nome = nome
-        self._cpf = cpf
-        self._rg = rg
+        self._cpf_cnpj = cpf_cnpj
+        self._rg_insc_estadual = rg_insc_estadual
+        self._sexo = sexo
         self._endereco_prop = endereco
-        self._telefone = telefone
+        self._end_numero = numero
+        self._cep = cep
+        self._celular = celular
         self._email = email
+        self._atividade = atividade
+        self._whatsapp = whatsapp
+        self._telefone = telefone
+        self._razao = razao
+        self._capital = capital
+        self._patrimonio = patrimonio
+        self._data_cad = data_cad
         self._cidade = cidade
         self._bairro = bairro
+        self._codigo = codigo
+        self._tipo_pessoa = tipo_pessoa
 
     def set_bairro(self,bairro):
         self._bairro = bairro
@@ -88,10 +103,6 @@ class Proprietario:
     def set_cidade(self,cidade):
         self._cidade = cidade
 
-    def valida(self, data):
-        if data == "" or data == "None":
-            data = None
-        return data
 
 class Corretores:
     def __init__(self, usuario, email, nome, creci, celular, cpf, endereco, senha, cidade=None, bairro=None, id_corr=None):
@@ -119,10 +130,6 @@ class Corretores:
     def set_user(self,user):
         self._usuario = user
 
-    def valida(self,data):
-        if data == "" or data == "None":
-            data = None
-        return data
 
 class Financeiro:
     def __init__(self, honorarios_corr, porcentagem_corr, honorarios_imob , porcentagem_imob,

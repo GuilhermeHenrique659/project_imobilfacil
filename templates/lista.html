@@ -436,10 +436,10 @@
                 <tr>
                     <td style="width:3%">{{ proprietario._id }}</td>
                     <td>{{ proprietario._nome }}</td>
-                    <td>{{ proprietario._cpf }}</td>
+                    <td>{{ proprietario._cpf_cnpj }}</td>
                     <td>{{ proprietario._telefone }}</td>
                     <td>{{ proprietario._email }}</td>
-                    <td><a href="{{url_for('editar_proprietario', id=proprietario._id)}}"><button type="button" class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
+                    <td><a href="{{url_for('editar_prop', id=proprietario._id)}}"><button type="button" class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
                         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_prop{{ proprietario._id}}"><i><img src="../static/img/icon/trash.svg"></i></button>
                         <div class="modal fade" id="modal_prop{{ proprietario._id}}" tabindex="-1"
                              aria-labelledby="exampleModalLabel"
@@ -460,7 +460,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar
                                         </button>
-                                        <a href="{{url_for('deletar_prop', id=proprietario._id)}}">
+                                        <a href="{{url_for('delete_prop', id=proprietario._id)}}">
                                             <button type="button"
                                                     class="btn btn-danger">Deletar proprietário
                                             </button>
@@ -506,5 +506,9 @@
 } );
 
 </script>
-
+<script>
+    window.addEventListener('load', ()=>{
+        sessionStorage.clear()
+    })
+</script>
 {% endblock %}

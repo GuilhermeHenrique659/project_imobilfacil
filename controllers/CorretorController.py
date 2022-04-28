@@ -1,54 +1,54 @@
-from controllers.controller import *
+from flask import request, redirect, render_template, session, flash,url_for
 from models import Corretores
+from daofactory import dao
+import bcrypt
+from config import server
 
-class CorretorController(Controller):
-    def __init__(self, Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao):
-        super().__init__(Imovel_Dao,Proprietario_dao,Corretores_dao,CidadeDao,BairroDao)
+UNIQUE_ERROR_CODE = 1062
 
+class CorretorController():
+
+    @server.loggin_required
     def rota_corretor(self):
         if 'usuario_logado' not in session or session['usuario_logado'] == None:
             return redirect('/login?proxima=novo_corretor.html')
-        lista_cidades = self._CidadeDao.lista()
-        lista_bairro = self._BairroDao.lista()
+        lista_cidades = dao.cidade.lista()
+        lista_bairro = dao.bairro.lista()
         return render_template('novo_corretor.html', cidades=lista_cidades, bairros=lista_bairro)
 
+    @server.loggin_required
     def criar_Corretor(self):
-        corretor = self._Corretores_dao.buscar_por_id(request.form['usuario_corr'])
-        if corretor:
-            flash('usuário já existe')
-            return redirect(url_for('rota_corretor'))
-        else:
-            usuario = request.form['usuario_corr']
-            email = request.form['email_corr']
-            nome = request.form['nome_corr']
-            creci = request.form['creci_corr']
-            celular = request.form['celular_corr']
-            cpf = request.form['cpf_corr']
-            endereco = request.form['endereco_corr']
-            senha = request.form['senha_corr']
-            cidade = request.form['cidades']
-            bairro = request.form['bairros']
-            senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
-            corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
-            corretor.set_user(corretor.valida(usuario))
-            corretor.set_cidade(corretor.valida(bairro))
-            corretor.set_bairro(corretor.valida(cidade))
-            corretor.set_email(corretor.valida(email))
-            self._Corretores_dao.salvar(corretor)
-
+        corretor = dao.corretor.buscar_por_id(request.form['usuario_corr'])
+        usuario = request.form['usuario_corr']
+        email = request.form['email_corr']
+        nome = request.form['nome_corr']
+        creci = request.form['creci_corr']
+        celular = request.form['celular_corr']
+        cpf = request.form['cpf_corr']
+        endereco = request.form['endereco_corr']
+        senha = request.form['senha_corr']
+        cidade = request.form['cidades']
+        bairro = request.form['bairros']
+        senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
+        corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
+        result = dao.corretor.salvar(corretor)
+        if result == UNIQUE_ERROR_CODE:
+            flash('email ou usuario nao disponivel')
+            return redirect(url_for('Corretor'))
         return redirect('/')
 
+    @server.loggin_required
     def editar_corretor(self,id):
         if 'usuario_logado' not in session or session['usuario_logado'] == None:
             return redirect('/login?proxima=''')
-        lista_cidades = self._CidadeDao.lista()
-        lista_bairro = self._BairroDao.lista()
-        corretor = self._Corretores_dao.busca_por_id_edit(id)
+        lista_cidades = dao.cidade.lista()
+        lista_bairro = dao.bairro.lista()
+        corretor = dao.corretor.busca_por_id_edit(id)
         return render_template('editar_corr.html', corretor=corretor, cidades=lista_cidades, bairros=lista_bairro)
 
+
+    @server.loggin_required
     def atualizar_corretor(self):
-        corretor_busq = self._Corretores_dao.buscar_por_id(request.form['usuario_corr'])
-        usuario_verifc = request.form['ussuario_verif']
         usuario = request.form['usuario_corr']
         email = request.form['email_corr']
         nome = request.form['nome_corr']
@@ -62,27 +62,16 @@ class CorretorController(Controller):
         id = request.form['id_corr']
         if (senha != ""):
             senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
-        if usuario_verifc == usuario:
-            corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro, id)
-            corretor.set_user(corretor.valida(usuario))
-            corretor.set_cidade(corretor.valida(cidade))
-            corretor.set_bairro(corretor.valida(bairro))
-            corretor.set_email(corretor.valida(email))
-            self._Corretores_dao.salvar(corretor)
-
-        elif corretor_busq:
-            flash('usuário já existe')
+        corretor = Corretores(usuario, email, nome, creci, celular, cpf, 
+                                    endereco, senha, cidade, bairro, id)
+        result = dao.corretor.salvar(corretor)
+        if result == UNIQUE_ERROR_CODE:
+            flash('email ou usuario nao disponivel')
             return redirect(url_for('editar_corretor', id=id))
-        else:
-            corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro, id)
-            corretor.set_user(corretor.valida(usuario))
-            corretor.set_cidade(corretor.valida(cidade))
-            corretor.set_bairro(corretor.valida(bairro))
-            corretor.set_email(corretor.valida(email))
-            self._Corretores_dao.salvar(corretor)
-
         return redirect('/')
 
+
+    @server.loggin_required
     def deletar_corr(self,id):
-        self._Corretores_dao.deletar_corr(id)
+        dao.corretor.deletar_corr(id)
         return redirect('/')
