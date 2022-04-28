@@ -4,6 +4,8 @@ from daofactory import dao
 import bcrypt
 from config import server
 
+UNIQUE_ERROR_CODE = 1062
+
 class CorretorController():
 
     @server.loggin_required
@@ -30,7 +32,7 @@ class CorretorController():
         senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
         result = dao.corretor.salvar(corretor)
-        if result == 1062:
+        if result == UNIQUE_ERROR_CODE:
             flash('email ou usuario nao disponivel')
             return redirect(url_for('Corretor'))
         return redirect('/')
@@ -63,7 +65,7 @@ class CorretorController():
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, 
                                     endereco, senha, cidade, bairro, id)
         result = dao.corretor.salvar(corretor)
-        if result == 1062:
+        if result == UNIQUE_ERROR_CODE:
             flash('email ou usuario nao disponivel')
             return redirect(url_for('editar_corretor', id=id))
         return redirect('/')

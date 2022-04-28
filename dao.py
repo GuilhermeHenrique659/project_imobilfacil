@@ -11,18 +11,22 @@ class ProprietarioDao:
     def __init__(self, db):
         self.__db=db
 
-    def salvar(self, Proprietario):
+    def salvar(self, proprietario):
         cursor = self.__db.connection.cursor()
-
-        if (Proprietario._id):
-            cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (Proprietario._nome, Proprietario._cpf,Proprietario._rg, Proprietario._endereco_prop, Proprietario._telefone,
-                                                       Proprietario._email,Proprietario._cidade,Proprietario._bairro, Proprietario._id))
-        else:
-            cursor.execute(SQL_CRIA_PROPRIETARIO, (Proprietario._nome,Proprietario._rg, Proprietario._cpf, Proprietario._endereco_prop, Proprietario._telefone,
-                                                   Proprietario._email,Proprietario._cidade,Proprietario._bairro))
-            cursor._id = cursor.lastrowid
+        try:
+            if (proprietario._id):
+                cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (proprietario._nome, proprietario._cpf_cnpj,proprietario._rg_insc_estadual, proprietario._endereco_prop, proprietario._telefone,
+                                                       proprietario._email,proprietario._cidade,proprietario._bairro, proprietario._id))
+            else:
+                cursor.execute(SQL_CRIA_PROPRIETARIO, (proprietario._nome,proprietario._rg_insc_estadual, proprietario._cpf_cnpj, proprietario._sexo,proprietario._endereco_prop,proprietario._cep,
+                                                     proprietario._end_numero, proprietario._tipo_pessoa, proprietario._codigo, proprietario._razao,proprietario._telefone,
+                                                     proprietario._celular, proprietario._whatsapp, proprietario._email, proprietario._capital, proprietario._patrimonio,
+                                                     proprietario._atividade, proprietario._cidade,proprietario._bairro))
+        except MySQLdb.IntegrityError as error:
+            return error.args[MYSQL_CODE_ERROR]
         self.__db.connection.commit()
-        del Proprietario
+        del proprietario
+        return cursor.lastrowid
 
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -37,7 +41,7 @@ class ProprietarioDao:
         prop_dict = cursor.fetchone()
         cidade = Cidade(prop_dict['CIDADE'], prop_dict['ID_CIDADE'])
         bairro = Bairro(prop_dict['BAIRRO'],prop_dict['CIDADE_ID_CID'],prop_dict['bairro.ID_BAIRRO'],prop_dict['CIDADE'])
-        proprietario = Proprietario(prop_dict['NOME'], prop_dict['CPF'], prop_dict['RG'], prop_dict['ENDERECO'],
+        proprietario = Proprietario(prop_dict['NOME'], prop_dict['CPF'], prop_dict['RG/INSC_ETAD'], prop_dict['ENDERECO'],
                                     prop_dict['TELEFONE'], prop_dict['EMAIL'], cidade, bairro, prop_dict['ID_PROP'])
         del cidade,bairro
         return proprietario
@@ -49,7 +53,7 @@ class ProprietarioDao:
 
     def traduz_para_lista(self,prop_dictlist):
         def traduz_para_objeto(prop_dict):
-            return Proprietario(prop_dict['NOME'], prop_dict['CPF'], prop_dict['RG'], prop_dict['ENDERECO'], prop_dict['TELEFONE'], prop_dict['EMAIL'],prop_dict['ID_CIDADE'],prop_dict['ID_BAIRRO'],prop_dict['ID_PROP'])
+            return Proprietario(prop_dict['NOME'], prop_dict['CPF_CNPJ'], prop_dict['RG_INSC_ETAD'], prop_dict['ENDERECO'], None, None, None,prop_dict['EMAIL'], telefone= prop_dict['TELEFONE'],cidade = prop_dict['ID_CIDADE'], bairro = prop_dict['ID_BAIRRO'],id = prop_dict['ID_PROP'])
         return list(map(traduz_para_objeto, prop_dictlist))
 
 #corretor/

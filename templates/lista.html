@@ -436,7 +436,7 @@
                 <tr>
                     <td style="width:3%">{{ proprietario._id }}</td>
                     <td>{{ proprietario._nome }}</td>
-                    <td>{{ proprietario._cpf }}</td>
+                    <td>{{ proprietario._cpf_cnpj }}</td>
                     <td>{{ proprietario._telefone }}</td>
                     <td>{{ proprietario._email }}</td>
                     <td><a href="{{url_for('editar_prop', id=proprietario._id)}}"><button type="button" class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
@@ -506,5 +506,9 @@
 } );
 
 </script>
-
+<script>
+    window.addEventListener('load', ()=>{
+        sessionStorage.clear()
+    })
+</script>
 {% endblock %}
