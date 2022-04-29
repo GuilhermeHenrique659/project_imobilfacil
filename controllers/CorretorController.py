@@ -16,6 +16,10 @@ class CorretorController():
         lista_bairro = dao.bairro.lista()
         return render_template('novo_corretor.html', cidades=lista_cidades, bairros=lista_bairro)
 
+    def take_message_error(self, error):
+        error_message = error.lower().replace("duplicate entry",'').replace("for key",'no campo')
+        return error_message
+    
     @server.loggin_required
     def criar_Corretor(self):
         corretor = dao.corretor.buscar_por_id(request.form['usuario_corr'])
@@ -32,8 +36,8 @@ class CorretorController():
         senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
         result = dao.corretor.salvar(corretor)
-        if result == UNIQUE_ERROR_CODE:
-            flash('email ou usuario nao disponivel')
+        if result.args[0] == UNIQUE_ERROR_CODE:
+            flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('Corretor'))
         return redirect('/')
 
@@ -65,8 +69,8 @@ class CorretorController():
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, 
                                     endereco, senha, cidade, bairro, id)
         result = dao.corretor.salvar(corretor)
-        if result == UNIQUE_ERROR_CODE:
-            flash('email ou usuario nao disponivel')
+        if result.args[0] == UNIQUE_ERROR_CODE:
+            flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('editar_corretor', id=id))
         return redirect('/')
 
