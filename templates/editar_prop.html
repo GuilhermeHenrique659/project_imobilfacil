@@ -2,154 +2,376 @@
 {% block conteudo %}
 
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
-  <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
-  <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
-  <script>
-   $(document).ready(function (){
-      $('#rg').mask('00.000.000-0');
-      $('#telefone').mask('(00) 00000-0000');
-      $('#cpf').mask('000.000.000-00');
+<script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
+<script>
+  $(document).ready(function () {
+    $('#rg').mask('00.000.000-0');
+    $('#telefone').mask('(00) 0000-0000');
+    $('#celular').mask('(00) 00000-0000');
+    $('#whatsapp').mask('(00) 00000-0000');
+    $('#cpf').mask('000.000.000-00');
+    $('#doc_estadual').mask('000.000.000/0000');
+    $('#doc_federal').mask('00.000.000/0000-00');
+    $('#cep').mask('00000-000');
   });
-  </script>
-      <div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3 needs-validation" action="/novo_bairro" method="post" novalidate>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Criar bairro</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <input type="hidden" name="previous" value="/editar_prop/{{proprietario._id}}">
+</script>
+<div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3 needs-validation" action="/novo_bairro" method="post" novalidate>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Criar bairro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="previous" value="/Proprietario">
+
           <div class="form-group">
             <label for="cidade_bairro">Cidade</label>
             <select class="form-select" id="cidade_bairro" name="cidade_bairro" required>
-                <option value="" selected>Selecione a tipo</option>
-                    {% for cidade in cidades %}
-                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
-                    {% endfor %}
-            </select><div class="invalid-feedback">
+              <option value="" selected>Selecione a tipo</option>
+              {% for cidade in cidades %}
+              <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+              {% endfor %}
+            </select>
+            <div class="invalid-feedback">
               Por favor insira uma cidade.
-              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="bairro">Bairro</label>
             <input type="text" id="bairro" name="bairro" class="form-control" required>
-              <div class="invalid-feedback">
+            <div class="invalid-feedback">
               Por favor insira um bairro.
-              </div>
+            </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+        </div>
       </div>
     </div>
-  </div></form>
+  </form>
 </div>
-      <div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3 needs-validation" action="/nova_cidade" method="post" novalidate>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="CidadeModalLabel">Criar cidade</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <input type="hidden" name="previous" value="/editar_prop/{{proprietario._id}}">
+<div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3 needs-validation" action="/nova_cidade" method="post" novalidate>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="CidadeModalLabel">Criar cidade</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="previous" value="/Proprietario">
+
           <div class="form-group">
             <label for="cidade">Cidade</label>
             <input type="text" id="cidade" name="cidade" class="form-control" required>
-              <div class="invalid-feedback">
+            <div class="invalid-feedback">
               Por favor insira uma cidade.
-              </div>
+            </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+        </div>
       </div>
     </div>
-  </div></form>
+  </form>
 </div>
-<h1>Editar Proprietario</h1>
+<h1>Cadastro de Proprietario</h1>
 <br>
-<form action="/atualizar_proprietario" method="post" class="needs-validation" novalidate>
-  <fieldset>
-    <input type="hidden" name="id" value="{{proprietario._id}}">
-    <div class="mb-3">
-      <label for="nome" class="form-label">Nome</label>
-      <input type="text" name="nome" class="form-control" id="nome" value="{{proprietario._nome}}" required >
-      <div class="invalid-feedback">
+
+<fieldset>
+
+
+  <div class="tab-content" id="nav-tabContent">
+    {% if proprietario._tipo_pessoa == 0 %}
+      <form id="form-fisica" action="{{url_for('atualizar_proprietario', tipo_pessoa=0,id_prop=proprietario._id)}}" method="post" class="needs-validation" novalidate>
+        <br>
+        
+        <div class="row">
+          <div class="col-10">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" name="nome" class="form-control" id="nome" required value="{{ proprietario._nome }}">
+            <div class="invalid-feedback">
               Por favor insira um nome.
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label for="cpf" class="form-label">CPF</label>
-      <input type="text" class="form-control" id="cpf" name="cpf" value="{{proprietario._cpf}}">
-    </div>
-    <div class="mb-3">
-      <label for="rg" class="form-label">RG</label>
-      <input type=text class="form-control" id="rg" name="rg" value="{{proprietario._rg}}">
-    </div>
-    <div class="mb-3">
-      <label for="endereco" class="form-label">Endereço</label>
-      <input type="text" class="form-control" id="endereco" name="endereco" value="{{proprietario._endereco_prop}}">
-    </div>
-    <div class="mb-3">
-        <label for="telefone" class="form-label">Celular</label>
-        <input type="text" class="form-control" id="telefone" name="telefone" value="{{proprietario._telefone}} " required>
-      <div class="invalid-feedback">
-              Por favor insira um Celular.
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input type="text" class="form-control" id="email" name="email" value="{{proprietario._email}}">
-    </div>
-
-<div class="input-group">
-            <label class="input-group-text" for="cidades">Cidade</label>
-            <select class="form-select" id="cidades" name="cidades" required>
-                <option value="{{proprietario._cidade._id_cidade}}" selected>{{proprietario._cidade._cidade_nome}}</option>
-                    {% for cidade in cidades %}
-                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
-                    {% endfor %}
+            </div>
+          </div>
+          <div class="col-2">
+            <label for="codigo" class="form-label">Codigo</label>
+            <input type="number" name="codigo" class="form-control" id="codigo" required value="{{ proprietario._codigo }}">
+            <div class="invalid-feedback">
+              Por favor insira um codigo.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <label for="cpf" class="form-label">CPF</label>
+            <input type="text" class="form-control" id="cpf" name="doc_federal" required value="{{ proprietario._cpf_cnpj }}">
+            <div class="invalid-feedback">
+              Por favor insira um cpf.
+            </div>
+          </div>
+          <div class="col-4">
+            <label for="rg" class="form-label">RG</label>
+            <input type=text class="form-control" id="rg" name="doc_estadual" required value="{{ proprietario._rg_insc_estadual }}">
+            <div class="invalid-feedback">
+              Por favor insira um rg.
+            </div>
+          </div>
+          <div class="col-4">
+            <label for="sexo" class="form-label">Sexo</label>
+            <select class="form-select" name="sexo" id="sexo" required>
+              <option value="m">Masculino</option>
+              <option value="f">Feminino</option>
             </select>
-                              <div class="invalid-feedback">
-              Por favor insira uma cidade.
-              </div>
+            <div class="invalid-feedback">
+              Por favor insira um sexo.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <label for="endereco" class="form-label">Endereço</label>
+            <input type="text" class="form-control" id="endereco" name="endereco" required value="{{ proprietario._endereco_prop }}">
+            <div class="invalid-feedback">
+              Por favor insira um endereco.
+            </div>
+          </div>
+          <div class="col-2">
+            <label for="numero" class="form-label">Numero</label>
+            <input type="number" class="form-control" id="numero" name="numero" required value="{{ proprietario._end_numero }}">
+            <div class="invalid-feedback">
+              Por favor insira um numero.
+            </div>
+          </div>
+          <div class="col-2">
+            <label for="cep" class="form-label">CEP</label>
+            <input type="text" class="form-control" id="cep" name="cep" required value="{{ proprietario._cep }}">
+            <div class="invalid-feedback">
+              Por favor insira um cep.
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="input-group">
+          <label class="input-group-text" for="cidades">Cidade</label>
+          <select class="form-select" id="cidades" name="cidades" required>
+            <option value="{{proprietario._cidade._id_cidade}}" selected>{{ proprietario._cidade._cidade_nome}}</option>
+            {% for cidade in cidades %}
+            <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">
+            Por favor insira uma cidade.
+          </div>
 
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CidadeModal"><i><img
-                      src="../static/img/icon/plus.svg" alt=""></i> Criar cidade </button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CidadeModal"><i><img
+                src="../static/img/icon/plus.svg" alt=""></i> Criar cidade </button>
+
+        </div>
+        <br>
+        <div class="input-group">
+          <label class="input-group-text" for="bairros">Bairros</label>
+          <select class="form-select" id="bairros" name="bairros" required>
+            <option value="{{ proprietario._bairro._id_bairro}}" selected>{{ proprietario._bairro._bairro_nome}}</option>
+            {% for bairro in bairros %}
+
+            <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
+              {{bairro._bairro_cid_nome}}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">
+            Por favor insira um bairro.
+          </div>
+
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#BairroModal"><i><img
+                src="../static/img/icon/plus.svg" alt=""></i> Criar bairro </button>
+
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-8">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ proprietario._email }}">
 
           </div>
-      <br>
+          <div class="col-4">
+            <label for="whatsapp" class="form-label">WhatsApp</label>
+            <input type="text" class="form-control" id="whatsapp" name="whatsapp" value="{{ proprietario._whatsapp }}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="celular" class="form-label">Celular</label>
+            <input type="text" class="form-control" id="celular" name="celular" value="{{ proprietario._celular}}">
+          </div>
+          <div class="col-6">
+            <label for="telefone" class="form-label">Telefone fixo</label>
+            <input type="text" class="form-control" id="telefone" name="telefone" value="{{ proprietario._telefone }}">
+          </div>
+        </div>
+        <br>
+        
+        <button type="submit" class="btn btn-dark">Salvar</button>
+        <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
+      </form>
 
 
-<div class="input-group">
-            <label class="input-group-text" for="bairros">Bairros</label>
-            <select class="form-select" id="bairros" name="bairros" required>
-                <option value="{{proprietario._bairro._id_bairro}}" selected>{{proprietario._bairro._bairro_nome}}</option>
-                    {% for bairro in bairros %}
 
-                        <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}}</option>
-                    {% endfor %}
-            </select>
-                              <div class="invalid-feedback">
-              Por favor insira um bairro.
-              </div>
+    {% else %}
+      <form id="form-juridica" action="{{url_for('atualizar_proprietario',tipo_pessoa=1,id_prop=proprietario._id )}}" method="post" class="needs-validation" novalidate>
+        <br>
+        <div class="row">
+          <div class="col-10">
+            <label for="nome-fantasia" class="form-label">Nome Fantasia</label>
+            <input type="text" name="nome" class="form-control" id="nome-fantasia" required value="{{ proprietario._nome }}">
+            <div class="invalid-feedback">
+              Por favor insira uma Nome Fantasia.
+            </div>
+          </div>
+          <div class="col-10">
+            <label for="razao" class="form-label">Razao Social</label>
+            <input type="text" name="razao" class="form-control" id="razao" required value="{{ proprietario._razao }}">
+            <div class="invalid-feedback">
+              Por favor insira uma Razao Social.
+            </div>
+          </div>
+          <div class="col-2">
+            <label for="codigo-jur" class="form-label">Codigo</label>
+            <input type="number" name="codigo" class="form-control" id="codigo-jur" required  value="{{ proprietario._codigo }}">
+            <div class="invalid-feedback">
+              Por favor insira um codigo.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <label for="doc_federal" class="form-label">CNPJ</label>
+            <input type="text" class="form-control" id="doc_federal" name="doc_federal" required  value="{{ proprietario._cpf_cnpj }}">
+            <div class="invalid-feedback">
+              Por favor insira um CNPJ.
+            </div>
+          </div>
+          <div class="col-4">
+            <label for="doc_estadual" class="form-label">Inscrição estadual</label>
+            <input type=text class="form-control" id="doc_estadual" name="doc_estadual" required  value="{{ proprietario._rg_insc_estadual }}">
+            <div class="invalid-feedback">
+              Por favor insira um Inscrição estadual.
+            </div>
+          </div>
+          <div class="col-4">
+            <label for="atividade" class="form-label">Atividade principal</label>
+            <input type=text class="form-control" id="atividade" name="atividade" required  value="{{ proprietario._atividade }}">
+            <div class="invalid-feedback">
+              Por favor insira uma atividade.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <label for="endereco-jur" class="form-label">Endereço</label>
+            <input type="text" class="form-control" id="endereco-jur" name="endereco" required  value="{{ proprietario._endereco_prop }}">
+            <div class="invalid-feedback">
+              Por favor insira um endereco.
+            </div>
+          </div>
+          <div class="col-2">
+            <label for="numero-jur" class="form-label">Numero</label>
+            <input type="number" class="form-control" id="numero-jur" name="numero" required  value="{{ proprietario._end_numero }}">
+            <div class="invalid-feedback">
+              Por favor insira um numero.
+            </div>
+          </div>
+          <div class="col-2">
+            <label for="cep-jur" class="form-label">CEP</label>
+            <input type="text" class="form-control" id="cep-jur" name="cep" required  value="{{ proprietario._cep }}">
+            <div class="invalid-feedback">
+              Por favor insira um cep.
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="input-group">
+          <label class="input-group-text" for="cidades-jur">Cidade</label>
+          <select class="form-select" id="cidades-jur" name="cidades" required>
+            <option value="{{proprietario._cidade._id_cidade}}" selected>{{proprietario._cidade._cidade_nome}}</option>
+            {% for cidade in cidades %}
+            <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">
+            Por favor insira uma cidade.
+          </div>
 
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#BairroModal"><i><img
-                      src="../static/img/icon/plus.svg" alt=""></i> Criar bairro </button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CidadeModal"><i><img
+                src="../static/img/icon/plus.svg" alt=""></i> Criar cidade </button>
+
+        </div>
+        <br>
+        <div class="input-group">
+          <label class="input-group-text" for="bairros-jur">Bairros</label>
+          <select class="form-select" id="bairros-jur" name="bairros" required>
+            <option value="{{ proprietario._bairro._id_bairro}}" selected>{{ proprietario._bairro._bairro_nome }}</option>
+            {% for bairro in bairros %}
+
+            <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
+              {{bairro._bairro_cid_nome}}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">
+            Por favor insira um bairro.
+          </div>
+
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#BairroModal"><i><img
+                src="../static/img/icon/plus.svg" alt=""></i> Criar bairro </button>
+
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-8">
+            <label for="email-jur" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email-jur" name="email" value="{{ proprietario._email }}">
 
           </div>
-      <br>
-    <button type="submit" class="btn btn-dark">Salvar</button>
-    <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
-  </fieldset>
-</form>
+          <div class="col-4">
+            <label for="whatsapp-jur" class="form-label">WhatsApp</label>
+            <input type="text" class="form-control" id="whatsapp-jur" name="whatsapp" value="{{ proprietario._whatsapp }}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="celular-jur" class="form-label">Celular</label>
+            <input type="text" class="form-control" id="celular-jur" name="celular" value="{{ proprietario._celular }}">
+          </div>
+          <div class="col-6">
+            <label for="telefone-jur" class="form-label">Telefone fixo</label>
+            <input type="text" class="form-control" id="telefone-jur" name="telefone" value="{{ proprietario._telefone }}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label for="capital" class="form-label">Capital registrado</label>
+            <input type="text" class="form-control" id="capital" name="capital" value="{{ proprietario._capital }}">
+          </div>
+          <div class="col-6">
+            <label for="patrimonio" class="form-label">Patrimonio Liquido</label>
+            <input type="text" class="form-control" id="patrimonio" name="patrimonio"  value="{{ proprietario._patrimonio }}">
+          </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-dark">Salvar</button>
+        <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
+      </form>
+      {% endif %}
+</fieldset>
 
+<script src="{{url_for('static', filename='js/storage_form_prop.js')}}"></script>
 {% endblock %}

@@ -78,12 +78,18 @@
     <br>
     <div class="mb-3">
       <label for="usuario" class="form-label">Usuário</label>
-      <input type=text class="form-control" id="usuario" name="usuario_corr">
+      <input type=text class="form-control" id="usuario" name="usuario_corr" required>
+      <div class="invalid-feedback">
+        Por favor insira um usuario.
+  </div>
     </div>
     <br>
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
-      <input type="email" class="form-control" id="email" name="email_corr">
+      <input type="email" class="form-control" id="email" name="email_corr" required>
+      <div class="invalid-feedback">
+        Por favor insira um email.
+  </div>
     </div>
     <br>
     <div class="mb-3">
@@ -120,7 +126,10 @@
     <br>
     <div class="mb-3">
       <label for="endereco" class="form-label">Endereço</label>
-      <input type="text" class="form-control" id="endereco" name="endereco_corr">
+      <input type="text" class="form-control" id="endereco" name="endereco_corr" required>
+      <div class="invalid-feedback">
+        Por favor insira um endereco.
+  </div>
     </div>
     <br>
 <div class="input-group">
@@ -160,9 +169,13 @@
           <br>
     <div class="mb-3">
       <label for="senha" class="form-label">Senha</label>
-      <input type="password" class="form-control" id="senha" name="senha_corr">
+      <input type="password" class="form-control" id="senha" name="senha_corr" required>
+      <div class="invalid-feedback">
+        Por favor insira uma senha.
+  </div>
                 <input type="checkbox" id="senha_mostrar" name="Senha_mostrar" onclick="Mostrar_senha()">
         <label for="senha_mostrar"> Mostrar senha!</label><br>
+
     </div>
     <button type="submit" class="btn btn-dark">Salvar</button>
     <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>

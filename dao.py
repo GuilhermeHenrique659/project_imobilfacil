@@ -4,7 +4,7 @@ from models import (Bairro, Cidade, Corretores, Financeiro, Imovel,
                     Proprietario, Tipo)
 from SQL import *
 
-MYSQL_CODE_ERROR = 0
+
 
 #proprietarios
 class ProprietarioDao:
@@ -15,15 +15,17 @@ class ProprietarioDao:
         cursor = self.__db.connection.cursor()
         try:
             if (proprietario._id):
-                cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (proprietario._nome, proprietario._cpf_cnpj,proprietario._rg_insc_estadual, proprietario._endereco_prop, proprietario._telefone,
-                                                       proprietario._email,proprietario._cidade,proprietario._bairro, proprietario._id))
+                cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (proprietario._nome,proprietario._rg_insc_estadual, proprietario._cpf_cnpj, proprietario._sexo,proprietario._endereco_prop,proprietario._cep,
+                                                     proprietario._end_numero, proprietario._tipo_pessoa, proprietario._codigo, proprietario._razao,proprietario._telefone,
+                                                     proprietario._celular, proprietario._whatsapp, proprietario._email, proprietario._capital, proprietario._patrimonio,
+                                                     proprietario._atividade, proprietario._cidade,proprietario._bairro,proprietario._id,))
             else:
                 cursor.execute(SQL_CRIA_PROPRIETARIO, (proprietario._nome,proprietario._rg_insc_estadual, proprietario._cpf_cnpj, proprietario._sexo,proprietario._endereco_prop,proprietario._cep,
                                                      proprietario._end_numero, proprietario._tipo_pessoa, proprietario._codigo, proprietario._razao,proprietario._telefone,
                                                      proprietario._celular, proprietario._whatsapp, proprietario._email, proprietario._capital, proprietario._patrimonio,
                                                      proprietario._atividade, proprietario._cidade,proprietario._bairro))
         except MySQLdb.IntegrityError as error:
-            return error.args[MYSQL_CODE_ERROR]
+            return error
         self.__db.connection.commit()
         del proprietario
         return cursor.lastrowid
@@ -41,8 +43,12 @@ class ProprietarioDao:
         prop_dict = cursor.fetchone()
         cidade = Cidade(prop_dict['CIDADE'], prop_dict['ID_CIDADE'])
         bairro = Bairro(prop_dict['BAIRRO'],prop_dict['CIDADE_ID_CID'],prop_dict['bairro.ID_BAIRRO'],prop_dict['CIDADE'])
-        proprietario = Proprietario(prop_dict['NOME'], prop_dict['CPF'], prop_dict['RG/INSC_ETAD'], prop_dict['ENDERECO'],
-                                    prop_dict['TELEFONE'], prop_dict['EMAIL'], cidade, bairro, prop_dict['ID_PROP'])
+        proprietario = Proprietario(prop_dict['NOME'], prop_dict['CPF_CNPJ'], prop_dict['RG_INSC_ETAD'], prop_dict['ENDERECO'],
+                                    prop_dict['NUMERO'],prop_dict['CEP'],prop_dict['CELULAR'],prop_dict['EMAIL'],cidade=cidade,bairro=bairro,
+                                    id=prop_dict['ID_PROP'],atividade=prop_dict['ATIVIDADE'],telefone=prop_dict['TELEFONE'],
+                                    razao=prop_dict['RAZAO'], capital=prop_dict['CAPITAL'],patrimonio=prop_dict['PATRIMONIO'],
+                                    whatsapp=prop_dict['WHATAPPS'],data_cad=prop_dict['DATA_CAD'],tipo_pessoa=prop_dict['PESSOA'],
+                                    codigo=prop_dict['CODIGO'],sexo=prop_dict['SEXO'])
         del cidade,bairro
         return proprietario
 
@@ -71,7 +77,7 @@ class CorretorDao:
                 cursor.execute(SQL_CRIA_CORRETORES, (corretor._usuario,corretor._email,corretor._nome,corretor._creci,
                                                  corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
         except MySQLdb.IntegrityError as error:
-            return error.args[MYSQL_CODE_ERROR]
+            return error
         self.__db.connection.commit()
         del corretor
         return cursor.lastrowid
