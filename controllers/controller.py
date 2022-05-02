@@ -8,13 +8,8 @@ class IndexController():
 
     @server.loggin_required
     def index(self):
-        lista_imob = dao.imovel.listar()
-        lista_prop = dao.proprietario.listar()
-        lista_corr = dao.corretor.listar()
-        lista_cidades = dao.cidade.lista()
-        lista_bairro = dao.bairro.lista()
-        return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop,
-                               cidades=lista_cidades, bairros=lista_bairro)
+        corretores = dao.corretor.listar()
+        return render_template('lista_corr.html',corretores=corretores)
 
     def login(self):
         proxima = request.args.get('proxima')

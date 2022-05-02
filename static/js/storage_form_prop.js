@@ -1,4 +1,5 @@
-document.getElementById('form-fisica').addEventListener('submit', function(event){
+
+function session_storege_cpf(){
     sessionStorage.setItem('nome',document.getElementById('nome').value)
     sessionStorage.setItem('codigo',document.getElementById('codigo').value)
     sessionStorage.setItem('cpf',document.getElementById('cpf').value)
@@ -13,8 +14,8 @@ document.getElementById('form-fisica').addEventListener('submit', function(event
     sessionStorage.setItem('whatsapp',document.getElementById('whatsapp').value)
     sessionStorage.setItem('celular',document.getElementById('celular').value)
     sessionStorage.setItem('telefone',document.getElementById('telefone').value)
-})
-document.getElementById('form-juridica').addEventListener('submit', function(event){
+}
+function session_storege_cnpj(){
     sessionStorage.setItem('nome-fantasia',document.getElementById('nome-fantasia').value)
     sessionStorage.setItem('razao',document.getElementById('razao').value)
     sessionStorage.setItem('codigo-jur',document.getElementById('codigo-jur').value)
@@ -32,8 +33,24 @@ document.getElementById('form-juridica').addEventListener('submit', function(eve
     sessionStorage.setItem('telefone-jur',document.getElementById('telefone-jur').value)
     sessionStorage.setItem('capital',document.getElementById('capital').value)
     sessionStorage.setItem('patrimonio',document.getElementById('patrimonio').value)
+}
 
+document.getElementById('form-fisica').addEventListener('submit', function(event){
+    session_storege_cpf()
 })
+document.getElementById('form-juridica').addEventListener('submit', function(event){
+    session_storege_cnpj()
+})
+
+document.getElementById('cidade').addEventListener('submit', function(event){
+    session_storege_cpf()
+    session_storege_cnpj()
+})
+document.getElementById('bairro').addEventListener('submit', function(event){
+    session_storege_cnpj()
+    session_storege_cpf()
+})
+
 
 window.addEventListener('load', (event) => {
     document.getElementById('nome').value = sessionStorage.getItem('nome')

@@ -1,0 +1,95 @@
+{% extends "template.html" %}
+{% block conteudo %}
+
+
+<div class="content-list">
+            <h3>Corretores</h3>
+            <br>
+            <table class="table table-striped table-responsive table-bordered" id="TableCorr">
+                <thead class="thead-default">
+                    <tr>
+                        <th style="width:3%">#</th>
+                        <th>Nome</th>
+                        <th>CRECI</th>
+                        <th>CPF</th>
+                        <th>Celular</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for corretor in corretores %}
+                    <tr>
+                        <td style="width:3%">{{ corretor._id_corr }}</td>
+                        <td>{{ corretor._nome }}</td>
+                        <td>{{ corretor._creci }}</td>
+                        <td>{{ corretor._cpf }}</td>
+                        <td>{{ corretor._celular }}</td>
+                        <td><a href="{{url_for('editar_corretor', id=corretor._id_corr)}}"><button type="button"
+                                    class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
+                            <button type="button" class="btn" data-bs-toggle="modal"
+                                data-bs-target="#modal_corr{{ corretor._id_corr}}"><i>
+                                    <img src="../static/img/icon/trash.svg"></i></button>
+                            <div class="modal fade" id="modal_corr{{ corretor._id_corr}}" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel1">Deseja excluir o registro {{
+                                            corretor._id_corr }} </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Você tem certeza que deseja excluir o corretor:</p>
+                                            <p>Nome: {{ corretor._nome }}</p>
+                                            <p>CPF: {{ corretor._cpf }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Fechar
+                                            </button>
+                                            <a href="{{url_for('deletar_corr', id=corretor._id_corr)}}">
+                                                <button type="button" class="btn btn-danger">Deletar corretor
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("table[id^='Table']").DataTable({
+            "language": {
+                "lengthMenu": "Mostrando  _MENU_  registros por página",
+                "zeroRecords": "Nada encontrado",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "Nenhum registro disponível",
+                "infoFiltered": "(filtrado de _MAX_ registros no total)",
+                "search": "Procurar",
+                "paginate": {
+                    "first": "Primeiro",
+                    "last": "Ultimo",
+                    "next": "Proximo",
+                    "previous": "Anterior"
+                }
+            }
+
+        });
+    });
+</script>
+<script>
+    window.addEventListener('load', () => {
+        sessionStorage.clear()
+    })
+</script>
+{% endblock %}

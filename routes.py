@@ -48,7 +48,9 @@ class Routes:
 
         server.app.add_url_rule('/criar_imovel', endpoint='cria_imovel' , view_func=controllers.imovel.criar_imovel,methods=['POST'])
 
+        server.app.add_url_rule('/novo_terreno', endpoint='novo_terreno', view_func=controllers.terreno.novo_terreno)
 
+        server.app.add_url_rule('/criar_terreno', endpoint='criar_terreno', view_func=controllers.terreno.criar_terreno, methods=['POST'])
 #Criar Proprietario
         server.app.add_url_rule('/Proprietario', endpoint='Proprietario',view_func=controllers.proprietario.rota_proprietario,methods=['GET'])
 

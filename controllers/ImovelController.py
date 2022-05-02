@@ -11,9 +11,8 @@ class ImovelController():
         lista_corr = dao.corretor.listar()
         lista_cidades = dao.cidade.lista()
         lista_bairro = dao.bairro.lista()
-        lista_tipo = dao.tipo.lista()
         return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr,
-                               tipos=lista_tipo, cidades=lista_cidades, bairros=lista_bairro)
+                            cidades=lista_cidades, bairros=lista_bairro)
 
     @server.loggin_required
     def criar_imovel(self):

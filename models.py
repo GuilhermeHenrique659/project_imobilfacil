@@ -16,63 +16,50 @@ class Tipo:
         self._tipo_nome = tipo_nome
 
 class Imovel:
-    def __init__(self, tipo, finalidade, cidade, bairro, endereco,area, descricao, valor_imovel, status, porcentagem,
-                 proprietario=None, corretor=None, valor_venda=None,honorarios=None, banheiro=None, quartos=None, garagem=None, imob_id=None):
+    def __init__(self, categoria=None,forma=None, ladoesq=None,ladodir=None, frente=None,fundo=None, 
+                m_total=None, topografia=None, area_util=None, area_contruida=None,edicula=None, cidade=None, 
+                bairro=None, endereco=None, numero=None, cep=None, valor_imovel=None,
+                taxa=None, valor_venda=None, repasse=None,  placa=None, url=None, data_placa=None,data_visita=None, 
+                data_ultvis=None, codigo=None, info_anun=None,info_area=None,info_end=None, proprietario=None, 
+                corretor=None, imob_id=None, tipo=None, subtipo=None):
         self._imob_id = imob_id
-        self._tipo = tipo
-        self._finalidade = finalidade
+        self._categoria = categoria
+        self._tipo =tipo
+        self._subtipo = subtipo
+        self._forma = forma
+        self._ladoesq = ladoesq
+        self._ladodir = ladodir
+        self._frente = frente
+        self._fundo = fundo
+        self._info_area = info_area
+        self._m_total = m_total
+        self._topografia = topografia
+        self._area_util = area_util
+        self._area_contruida = area_contruida
+        self._edicula = edicula
+        self._numero = numero
+        self._cep = cep
+        self._placa = placa
+        self._info_end = info_end
+        self._codigo = codigo
+        self._url = url
+        self._data_placa = data_placa
+        self._data_visita = data_visita
+        self._data_ultvis = data_ultvis
+        self._info_anun = info_anun
+        self._taxa = taxa
+        self._repasse = repasse
         self._cidade = cidade
         self._bairro = bairro
         self._endereco = endereco
-        self._area = area
-        self._descricao = descricao
         self._valor_imovel = valor_imovel
         self._valor_venda = valor_venda
-        self._status = status
-        self._porcentagem = porcentagem
-        self._honorarios = honorarios
         self._proprietario = proprietario
         self._corretor = corretor
-        self._banheiro = banheiro
-        self._quartos = quartos
-        self._garagem = garagem
-
-    def set_area(self):
-        self._area = self._area.replace('m','')
-        return float(self._area)
-    def set_id(self,id):
-        self._imob_id = id
-
-    @property
-    def area(self):
-        return int(self._area)
-
-    def set_percentagem(self):
-        self._porcentagem = self._porcentagem.replace('%','')
-        return float(self._porcentagem)
-
-    def set_valor_imovel(self):
-        self._valor_imovel = self._valor_imovel.replace('.','')
-        return float(self._valor_imovel)
-
-    @property
-    def valor_imovel(self):
-        return int(self._valor_imovel)
-
-    def set_honorarios(self):
-        self._honorarios = (self.set_percentagem() * self.set_valor_imovel())/100
-        return float(self._honorarios)
-    @property
-    def honorarios(self):
-        return float(self._honorarios)
-
-    def set_valor_venda(self):
-        self._valor_venda = (self.valor_imovel + ((self.set_percentagem() * self.valor_imovel)/100))
-        return float(self._valor_venda)
 
 class Proprietario:
-    def __init__(self, nome, cpf_cnpj, rg_insc_estadual, endereco, numero, cep,
-                celular, email, cidade=None, bairro=None, id = None, atividade = None,
+    def __init__(self, nome=None, cpf_cnpj=None, rg_insc_estadual=None, endereco=None, numero=None, cep=None,
+                celular=None, email=None, cidade=None, bairro=None, id = None, atividade = None,
                 telefone = None, razao = None, capital = None, patrimonio = None, 
                 whatsapp = None, data_cad = None, tipo_pessoa = None, codigo = None, sexo = None):
         self._id = id
