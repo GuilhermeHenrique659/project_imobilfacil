@@ -66,121 +66,7 @@
     </form>
 </div>
 
-<div class="modal fade" id="FiltroStatusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-        <input type="hidden" name="filtro" value="filtra_status">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="FiltroStatusModalLabel">Filtrar Status</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="filtra_status">Status</label>
-                        <select class="form-select" id="filtra_status" name="filtra_status" required>
-                            <option value="" selected>Selecione o status</option>
-                            <option value="Livre">Livre</option>
-                            <option value="Ocupado">Ocupado</option>
-                            <option value="Vendido">Vendido</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Por favor insira um status.
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-dark">Filtrar</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
 
-<div class="modal fade" id="FiltroBanheiroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-        <input type="hidden" name="filtro" value="filtra_banheiro">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="FiltroBanheiroModalLabel">Filtrar Quartos</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="filtra_banheiro">Numero de quartos</label>
-                        <input type="number" class="form-select" id="filtra_banheiro" name="filtra_banheiro" value="0"
-                               required>
-                        <div class="invalid-feedback">
-                            Por favor insira o numero de banheiro.
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-dark">Filtrar</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
-<div class="modal fade" id="FiltroQuartosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-        <input type="hidden" name="filtro" value="filtra_quartos">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="FiltroQuartosModalLabel">Filtrar Quartos</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="filtra_quartos">Numero de quartos</label>
-                        <input type="number" class="form-select" id="filtra_quartos" name="filtra_quartos" value="0"
-                               required>
-                        <div class="invalid-feedback">
-                            Por favor insira um numero de quartos.
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-dark">Filtrar</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
-<div class="modal fade" id="FiltroGaragemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
-        <input type="hidden" name="filtro" value="filtra_garagem">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="FiltroGaragemModalLabel">Filtrar garagem</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="filtra_garagem">Numero de garagem</label>
-                        <input type="number" class="form-select" id="filtra_garagem" name="filtra_garagem" value="0"
-                               required>
-                        <div class="invalid-feedback">
-                            Por favor insira um numero de garagem.
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-dark">Filtrar</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
 
 <div class="modal fade" id="FiltroBairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <form class="row g-3 needs-validation" action="/filtro" method="post" novalidate>
@@ -321,26 +207,6 @@
                                         data-bs-target="#FiltroPropModal">Filtrar por proprietarios
                                 </button>
                             </li>
-                            <li>
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                        data-bs-target="#FiltroStatusModal">Filtrar por status
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                        data-bs-target="#FiltroQuartosModal">Filtrar por quartos
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                        data-bs-target="#FiltroBanheiroModal">Filtrar por banheiro
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                        data-bs-target="#FiltroGaragemModal">Filtrar por garagem
-                                </button>
-                            </li>
 
                         </ul>
                         <a href="{{url_for('index')}}">
@@ -355,13 +221,12 @@
                         <thead class="thead-default">
                         <tr>
                             <th style="width:3%">#</th>
-                            <th style="width:8%">Tipo</th>
                             <th>Cidade</th>
+                            <th>Categoria</th>
                             <th>Bairro</th>
                             <th>Endereço</th>
                             <th>Proprietario</th>
                             <th>Telefone</th>
-                            <th>Status</th>
                             <th>Ações</th>
                         </tr>
                         </thead>
@@ -369,15 +234,17 @@
                         {% for l in lista %}
                         <tr>
                             <td style="width:3%">{{ l._imob_id}}</td>
-                            <td style="width:8%">{{ l._tipo._tipo_nome}}</td>
-                            <td>{{ l._cidade._cidade_nome}}</td>
-                            <td>{{ l._bairro._bairro_nome}}</td>
+                            <td>{{ l._categoria}}</td>
+                            <td>{{ l._cidade}}</td>
+                            <td>{{ l._bairro}}</td>
                             <td>{{ l._endereco}}</td>
                             <td>{{ l._proprietario._nome}}</td>
-                            <td>{{ l._proprietario._telefone}}</td>
-                            <td>{{ l._status }}</td>
-                            <td><a href="{{url_for('view_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i><img src="../static/img/icon/eye.svg"></i></button></a>
+                            <td>{{ l._proprietario._celular}}</td>
+                            <td>{% if l._categoria == 'Terreno' %}                                
+                                <a href="{{url_for('editar_terreno', id=l._imob_id)}}"><button type="button" class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
+                                {% else %}
                                 <a href="{{url_for('editar_imovel', id=l._imob_id)}}"><button type="button" class="btn"><i><img src="../static/img/icon/pen.svg"></i></button></a>
+                                {% endif %}
                                 <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_imob{{ l._imob_id}}"><i><img src="../static/img/icon/trash.svg"></i></button>
                                 <div class="modal fade" id="modal_imob{{ l._imob_id}}" tabindex="-1"
                                      aria-labelledby="exampleModalLabel"

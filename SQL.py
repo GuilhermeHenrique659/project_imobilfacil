@@ -1,19 +1,29 @@
 
 #Sql da tabela imoveis
-SQL_CRIA_IMOVEL = 'INSERT into imoveis (ID_CORR, ID_PROP, ID_TIPO, FINALIDADE, ID_CIDADE, ID_BAIRRO, ENDERECO_IMOVEL, AREA, DETALHES,' \
-                  ' VALOR_IMOVEL,VALOR_VENDA, STATUS, PORCENTAGEM, HONORARIOS, BANHEIRO, QUARTOS, GARAGEM)' \
-                  ' values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s, %s, %s)'
+SQL_CRIA_IMOVEL = '''
+                INSERT into imoveis (ID_CORR, ID_PROP, ID_CIDADE,ID_BAIRRO,CATEGORIA,FORMA,LADO_ESQ,LADO_DIR,LADO_FRE,
+                                    LADO_FUN,TOTAL,TOPOGRAFIA,AREA_UTIL,CONSTRUIDA,EDICULA,AREA_INFO,TIPO,SUBTIPO,ENDERECO_IMOVEL,
+                                    NUMERO,CEP,END_INFO,PLACA,DATA_PLACA,DATA_VISITA,DATA_ULTIMA_VIS,URL,COD_ANUNCIO,ANUNCIO_INFO,
+                                    VALOR_IMOVEL,VALOR_VENDA,CORRETAGEM,REPASSE_IMOB)
+                values (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s,
+                         %s, %s, %s, %s ,%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s);
+'''
 
 SQL_DELETA_IMOVEL = 'delete from imoveis where ID_IMOB = %s'
 
-SQL_ATUALIZA_IMOVEIS = 'UPDATE imoveis SET ID_CORR=%s,ID_PROP=%s,ID_TIPO=%s,FINALIDADE=%s,ID_CIDADE=%s,ID_BAIRRO=%s,ENDERECO_IMOVEL=%s, AREA=%s, DETALHES=%s,'\
-                       'VALOR_IMOVEL=%s,VALOR_VENDA=%s,STATUS=%s, PORCENTAGEM=%s, HONORARIOS=%s,BANHEIRO=%s,QUARTOS=%s, GARAGEM=%s where ID_IMOB=%s'
+SQL_ATUALIZA_IMOVEIS = ''' UPDATE imoveis SET  ID_CORR=%s, ID_PROP=%s, ID_CIDADE=%s,ID_BAIRRO=%s,
+                                    CATEGORIA=%s,FORMA=%s,LADO_ESQ=%s,LADO_DIR=%s,LADO_FRE=%s,
+                                    LADO_FUN=%s,TOTAL=%s,TOPOGRAFIA=%s,AREA_UTIL=%s,CONSTRUIDA=%s,EDICULA=%s,
+                                    AREA_INFO=%s,TIPO=%s,SUBTIPO=%s,ENDERECO_IMOVEL=%s,
+                                    NUMERO=%s,CEP=%s,END_INFO=%s,PLACA=%s,DATA_PLACA=%s,DATA_VISITA=%s,DATA_ULTIMA_VIS=%s,
+                                    URL=%s,COD_ANUNCIO=%s,ANUNCIO_INFO=%s,
+                                     VALOR_IMOVEL=%s,VALOR_VENDA=%s,CORRETAGEM=%s,REPASSE_IMOB=%s where ID_IMOB=%s;
+    '''
 
-SQL_BUSCA_LISTA_IMOB = 'select * from imoveis left join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP  inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
-                       'join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO'
+SQL_BUSCA_LISTA_IMOB = 'select ID_IMOB,CATEGORIA,CIDADE,BAIRRO,ENDERECO_IMOVEL,NOME,CELULAR from imoveis left join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP' \
+                       ' join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO'
 
 SQL_BUSCA_IMOB_ID = 'select * from imoveis left join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP ' \
-                    'inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
                     'join cidade on cidade.ID_CID = imoveis.ID_CIDADE ' \
                     'join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO ' \
                     'left join corretores on imoveis.ID_CORR = corretores.ID_CORR ' \

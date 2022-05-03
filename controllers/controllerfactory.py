@@ -4,7 +4,7 @@ from .ImovelController import ImovelController
 from .FinanceiroController import FinanceiroController
 from .OthersController import OthersController
 from .ProprietarioController import ProprietarioController
-
+from .TerrenoController import TerrenoController
 
 class FactoryController:
     def __init__(self) -> None:
@@ -14,6 +14,7 @@ class FactoryController:
         self.__financeiro = FinanceiroController()
         self.__others = OthersController()
         self.__proprietario = ProprietarioController()
+        self.__terreno = TerrenoController()
 
     @property
     def imovel(self):
@@ -39,5 +40,8 @@ class FactoryController:
     def orthers(self):
         return self.__others
 
+    @property
+    def terreno(self):
+        return self.__terreno
 
 controllers = FactoryController()

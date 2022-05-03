@@ -28,14 +28,6 @@ conn.cursor().execute("USE `heroku_405b84a0ef05c35`;")
 '''
 conn.cursor().execute("USE `heroku_7f17bca4c88d1c7`;")
 
-criar_tabela_tipo = '''CREATE TABLE `TIPOS` (
-        `ID_TIPO` INT NOT NULL AUTO_INCREMENT,
-        `TIPO` VARCHAR(45) NOT NULL,
-        PRIMARY KEY (`ID_TIPO`)
-    ) ENGINE=InnoDB;'''
-conn.cursor().execute(criar_tabela_tipo)
-conn.commit()
-
 criar_tabela_cidade = '''CREATE TABLE `CIDADE` (
         `ID_CID` INT NOT NULL AUTO_INCREMENT,
         `CIDADE` VARCHAR(45) NOT NULL,
@@ -60,7 +52,6 @@ conn.cursor().execute(criar_tabela_bairro)
 conn.commit()
 criar_tabela_corretor = '''CREATE TABLE `CORRETORES` (
         `ID_CORR` INT NOT NULL AUTO_INCREMENT,
-        `CODIGO` INT NOT NULL UNIQUE,
         `USUARIO` VARCHAR(45) NOT NULL UNIQUE,
         `EMAIL` VARCHAR(45) NOT NULL UNIQUE,
         `NOME` VARCHAR(45) NULL,
@@ -131,25 +122,42 @@ criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
 conn.cursor().execute(criar_tabela_proprietario)
 conn.commit()
 
+
 criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
         `ID_IMOB` INT NOT NULL AUTO_INCREMENT,
         `ID_CORR` INT NULL,
         `ID_PROP` INT NULL,
-        `ID_TIPO` INT NULL,
-        `FINALIDADE` VARCHAR(45) NULL,
         `ID_CIDADE` INT NULL,
         `ID_BAIRRO` INT NULL,
-        `ENDERECO_IMOVEL` VARCHAR(45) NULL,
-        `AREA` REAL NULL,
-        `DETALHES` VARCHAR(512) NULL,
+        `CATEGORIA` VARCHAR(45) NOT NULL,
+        `FORMA` VARCHAR(25) NOT NULL,
+        `LADO_ESQ` INT NOT NULL,
+        `LADO_DIR` INT NOT NULL,
+        `LADO_FRE` INT NOT NULL,
+        `LADO_FUN` INT NOT NULL,
+        `TOTAL` INT NOT NULL,
+        `TOPOGRAFIA` VARCHAR(45) NOT NULL,
+        `AREA_UTIL` INT NOT NULL,
+        `CONSTRUIDA` INT NOT NULL,
+        `EDICULA` INT NOT NULL,
+        `AREA_INFO` TEXT NULL,
+        `TIPO` VARCHAR(45) NULL,
+        `SUBTIPO` VARCHAR(45) NULL,
+        `ENDERECO_IMOVEL` VARCHAR(45) NOT NULL,
+        `NUMERO` INT NOT NULL,
+        `CEP` VARCHAR(10) NOT NULL,
+        `END_INFO` TEXT NULL,
+        `PLACA` INT NOT NULL,
+        `DATA_PLACA` DATE NULL,
+        `DATA_VISITA` DATE NULL,
+        `DATA_ULTIMA_VIS` DATE NULL,
+        `URL` VARCHAR(255) NULL,
+        `COD_ANUNCIO` INT NOT NULL UNIQUE,
+        `ANUNCIO_INFO` TEXT NULL,
         `VALOR_IMOVEL` REAL NULL,
         `VALOR_VENDA` REAL NULL,
-        `STATUS` VARCHAR(45) NULL,
-        `PORCENTAGEM` REAL NULL,
-        `HONORARIOS` REAL NULL,
-        `BANHEIRO` INT NULL,
-        `QUARTOS` INT NULL,
-        `GARAGEM` INT NULL,
+        `CORRETAGEM` REAL NULL,
+        `REPASSE_IMOB` REAL NULL,
         PRIMARY KEY (`ID_IMOB`),
   CONSTRAINT `fk_IMOVEIS_PROPRIETARIOS`
     FOREIGN KEY (`ID_PROP`)
@@ -159,11 +167,6 @@ criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
   CONSTRAINT `fk_IMOVEIS_CORRETORES`
     FOREIGN KEY (`ID_CORR`)
     REFERENCES `CORRETORES` (`ID_CORR`)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_IMOVEIS_TIPOS`
-    FOREIGN KEY (`ID_TIPO`)
-    REFERENCES `TIPOS` (`ID_TIPO`)
     ON DELETE SET NULL
     ON UPDATE CASCADE,
   CONSTRAINT `fk_IMOVEIS_BAIRRO`

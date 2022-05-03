@@ -1,0 +1,419 @@
+{% extends "template.html" %}
+{% block conteudo %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
+<script>
+  $(document).ready(function () {
+    $('#valor').mask('000.000.000.000.000', {
+      reverse: true
+    });
+    $('#porcentagem').mask('##00.0%', {
+      reverse: true
+    });
+    $('#area').mask('##000m', {
+      reverse: true
+    });
+  });
+</script>
+<div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3 needs-validation" action="/novo_bairro" method="post" novalidate id="bairro">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Criar bairro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="previous" value="{{url_for('editar_terreno', id=terreno._imob_id)}}">
+          <div class="form-group">
+            <label for="cidade_bairro">Cidade</label>
+            <select class="form-select" id="cidade_bairro" name="cidade_bairro" required>
+              <option value="" selected>Selecione a tipo</option>
+              {% for cidade in cidades %}
+              <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+              {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+              Por favor insira uma cidade.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="bairro">Bairro</label>
+            <input type="text" id="bairro" name="bairro" class="form-control" required>
+            <div class="invalid-feedback">
+              Por favor insira um bairro.
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3 needs-validation" action="/nova_cidade" method="post" novalidate id="cidade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="CidadeModalLabel">Criar cidade</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="previous" value="{{url_for('editar_terreno', id=terreno._imob_id)}}">
+          <div class="form-group">
+            <label for="cidade">Cidade</label>
+            <input type="text" id="cidade" name="cidade" class="form-control" required>
+            <div class="invalid-feedback">
+              Por favor insira uma cidade.
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<h1>Cadastro de terreno</h1>
+
+<br>
+<fieldset>
+
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-link active" id="nav-area-tab" data-bs-toggle="tab" href="#nav-area" role="tab"
+        aria-controls="nav-corretor" aria-selected="true">Area</a>
+      <a class="nav-link" id="nav-local-tab" data-bs-toggle="tab" href="#nav-local" role="tab" aria-controls="nav-local"
+        aria-selected="false">Local</a>
+      <a class="nav-link" id="nav-anuncio-tab" data-bs-toggle="tab" href="#nav-anuncio" role="tab"
+        aria-controls="nav-anuncio" aria-selected="false">Anuncio</a>
+      <a class="nav-link" id="nav-prop-tab" data-bs-toggle="tab" href="#nav-prop" role="tab" aria-controls="nav-prop"
+        aria-selected="false">Participação</a>
+    </div>
+  </nav>
+  <form id="terreno" action="{{ url_for('atualiza_terreno', id_terr=terreno._imob_id ) }}" method="post" class="needs-validation"
+    novalidate>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-area" role="tabpanel" aria-labelledby="nav-area-tab">
+        <h3>Terreno</h3>
+        <div class="col-4">
+          <div class="input-group">
+            <label class="input-group-text" for="forma">Forma</label>
+            <select class="form-select" id="forma" name="forma" required>
+              <option value="{{ terreno._forma }}" selected>{{ terreno._forma }}</option>
+              <option value="retangulo">Retangulo</option>
+              <option value="trapezio">Trapezio</option>
+              <option value="quadrado">Quadrado</option>
+              <option value="triangular">Triangular</option>
+              <option value="irregular">Irregular</option>
+            </select>
+            <div class="invalid-feedback">
+              Por favor insira uma forma.
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="col-4">
+          <label for="lado-esq" class="form-label">Lado Esquerdo</label>
+          <input type="number" class="form-control" id="ladoesq" name="ladoesq" required value="{{ terreno._ladoesq }}">
+          <div class="invalid-feedback">
+            Por favor insira o lado esquerdo.
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="ladodir" class="form-label">Lado Direito</label>
+          <input type="number" class="form-control" id="ladodir" name="ladodir" required value="{{ terreno._ladodir }}">
+          <div class="invalid-feedback">
+            Por favor insira o lado direito.
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="ladofrente" class="form-label">Frente</label>
+          <input type="number" class="form-control" id="ladofrente" name="ladofrente" required
+            value="{{ terreno._frente }}">
+          <div class="invalid-feedback">
+            Por favor insira a frente.
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="ladofundo" class="form-label">Fundos</label>
+          <input type="number" class="form-control" id="ladofundo" name="ladofundo" required
+            value="{{ terreno._fundo }}">
+          <div class="invalid-feedback">
+            Por favor insira os fundos.
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="metros" class="form-label">Total em m<sup>2</sup></label>
+          <input type="number" class="form-control" id="metros" name="metros" required value="{{ terreno._m_total }}">
+          <div class="invalid-feedback">
+            Por favor insira os metros totais.
+          </div>
+        </div>
+        <br>
+        <div class="col-4">
+          <div class="input-group">
+            <label class="input-group-text" for="topografia">Topografia</label>
+            <select class="form-select" id="topografia" name="topografia" required>
+              <option value="{{ terreno._topografia }}" selected>{{ terreno._topografia }}</option>
+              <option value="aclive">Aclive</option>
+              <option value="declive">Declive</option>
+              <option value="plano">Plano</option>
+            </select>
+            <div class="invalid-feedback">
+              Por favor insira uma topografia.
+            </div>
+          </div>
+        </div>
+        <br>
+        <h3>Area do terreno</h3>
+        <br>
+        <div class="row">
+          <div class="col-6">
+            <div class="col-4">
+              <label for="areautil" class="form-label">Area Util</label>
+              <input type="number" class="form-control" id="areautil" name="areautil" required
+                value="{{ terreno._area_util }}">
+              <div class="invalid-feedback">
+                Por favor insira a area util.
+              </div>
+            </div>
+            <div class="col-4">
+              <label for="areacons" class="form-label">Area Contruida</label>
+              <input type="number" class="form-control" id="areacons" name="areacons" required
+                value="{{ terreno._area_contruida }}">
+              <div class="invalid-feedback">
+                Por favor insira a area construida.
+              </div>
+            </div>
+            <div class="col-4">
+              <label for="edicula" class="form-label">Edícula</label>
+              <input type="number" class="form-control" id="edicula" name="edicula" required
+                value="{{ terreno._edicula }}">
+              <div class="invalid-feedback">
+                Por favor insira a edicula.
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <label for="infoarea" class="form-label">Informações adcionais</label>
+            <textarea name="infoarea" id="infoarea" cols="60" rows="5">{{terreno._info_area}}</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="nav-local" role="tabpanel" aria-labelledby="nav-local-tab">
+        <div class="row">
+          <div class="col-8">
+            <label for="endereco" class="form-label">Endereço</label>
+            <input type="text" class="form-control" id="endereco" name="endereco" required
+              value="{{ terreno._endereco }}">
+            <div class="invalid-feedback">
+              Por favor insira um endereco.
+            </div>
+          </div>
+          <div class="col-2">
+            <label for="numero" class="form-label">Numero</label>
+            <input type="number" class="form-control" id="numero" name="numero" required value="{{ terreno._numero }}">
+            <div class="invalid-feedback">
+              Por favor insira um numero.
+            </div>
+          </div>
+          <div class="col-2">
+            <label for="cep" class="form-label">CEP</label>
+            <input type="text" class="form-control" id="cep" name="cep" required value="{{ terreno._cep }}">
+            <div class="invalid-feedback">
+              Por favor insira um cep.
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="input-group">
+          <label class="input-group-text" for="cidades">Cidade</label>
+          <select class="form-select" id="cidades" name="cidades" required>
+            <option value="{{ terreno._cidade._id_cidade }}" selected>{{terreno._cidade._cidade_nome}}</option>
+            {% for cidade in cidades %}
+            <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">
+            Por favor insira uma cidade.
+          </div>
+
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CidadeModal"><i><img
+                src="../static/img/icon/plus.svg" alt=""></i> Criar cidade </button>
+
+        </div>
+        <br>
+        <div class="input-group">
+          <label class="input-group-text" for="bairros">Bairros</label>
+          <select class="form-select" id="bairros" name="bairros" required>
+            <option value="{{ terreno._bairro._id_bairro }}" selected>{{ terreno._bairro._bairro_nome }}</option>
+            {% for bairro in bairros %}
+
+            <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
+              {{bairro._bairro_cid_nome}}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">
+            Por favor insira um bairro.
+          </div>
+
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#BairroModal"><i><img
+                src="../static/img/icon/plus.svg" alt=""></i> Criar bairro </button>
+
+        </div>
+        <br>
+        <label for="inflocal" class="form-label"></label>
+        <textarea name="inflocal" id="inflocal" cols="60" rows="5">{{ terreno._info_end }}</textarea>
+      </div>
+      <br>
+      <div class="tab-pane fade" id="nav-anuncio" role="tabpanel" aria-labelledby="nav-anuncio-tab">
+        <div class="row">
+          <div class="col-4">
+            <div class="input-group-checkbox">
+              <label for="placa" class="form-label">Fixar Placa:</label>
+              {% if terreno._placa == 1 %}
+              <input type="checkbox" name="placa" id="placa" value="1" checked>
+              {% else %}
+              <input type="checkbox" name="placa" id="placa" value="1">
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-8">
+            <div class="input-group">
+              <label for="url" class="form-label">URL</label>
+              <input type="url" class="form-control" name="url" id="url" value="{{ terreno._url }}">
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-4">
+            <div class="input-group-date">
+              <label for="dataplaca" class="form-label">Data de fixação da placa</label>
+              <input type="date" class="form-control" name="dataplaca" id="dataplaca" value="{{ terreno._data_placa }}">
+            </div>
+
+            <div class="input-group-date">
+              <label for="datavis" class="form-label">Data da visita</label>
+              <input type="date" class="form-control" name="datavis" id="datavis" value="{{ terreno._data_visita }}">
+            </div>
+            <div class="input-group-date">
+              <label for="dataultvis" class="form-label">Data da ultima vistora</label>
+              <input type="date" class="form-control" name="dataultvis" id="dataultvis"
+                value="{{ terreno._data_ultvis }}">
+            </div>
+          </div>
+          <br>
+          <div class="col-6">
+            <div class="input-group">
+              <label for="codanun" class="form-label">Codigo de anuncio</label>
+              <input type="text" class="form-control" name="codanun" id="codanun" value="{{ terreno._codigo }}">
+            </div>
+            <br>
+            <div class="input-group">
+              <label for="infoanun" class="form-label">Info anuncio: </label>
+              <textarea name="infoanun" class="form-control" id="infoanun" cols="60"
+                rows="5">{{terreno._info_anun}}</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="nav-prop" role="tabpanel" aria-labelledby="nav-prop-tab">
+        <br>
+        <div class="mb-3">
+          <select class="js-example-responsive" style="width: 50%" name="proprietario" id="proprietario" required>
+            <option value="{{ terreno._proprietario._id }}" selected>{{ terreno._proprietario._nome }}</option>
+            {% for proprietario in proprietarios %}
+            <option value="{{ proprietario._id }}">{{ proprietario._nome }}</option>
+            {% endfor %}
+          </select>
+          <label for="proprietario">Proprietario</label>
+          <div class="invalid-feedback">
+            Por favor insira um proprietario.
+          </div>
+        </div>
+        <br>
+        <div class="mb-3">
+          <select class="js-example-responsive" style="width: 50%" name="corretor" id="corretor" required>
+            <option value="{{ terreno._corretor._id_corr }}" selected>{{ terreno._corretor._nome }}</option>
+            {% for corretor in corretores %}
+            <option value="{{ corretor._id_corr }}">{{ corretor._nome }}</option>
+            {% endfor %}
+          </select>
+          <label for="corretor">Corretor</label>
+          <div class="invalid-feedback">
+            Por favor insira um corretor.
+          </div>
+        </div>
+        <script>
+          $(document).ready(function () {
+            $('#corretor').select2({
+              width: 'resolve'
+            });
+          });
+
+          $(document).ready(function () {
+            $('#proprietario').select2({
+              width: 'resolve'
+            });
+          });
+        </script>
+        <br>
+        <div class="form-group">
+          <label for="valor">Valor do imovel</label>
+          <input type="text" id="valor" name="valor" class="form-control" required value="{{ terreno._valor_imovel }}">
+          <div class="invalid-feedback">
+            Por favor insira um valor.
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="porcentagem">Taxa de Corretagem</label>
+          <input type="text" id="porcentagem" name="porcentagem" class="form-control" required
+            value="{{ terreno._taxa }}">
+          <div class="invalid-feedback">
+            Por favor insira uma porcentagem.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="valorvenda">Valor de venda</label>
+          <input type="text" id="valorvenda" name="valorvenda" class="form-control" readonly
+            value="{{ terreno._valor_venda }}">
+        </div>
+        <div class="form-group">
+          <label for="repasse">Repasse para imobiliaria</label>
+          <input type="text" id="repasse" name="repasse" class="form-control" readonly value="{{ terreno._repasse }}">
+        </div>
+      </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+    <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
+  </form>
+
+
+</fieldset>
+<script>
+  document.getElementById('porcentagem').addEventListener('keyup', (event) => {
+    console.log(event)
+    valorimovel = document.getElementById('valor').value.replace('.', '')
+    taxa = document.getElementById('porcentagem').value.replace('%', '')
+    valorvenda = parseInt(valorimovel) + (parseInt(valorimovel) * parseFloat(taxa / 100))
+    repasse = (parseInt(valorimovel) * parseFloat(taxa / 100))
+    console.log(valorvenda)
+    document.getElementById('valorvenda').value = valorvenda
+    document.getElementById('repasse').value = repasse
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="{{ url_for('static', filename='js/storage_form_terreno.js')}}"></script> 
+
+{% endblock %}

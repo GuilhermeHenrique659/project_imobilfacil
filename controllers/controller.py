@@ -2,19 +2,20 @@ from flask import request, redirect, render_template, session, flash,url_for
 import bcrypt
 from daofactory import dao
 from config import server
+from models import Cidade, Proprietario
 
 
 class IndexController():
 
     @server.loggin_required
     def index(self):
-        lista_imob = dao.imovel.listar()
-        lista_prop = dao.proprietario.listar()
-        lista_corr = dao.corretor.listar()
-        lista_cidades = dao.cidade.lista()
-        lista_bairro = dao.bairro.lista()
-        return render_template('lista.html', corretores=lista_corr, lista=lista_imob, proprietarios=lista_prop,
-                               cidades=lista_cidades, bairros=lista_bairro)
+        proprietarios = dao.proprietario.listar()
+        corretores = dao.corretor.listar()
+        imoveis = dao.imovel.listar()
+        cidades = dao.cidade.lista()
+        bairros = dao.bairro.lista()
+        return render_template('lista.html',corretores=corretores, proprietarios = proprietarios,lista= imoveis,
+                                cidades = cidades, bairros=bairros )
 
     def login(self):
         proxima = request.args.get('proxima')
