@@ -32,7 +32,6 @@ class Routes:
 
         server.app.add_url_rule('/resumo_imovel/<int:id>',endpoint='resumo_imovel',view_func=controllers.imovel.resumo_imovel, methods=['GET'])
 
-#exclui_imovel
         server.app.add_url_rule('/filtro', endpoint='filtro' ,view_func=controllers.imovel.filtro, methods=['POST'])
 
 #exclui_imovel
@@ -43,6 +42,10 @@ class Routes:
 
         server.app.add_url_rule('/atualizar_imovel',endpoint='atualizar_imovel' ,view_func=controllers.imovel.atualiza_imovel,methods=['POST'])
 
+        server.app.add_url_rule('/editar_terreno/<int:id>', endpoint='editar_terreno', view_func=controllers.terreno.editar_terreno)
+
+        server.app.add_url_rule('/atualiza_terreno',endpoint='atualiza_terreno', view_func=controllers.terreno.atualiza_terreno, methods=['POST'])
+
 #criar_imovel
         server.app.add_url_rule('/novo_imovel', endpoint='novo_imovel'  ,view_func=controllers.imovel.novo_imovel,methods=['GET'])
 
@@ -51,6 +54,8 @@ class Routes:
         server.app.add_url_rule('/novo_terreno', endpoint='novo_terreno', view_func=controllers.terreno.novo_terreno)
 
         server.app.add_url_rule('/criar_terreno', endpoint='criar_terreno', view_func=controllers.terreno.criar_terreno, methods=['POST'])
+
+
 #Criar Proprietario
         server.app.add_url_rule('/Proprietario', endpoint='Proprietario',view_func=controllers.proprietario.rota_proprietario,methods=['GET'])
 

@@ -1,3 +1,4 @@
+from cmath import pi
 import MySQLdb
 from flask_mysqldb import MySQL
 from models import (Bairro, Cidade, Corretores, Financeiro, Imovel,
@@ -135,24 +136,27 @@ class imovelDao:
 
     def salvar(self, imovel:Imovel):
         cursor = self.__db.connection.cursor()
-        if (imovel._imob_id):
-            cursor.execute(SQL_ATUALIZA_IMOVEIS, (imovel._corretor,imovel._proprietario,imovel._cidade, imovel._bairro, imovel._categoria,
+        try:
+            if (imovel._imob_id):
+                cursor.execute(SQL_ATUALIZA_IMOVEIS, (imovel._corretor,imovel._proprietario,imovel._cidade, imovel._bairro, imovel._categoria,
                                             imovel._forma,imovel._ladodir,imovel._ladoesq,imovel._frente, imovel._fundo,imovel._m_total, imovel._topografia,
                                             imovel._area_util,imovel._area_contruida,imovel._edicula,imovel._info_area,imovel._tipo,imovel._subtipo,
                                             imovel._endereco, imovel._numero,imovel._cep, imovel._info_end, imovel._placa,imovel._data_placa, imovel._data_visita,
                                             imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel._valor_imovel,imovel._valor_venda, 
                                             imovel._taxa, imovel._repasse,imovel._imob_id))
-        else:
-            cursor.execute(SQL_CRIA_IMOVEL,(imovel._corretor,imovel._proprietario,imovel._cidade, imovel._bairro, imovel._categoria,
+            else:
+                cursor.execute(SQL_CRIA_IMOVEL,(imovel._corretor,imovel._proprietario,imovel._cidade, imovel._bairro, imovel._categoria,
                                             imovel._forma,imovel._ladodir,imovel._ladoesq,imovel._frente, imovel._fundo,imovel._m_total, imovel._topografia,
                                             imovel._area_util,imovel._area_contruida,imovel._edicula,imovel._info_area,imovel._tipo,imovel._subtipo,
                                             imovel._endereco, imovel._numero,imovel._cep, imovel._info_end, imovel._placa,imovel._data_placa, imovel._data_visita,
                                             imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel._valor_imovel,imovel._valor_venda, 
                                             imovel._taxa, imovel._repasse))
+        except MySQLdb.IntegrityError as error:
+            return error
         cursor._id = cursor.lastrowid
         self.__db.connection.commit()
         del imovel
-        return cursor._id
+        return None
 
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -171,13 +175,12 @@ class imovelDao:
         corretor = Corretores(imob_dict['USUARIO'],imob_dict['EMAIL'],imob_dict['corretores.NOME'],imob_dict['CRECI'],imob_dict['CELULAR'],
                       imob_dict['CPF'],imob_dict['ENDERECO'],imob_dict['SENHA'],imob_dict['ID_CIDADE'],imob_dict['ID_BAIRRO'], imob_dict['ID_CORR'])
 
-        proprietario = Proprietario(imob_dict['NOME'], imob_dict['CPF'], imob_dict['RG'], imob_dict['ENDERECO'], imob_dict['TELEFONE'],
-                                    imob_dict['EMAIL'], imob_dict['CIDADE'],imob_dict['BAIRRO'],imob_dict['proprietarios.ID_PROP'])
-
+        proprietario = Proprietario(imob_dict['NOME'], imob_dict['CPF_CNPJ'], imob_dict['RG_INSC_ETAD'], imob_dict['ENDERECO'], imob_dict['TELEFONE'],
+                                    imob_dict['EMAIL'], imob_dict['CIDADE'],imob_dict['BAIRRO'],id=imob_dict['ID_PROP'])
         imovel = Imovel(imob_dict['CATEGORIA'],imob_dict['FORMA'],imob_dict['LADO_ESQ'],imob_dict['LADO_DIR'],imob_dict['LADO_FRE'],imob_dict['LADO_FUN'],
                         imob_dict['TOTAL'],imob_dict['TOPOGRAFIA'],imob_dict['AREA_UTIL'],imob_dict['CONSTRUIDA'],imob_dict['EDICULA'],cidade,bairro,
                         imob_dict['ENDERECO_IMOVEL'],imob_dict['NUMERO'],imob_dict['CEP'],imob_dict['VALOR_IMOVEL'],imob_dict['CORRETAGEM'],imob_dict['VALOR_VENDA'],
-                        imob_dict['REPASSE'],imob_dict['PLACA'],imob_dict['URL'],imob_dict['DATA_PLACA'],imob_dict['DATA_VISITA'],imob_dict['DATA_ULTIMA_VIS'],imob_dict['COD_ANUNCIO'],
+                        imob_dict['REPASSE_IMOB'],imob_dict['PLACA'],imob_dict['URL'],imob_dict['DATA_PLACA'],imob_dict['DATA_VISITA'],imob_dict['DATA_ULTIMA_VIS'],imob_dict['COD_ANUNCIO'],
                         imob_dict['ANUNCIO_INFO'],imob_dict['END_INFO'],imob_dict['AREA_INFO'],proprietario,corretor,imob_dict['ID_IMOB'])
         del cidade, bairro, proprietario, corretor
         return imovel
