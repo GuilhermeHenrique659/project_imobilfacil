@@ -47,6 +47,7 @@ window.addEventListener('load', (event) => {
     if (sessionStorage.length > 0) {
         document.getElementById('forma').value = sessionStorage.getItem('forma')
         document.getElementById('ladoesq').value = sessionStorage.getItem('ladoesq')
+        document.getElementById('ladodir').value = sessionStorage.getItem('ladodir')
         document.getElementById('ladofrente').value = sessionStorage.getItem('ladofrente')
         document.getElementById('ladofundo').value = sessionStorage.getItem('ladofundo')
         document.getElementById('metros').value = sessionStorage.getItem('metros')
