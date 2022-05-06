@@ -84,7 +84,7 @@
 
 <br>
 <fieldset>
-  <form id="imovel" action="{{ url_for('cria_imovel') }}" method="post" class="needs-validation" novalidate>
+  <form id="imovel" action="{{ url_for('atualizar_imovel', id_imob=imovel._imob_id, id_desc=imovel._desc._id_desc) }}" method="post" class="needs-validation" novalidate>
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <a class="nav-link active" id="nav-imovel-tab" data-bs-toggle="tab" href="#nav-imovel" role="tab"
@@ -556,6 +556,6 @@
   })
 </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-<script src="{{ url_for('static', filename='js/storage_form_terreno.js')}}"></script>
+<script src="{{ url_for('static', filename='js/storage_form_imovel.js')}}"></script>
 
 {% endblock %}

@@ -140,7 +140,7 @@ class imovelDao:
                                                 desc._hidromsg,desc._piso,desc._sacada,desc._sala_vist,desc._sala_estar,desc._sotao,desc._amarinho,desc._cozinha,desc._escritorio,desc._lavabo,desc._sala_jantar,
                                                 desc._varanda,desc._claraboia,desc._dep_empregada,desc._garage,desc._living_room,desc._quintal,desc._sala_tv,desc._w_c_empregada,
                                                 desc._closet,desc._despensa,desc._churrasqueira,desc._portaria_24h,desc._salao_festa,desc._jd_inverno,
-                                                desc._quadra,desc._sauna,desc._pescina,desc._entrada_ind,desc._quadra_tenis,desc._playground,desc._sala_ginastica,desc._id_imob,))
+                                                desc._quadra,desc._sauna,desc._pescina,desc._entrada_ind,desc._quadra_tenis,desc._playground,desc._sala_ginastica,desc._id_desc,))
         else:
             cursor.execute(SQL_CRIA_IMOVEL_DESC, (desc._id_imob,desc._vagas,desc._banheiro,desc._suite,desc._dormitorio,desc._area_serve,desc._copa,desc._edicula,desc._lareira,desc._portao_elec,
                                                 desc._hidromsg,desc._piso,desc._sacada,desc._sala_vist,desc._sala_estar,desc._sotao,desc._amarinho,desc._cozinha,desc._escritorio,desc._lavabo,desc._sala_jantar,
@@ -218,10 +218,6 @@ class imovelDao:
         filtros_dic = {
             "filtra_cidade" : SQL_FILTRA_CIDADE,
             "filtra_prop" : SQL_FILTRA_PROP,
-            "filtra_status" : SQL_FILTRA_STATUS,
-            "filtra_quartos": SQL_FILTRO_QUARTO,
-            "filtra_banheiro": SQL_FILTRO_BANHEIRO,
-            "filtra_garagem": SQL_FILTRO_GARAGEM,
             "bairros": SQL_FILTRO_BAIRRO
         }
         cursor = self.__db.connection.cursor()
