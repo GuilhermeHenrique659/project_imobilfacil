@@ -7,10 +7,7 @@ class Routes:
          #index
         server.app.add_url_rule('/',endpoint='index',view_func=controllers.system.index, methods=['GET'])
 
-#tipos,cidade e bairro
-#tipo
-        server.app.add_url_rule('/novo_tipo', endpoint='novo_tipo', view_func=controllers.orthers.novo_tipo, methods=['POST'])
-
+#cidade e bairro
 #cidade
         server.app.add_url_rule('/nova_cidade', endpoint='nova_cidade',view_func=controllers.orthers.nova_cidade, methods=['POST'])
 #bairro

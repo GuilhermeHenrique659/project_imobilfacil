@@ -123,6 +123,7 @@ conn.cursor().execute(criar_tabela_proprietario)
 conn.commit()
 
 
+
 criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
         `ID_IMOB` INT NOT NULL AUTO_INCREMENT,
         `ID_CORR` INT NULL,
@@ -181,6 +182,61 @@ criar_tabela_imovel = '''CREATE TABLE `IMOVEIS` (
     ON UPDATE CASCADE)
 ENGINE=InnoDB;'''
 conn.cursor().execute(criar_tabela_imovel)
+conn.commit()
+
+criar_tabela_casa_descrição = '''CREATE TABLE `IMOVEL_DESC` (
+    `ID_DESC` INT NOT NULL AUTO_INCREMENT,
+    `ID_IMOB` INT NOT NULL,
+    `VAGAS` INT NOT NULL,
+    `BANHEIRO` INT NOT NULL,
+    `SUITE` INT NOT NULL,
+    `DORMITORIOS` INT NOT NULL,
+    `AREA_SERVICO` INT NULL,
+    `COPA` INT NULL,
+    `EDICULA` INT NULL,
+    `LAREIRA` INT NULL,
+    `PORTAO_ELEC` INT NULL,
+    `HIDROMSG` INT NULL,
+    `PISO` INT NULL,
+    `SACADA` INT NULL,
+    `SALA_VIST` INT NULL,
+    `SALA_ESTAR` INT NULL,
+    `SOTAO` INT NULL,
+    `AMARINHO` INT NULL,
+    `COZINHA` INT NULL,
+    `ESCRITORIO` INT NULL,
+    `LAVABO` INT NULL,
+    `SALA_JANTAR` INT NULL,
+    `VARANDA` INT NULL,
+    `CLARABOIA` INT NULL,
+    `DEP_EMPREGADA` INT NULL,
+    `GARAGE` INT NULL,
+    `LIVING_ROOM` INT NULL,
+    `QUINTAL` INT NULL,
+    `SALA_TV` INT NULL,
+    `W_C_EMPREGADA` INT NULL,
+    `CLOSET` INT NULL,
+    `DESPENSA` INT NULL,
+    `CHURRASQUEIRA` INT NULL,
+    `PORTARIA_24H` INT NULL,
+    `SALAO_FESTA` INT NULL,
+    `JD_INVERNO` INT NULL,
+    `QUADRA` INT NULL,
+    `SAUNA` INT NULL,
+    `PISCINA` INT NULL,
+    `ENTRADA_INDEP` INT NULL,
+    `QUADRA_TENIS` INT NULL,
+    `PLAYGROUND` INT NULL,
+    `SALA_GINASTICA` INT NULL,
+    PRIMARY KEY (`ID_DESC`),
+    CONSTRAINT `fk_IMOVEIS_IMOVEL_DESC`
+        FOREIGN KEY (`ID_IMOB`)
+        REFERENCES `IMOVEIS` (`ID_IMOB`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+)ENGINE=InnoDB;
+'''
+conn.cursor().execute(criar_tabela_casa_descrição)
 conn.commit()
 
 criar_tabela_financeiro = '''CREATE TABLE `FINANCEIRO` (

@@ -36,7 +36,7 @@ class CorretorController():
         senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
         corretor = Corretores(usuario, email, nome, creci, celular, cpf, endereco, senha, cidade, bairro)
         result = dao.corretor.salvar(corretor)
-        if result.args[0] == UNIQUE_ERROR_CODE:
+        if type(result) == tuple and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('Corretor'))
         return redirect('/')

@@ -9,6 +9,23 @@ SQL_CRIA_IMOVEL = '''
                          %s, %s, %s, %s ,%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s);
 '''
 
+SQL_CRIA_IMOVEL_DESC = '''
+                    INSERT INTO IMOVEL_DESC (ID_IMOB,VAGAS,BANHEIRO,SUITE,DORMITORIOS,AREA_SERVICO,COPA,
+                    EDICULA ,LAREIRA ,PORTAO_ELEC ,HIDROMSG ,PISO ,SACADA ,SALA_VIST ,SALA_ESTAR ,SOTAO ,AMARINHO ,
+                    COZINHA ,ESCRITORIO ,LAVABO ,SALA_JANTAR ,VARANDA ,CLARABOIA ,DEP_EMPREGADA ,GARAGE ,LIVING_ROOM ,
+                    QUINTAL ,SALA_TV ,W_C_EMPREGADA ,CLOSET ,DESPENSA ,CHURRASQUEIRA ,PORTARIA_24H ,SALAO_FESTA ,
+                    JD_INVERNO ,QUADRA ,SAUNA ,PISCINA ,ENTRADA_INDEP ,QUADRA_TENIS ,PLAYGROUND ,SALA_GINASTICA)
+                    VALUES (%s, %s, %s, %s, %s, %s ,%s, %s, %s ,%s, %s, %s, %s, %s, %s,%s, %s, %s, %s ,%s, %s, 
+                            %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s, %s,%s,%s,%s,%s,%s,%s,%s,%s);
+'''
+
+SQL_ATUALIZA_DESC = '''UPDATE IMOVEL_DESC SET VAGAS =%s,BANHEIRO =%s,SUITE =%s, DORMITORIOS =%s,AREA_SERVICO =%s,COPA =%s,EDICULA =%s,
+                        LAREIRA =%s,PORTAO_ELEC =%s,HIDROMSG =%s,PISO =%s,SACADA =%s,SALA_VIST =%s,SALA_ESTAR =%s,SOTAO =%s,AMARINHO =%s,
+                        COZINHA =%s,ESCRITORIO =%s,LAVABO =%s,SALA_JANTAR =%s,VARANDA =%s,CLARABOIA =%s,DEP_EMPREGADA =%s,GARAGE =%s,
+                        LIVING_ROOM =%s,QUINTAL =%s,SALA_TV =%s,W_C_EMPREGADA =%s,CLOSET =%s,DESPENSA =%s,CHURRASQUEIRA =%s,PORTARIA_24H =%s,SALAO_FESTA =%s,
+                        JD_INVERNO =%s,QUADRA =%s,SAUNA =%s,PISCINA =%s,ENTRADA_INDEP =%s,QUADRA_TENIS =%s,PLAYGROUND =%s,SALA_GINASTICA =%s WHERE ID_IMOB = %s
+'''
+
 SQL_DELETA_IMOVEL = 'delete from imoveis where ID_IMOB = %s'
 
 SQL_ATUALIZA_IMOVEIS = ''' UPDATE imoveis SET  ID_CORR=%s, ID_PROP=%s, ID_CIDADE=%s,ID_BAIRRO=%s,
@@ -23,12 +40,15 @@ SQL_ATUALIZA_IMOVEIS = ''' UPDATE imoveis SET  ID_CORR=%s, ID_PROP=%s, ID_CIDADE
 SQL_BUSCA_LISTA_IMOB = 'select ID_IMOB,CATEGORIA,CIDADE,BAIRRO,ENDERECO_IMOVEL,NOME,CELULAR from imoveis left join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP' \
                        ' join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO'
 
-SQL_BUSCA_IMOB_ID = 'select * from imoveis left join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP ' \
-                    'join cidade on cidade.ID_CID = imoveis.ID_CIDADE ' \
-                    'join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO ' \
-                    'left join corretores on imoveis.ID_CORR = corretores.ID_CORR ' \
-                    'where imoveis.ID_IMOB = %s'
 
+SQL_BUSCA_IMOB_ID ='''select * from imoveis left join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP 
+                    join cidade on cidade.ID_CID = imoveis.ID_CIDADE 
+                    join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO 
+                    left join corretores on imoveis.ID_CORR = corretores.ID_CORR 
+                    left join IMOVEL_DESC on imoveis.ID_IMOB = IMOVEL_DESC.ID_IMOB
+                    where imoveis.ID_IMOB = %s
+'''
+ 
 #Sql da tabela propeitarios
 
 SQL_DELETA_PROPRIETARIO = 'delete from proprietarios where ID_PROP = %s'

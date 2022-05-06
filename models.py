@@ -10,18 +10,64 @@ class Bairro:
         self._id_cid = id_cid
         self._bairro_cid_nome = bairro_cidade_nome
 
-class Tipo:
-    def __init__(self,tipo_nome,id_tipo = None):
-        self._id_tipo = id_tipo
-        self._tipo_nome = tipo_nome
-
+class Descricao_imovel:
+    def __init__(self, vagas, banheiro, suite, dormitorio, area_serve=None, copa=None, lareira=None,edicula=None,
+                portao_elec=None,hidromsg=None, piso=None, sacada=None, sala_vist=None, sala_estar=None, sotao=None,
+                amarinho=None,cozinha=None,escritorio=None, lavabo=None,sala_jantar=None,varanda=None, clarabioa=None,
+                dep_empregada=None, garage=None, living_room=None,quintal=None,sala_tv=None,w_c_empregada=None,closet=None,
+                depensa=None, churrasqueira=None, portaria_24h=None, salao_festa=None,jd_inverno=None,quadra=None, sauna=None,
+                piscina=None, entrada_ind=None, quadra_tenis=None, playground=None, salao_ginastica=None, id_imob = None, id_desc = None) -> None:
+        self._id_desc = id_desc
+        self._id_imob = id_imob
+        self._vagas = vagas
+        self._banheiro = banheiro
+        self._suite = suite
+        self._dormitorio = dormitorio
+        self._area_serve = area_serve
+        self._copa =copa
+        self._lareira = lareira
+        self._edicula = edicula
+        self._portao_elec= portao_elec
+        self._hidromsg = hidromsg
+        self._piso = piso
+        self._sacada = sacada
+        self._sala_vist = sala_vist
+        self._sala_estar = sala_estar
+        self._sotao = sotao
+        self._amarinho = amarinho
+        self._cozinha = cozinha
+        self._escritorio = escritorio
+        self._lavabo =lavabo
+        self._sala_jantar = sala_jantar
+        self._varanda = varanda
+        self._claraboia = clarabioa
+        self._dep_empregada = dep_empregada
+        self._garage = garage
+        self._living_room = living_room
+        self._quintal = quintal
+        self._sala_tv = sala_tv
+        self._w_c_empregada = w_c_empregada
+        self._closet = closet
+        self._despensa = depensa
+        self._churrasqueira = churrasqueira
+        self._portaria_24h = portaria_24h
+        self._salao_festa = salao_festa
+        self._jd_inverno = jd_inverno
+        self._quadra = quadra
+        self._sauna = sauna
+        self._pescina = piscina
+        self._entrada_ind = entrada_ind
+        self._quadra_tenis = quadra_tenis
+        self._playground = playground
+        self._sala_ginastica = salao_ginastica
+    
 class Imovel:
     def __init__(self, categoria=None,forma=None, ladoesq=None,ladodir=None, frente=None,fundo=None, 
                 m_total=None, topografia=None, area_util=None, area_contruida=None,edicula=None, cidade=None, 
                 bairro=None, endereco=None, numero=None, cep=None, valor_imovel=None,
                 taxa=None, valor_venda=None, repasse=None,  placa=None, url=None, data_placa=None,data_visita=None, 
                 data_ultvis=None, codigo=None, info_anun=None,info_area=None,info_end=None, proprietario=None, 
-                corretor=None, imob_id=None, tipo=None, subtipo=None):
+                corretor=None, imob_id=None, tipo=None, subtipo=None, desc=None):
         self._imob_id = imob_id
         self._categoria = categoria
         self._tipo =tipo
@@ -56,6 +102,7 @@ class Imovel:
         self._valor_venda = valor_venda
         self._proprietario = proprietario
         self._corretor = corretor
+        self._desc = desc
 
 class Proprietario:
     def __init__(self, nome=None, cpf_cnpj=None, rg_insc_estadual=None, endereco=None, numero=None, cep=None,

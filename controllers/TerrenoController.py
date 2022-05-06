@@ -23,12 +23,15 @@ class TerrenoController:
     @server.loggin_required
     def criar_terreno(self):
         formdata = request.form
+        placa = formdata.get('placa')
+        if not placa:
+            placa = 0
         terreno = Imovel('Terreno',formdata['forma'],formdata['ladoesq'],formdata['ladodir'],formdata['ladofrente'],formdata['ladofundo'],formdata['metros'],formdata['topografia'],
                         formdata['areautil'],formdata['areacons'],formdata['edicula'],formdata['cidades'],formdata['bairros'],formdata['endereco'],formdata['numero'],
-                        formdata['cep'],formdata['valor'],formdata['porcentagem'],formdata['valorvenda'],formdata['repasse'],formdata['placa'],formdata['url'],formdata['dataplaca'],
+                        formdata['cep'],formdata['valor'],formdata['porcentagem'],formdata['valorvenda'],formdata['repasse'],placa,formdata['url'],formdata['dataplaca'],
                         formdata['datavis'],formdata['dataultvis'],formdata['codanun'],formdata['infoanun'],formdata['inflocal'],formdata['infoarea'],formdata['proprietario'],formdata['corretor'])
         result = dao.imovel.salvar(terreno)
-        if result and result.args[0] == UNIQUE_ERROR_CODE:
+        if type(result) == tuple and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('novo_terreno'))
         return redirect(url_for('index'))
@@ -56,7 +59,7 @@ class TerrenoController:
                         formdata['cep'],formdata['valor'],formdata['porcentagem'],formdata['valorvenda'],formdata['repasse'],placa,formdata['url'],formdata['dataplaca'],
                         formdata['datavis'],formdata['dataultvis'],formdata['codanun'],formdata['infoanun'],formdata['inflocal'],formdata['infoarea'],formdata['proprietario'],formdata['corretor'],imob_id=id)
         result = dao.imovel.salvar(terreno)
-        if result and result.args[0] == UNIQUE_ERROR_CODE:
+        if type(result) == tuple and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('editar_terreno', id=id))
         return redirect(url_for('index'))
