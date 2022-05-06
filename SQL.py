@@ -23,7 +23,7 @@ SQL_ATUALIZA_DESC = '''UPDATE IMOVEL_DESC SET VAGAS =%s,BANHEIRO =%s,SUITE =%s, 
                         LAREIRA =%s,PORTAO_ELEC =%s,HIDROMSG =%s,PISO =%s,SACADA =%s,SALA_VIST =%s,SALA_ESTAR =%s,SOTAO =%s,AMARINHO =%s,
                         COZINHA =%s,ESCRITORIO =%s,LAVABO =%s,SALA_JANTAR =%s,VARANDA =%s,CLARABOIA =%s,DEP_EMPREGADA =%s,GARAGE =%s,
                         LIVING_ROOM =%s,QUINTAL =%s,SALA_TV =%s,W_C_EMPREGADA =%s,CLOSET =%s,DESPENSA =%s,CHURRASQUEIRA =%s,PORTARIA_24H =%s,SALAO_FESTA =%s,
-                        JD_INVERNO =%s,QUADRA =%s,SAUNA =%s,PISCINA =%s,ENTRADA_INDEP =%s,QUADRA_TENIS =%s,PLAYGROUND =%s,SALA_GINASTICA =%s WHERE ID_IMOB = %s
+                        JD_INVERNO =%s,QUADRA =%s,SAUNA =%s,PISCINA =%s,ENTRADA_INDEP =%s,QUADRA_TENIS =%s,PLAYGROUND =%s,SALA_GINASTICA =%s WHERE ID_DESC = %s
 '''
 
 SQL_DELETA_IMOVEL = 'delete from imoveis where ID_IMOB = %s'
@@ -116,24 +116,11 @@ SQL_LISTA_BAIRRO = 'SELECT * FROM bairro inner join cidade on bairro.CIDADE_ID_C
 
 
 #filtros
-SQL_FILTRA_CIDADE = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
-                    'join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO where imoveis.ID_CIDADE= %s'
+SQL_FILTRA_CIDADE = 'select ID_IMOB,CATEGORIA,CIDADE,BAIRRO,ENDERECO_IMOVEL,NOME,CELULAR from imoveis left join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP' \
+                       ' join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO WHERE imoveis.ID_BAIRRO where imoveis.ID_CIDADE= %s'
 
-SQL_FILTRA_PROP = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
-                    'join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO where imoveis.ID_PROP = %s'
+SQL_FILTRA_PROP = 'select ID_IMOB,CATEGORIA,CIDADE,BAIRRO,ENDERECO_IMOVEL,NOME,CELULAR from imoveis left join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP' \
+                       ' join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO WHERE imoveis.ID_PROP = %s'
 
-SQL_FILTRA_STATUS = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
-                    'join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO where imoveis.STATUS = %s'
-
-
-SQL_FILTRO_QUARTO ='select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
-                    'join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO where imoveis.QUARTOS = %s'
-
-SQL_FILTRO_BANHEIRO = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
-                    'join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO where imoveis.BANHEIRO = %s'
-
-SQL_FILTRO_GARAGEM = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
-                    'join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO where imoveis.GARAGEM = %s'
-
-SQL_FILTRO_BAIRRO = 'select * from imoveis inner join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP inner join tipos on imoveis.ID_TIPO = tipos.ID_TIPO ' \
-                    'join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO where imoveis.ID_BAIRRO = %s'
+SQL_FILTRO_BAIRRO = 'select ID_IMOB,CATEGORIA,CIDADE,BAIRRO,ENDERECO_IMOVEL,NOME,CELULAR from imoveis left join proprietarios on imoveis.ID_PROP = proprietarios.ID_PROP' \
+                       ' join cidade on cidade.ID_CID = imoveis.ID_CIDADE join bairro on bairro.ID_BAIRRO = imoveis.ID_BAIRRO WHERE where imoveis.ID_BAIRRO = %s'
