@@ -1,8 +1,7 @@
-from cmath import pi
 import MySQLdb
 from flask_mysqldb import MySQL
 from models import (Bairro, Cidade, Corretores, Financeiro, Imovel,
-                    Proprietario, Tipo)
+                    Proprietario, Descricao_imovel)
 from SQL import *
 
 
@@ -134,6 +133,24 @@ class imovelDao:
     def __init__(self, db:MySQL):
         self.__db = db
 
+    def salvar_desc(self, desc:Descricao_imovel):
+        cursor = self.__db.connection.cursor()
+        if desc._id_desc:
+            cursor.execute(SQL_ATUALIZA_DESC, (desc._vagas,desc._banheiro,desc._suite,desc._dormitorio,desc._area_serve,desc._copa,desc._edicula,desc._lareira,desc._portao_elec,
+                                                desc._hidromsg,desc._piso,desc._sacada,desc._sala_vist,desc._sala_estar,desc._sotao,desc._amarinho,desc._cozinha,desc._escritorio,desc._lavabo,desc._sala_jantar,
+                                                desc._varanda,desc._claraboia,desc._dep_empregada,desc._garage,desc._living_room,desc._quintal,desc._sala_tv,desc._w_c_empregada,
+                                                desc._closet,desc._despensa,desc._churrasqueira,desc._portaria_24h,desc._salao_festa,desc._jd_inverno,
+                                                desc._quadra,desc._sauna,desc._pescina,desc._entrada_ind,desc._quadra_tenis,desc._playground,desc._sala_ginastica,desc._id_imob,))
+        else:
+            cursor.execute(SQL_CRIA_IMOVEL_DESC, (desc._id_imob,desc._vagas,desc._banheiro,desc._suite,desc._dormitorio,desc._area_serve,desc._copa,desc._edicula,desc._lareira,desc._portao_elec,
+                                                desc._hidromsg,desc._piso,desc._sacada,desc._sala_vist,desc._sala_estar,desc._sotao,desc._amarinho,desc._cozinha,desc._escritorio,desc._lavabo,desc._sala_jantar,
+                                                desc._varanda,desc._claraboia,desc._dep_empregada,desc._garage,desc._living_room,desc._quintal,desc._sala_tv,desc._w_c_empregada,
+                                                desc._closet,desc._despensa,desc._churrasqueira,desc._portaria_24h,desc._salao_festa,desc._jd_inverno,
+                                                desc._quadra,desc._sauna,desc._pescina,desc._entrada_ind,desc._quadra_tenis,desc._playground,desc._sala_ginastica,))
+        self.__db.connection.commit()
+        del desc
+        return cursor.lastrowid
+
     def salvar(self, imovel:Imovel):
         cursor = self.__db.connection.cursor()
         try:
@@ -153,10 +170,9 @@ class imovelDao:
                                             imovel._taxa, imovel._repasse))
         except MySQLdb.IntegrityError as error:
             return error
-        cursor._id = cursor.lastrowid
         self.__db.connection.commit()
         del imovel
-        return None
+        return cursor.lastrowid
 
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -177,11 +193,23 @@ class imovelDao:
 
         proprietario = Proprietario(imob_dict['NOME'], imob_dict['CPF_CNPJ'], imob_dict['RG_INSC_ETAD'], imob_dict['ENDERECO'], imob_dict['TELEFONE'],
                                     imob_dict['EMAIL'], imob_dict['CIDADE'],imob_dict['BAIRRO'],id=imob_dict['ID_PROP'])
+        
+        
+        descricao = Descricao_imovel( imob_dict['VAGAS'] ,imob_dict['BANHEIRO'] ,imob_dict['SUITE'] ,imob_dict['DORMITORIOS'] ,imob_dict['AREA_SERVICO'] ,imob_dict['COPA'] ,
+                        imob_dict['EDICULA'] ,imob_dict['LAREIRA'] ,imob_dict['PORTAO_ELEC'] ,imob_dict['HIDROMSG'] ,
+                        imob_dict['PISO'] ,imob_dict['SACADA'] ,imob_dict['SALA_VIST'] ,imob_dict['SALA_ESTAR'] ,imob_dict['SOTAO'] ,imob_dict['AMARINHO'] ,
+                        imob_dict['COZINHA'] ,imob_dict['ESCRITORIO'] ,imob_dict['LAVABO'] ,imob_dict['SALA_JANTAR'] ,imob_dict['VARANDA'] ,
+                        imob_dict['CLARABOIA'] ,imob_dict['DEP_EMPREGADA'] ,imob_dict['GARAGE'] ,imob_dict['LIVING_ROOM'] ,imob_dict['QUINTAL'] ,
+                        imob_dict['SALA_TV'] ,imob_dict['W_C_EMPREGADA'] ,imob_dict['CLOSET'] ,imob_dict['DESPENSA'] ,imob_dict['CHURRASQUEIRA'] ,
+                        imob_dict['PORTARIA_24H'] ,imob_dict['SALAO_FESTA'] ,imob_dict['JD_INVERNO'] ,imob_dict['QUADRA'] ,imob_dict['SAUNA'] ,
+                        imob_dict['PISCINA'] ,imob_dict['ENTRADA_INDEP'] ,imob_dict['QUADRA_TENIS'] ,imob_dict['PLAYGROUND'] ,imob_dict['SALA_GINASTICA'],id_desc=imob_dict['ID_DESC'])
+
+
         imovel = Imovel(imob_dict['CATEGORIA'],imob_dict['FORMA'],imob_dict['LADO_ESQ'],imob_dict['LADO_DIR'],imob_dict['LADO_FRE'],imob_dict['LADO_FUN'],
                         imob_dict['TOTAL'],imob_dict['TOPOGRAFIA'],imob_dict['AREA_UTIL'],imob_dict['CONSTRUIDA'],imob_dict['EDICULA'],cidade,bairro,
                         imob_dict['ENDERECO_IMOVEL'],imob_dict['NUMERO'],imob_dict['CEP'],imob_dict['VALOR_IMOVEL'],imob_dict['CORRETAGEM'],imob_dict['VALOR_VENDA'],
                         imob_dict['REPASSE_IMOB'],imob_dict['PLACA'],imob_dict['URL'],imob_dict['DATA_PLACA'],imob_dict['DATA_VISITA'],imob_dict['DATA_ULTIMA_VIS'],imob_dict['COD_ANUNCIO'],
-                        imob_dict['ANUNCIO_INFO'],imob_dict['END_INFO'],imob_dict['AREA_INFO'],proprietario,corretor,imob_dict['ID_IMOB'])
+                        imob_dict['ANUNCIO_INFO'],imob_dict['END_INFO'],imob_dict['AREA_INFO'],proprietario,corretor,imob_dict['ID_IMOB'], imob_dict['TIPO'], imob_dict['SUBTIPO'],desc=descricao)
         del cidade, bairro, proprietario, corretor
         return imovel
 
@@ -262,28 +290,6 @@ class financeiroDao:
                               fin_dict['HONORARIOS'],fin_dict['VALOR_VENDA'],fin_dict['ENDERECO_IMOVEL'],fin_dict['NOME'],corr_id=fin_dict['ID_CORR_FIN'],id_fin=fin_dict['ID_FIN'])
         return list(map(traduz_para_objeto_fin, fin_dictlist))
 
-#tipos
-class tiposDao:
-    def __init__(self, db):
-        self.__db = db
-
-    def salvar(self, tipo):
-        cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_CRIA_TIPOS,(tipo._id_tipo,tipo._tipo_nome))
-        cursor._id = cursor.lastrowid
-        self.__db.connection.commit()
-        del tipo
-
-    def lista(self):
-        cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_LISTA_TIPOS)
-        tipos = self.traduz_para_lista_tipos(cursor.fetchall())
-        return tipos
-
-    def traduz_para_lista_tipos(self, tipo_dictlist):
-        def traduz_para_objct_tipo(tipo_dict):
-            return Tipo(tipo_dict['TIPO'],tipo_dict['ID_TIPO'])
-        return list(map(traduz_para_objct_tipo,tipo_dictlist))
 
 class ciadadeDao:
     def __init__(self, db):

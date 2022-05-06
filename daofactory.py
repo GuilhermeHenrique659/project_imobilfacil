@@ -9,7 +9,6 @@ class DaoFactory:
         self.__financeiro = financeiroDao(server.db)
         self.__cidade = ciadadeDao(server.db)
         self.__bairro = bairroDao(server.db)
-        self.__tipo = tiposDao(server.db) 
 
     @property
     def imovel(self):
@@ -35,8 +34,5 @@ class DaoFactory:
     def bairro(self):
         return self.__bairro
 
-    @property
-    def tipo(self):
-        return self.__tipo
 
 dao = DaoFactory()

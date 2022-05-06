@@ -31,7 +31,7 @@ class TerrenoController:
                         formdata['cep'],formdata['valor'],formdata['porcentagem'],formdata['valorvenda'],formdata['repasse'],placa,formdata['url'],formdata['dataplaca'],
                         formdata['datavis'],formdata['dataultvis'],formdata['codanun'],formdata['infoanun'],formdata['inflocal'],formdata['infoarea'],formdata['proprietario'],formdata['corretor'])
         result = dao.imovel.salvar(terreno)
-        if result and result.args[0] == UNIQUE_ERROR_CODE:
+        if type(result) == tuple and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('novo_terreno'))
         return redirect(url_for('index'))
@@ -59,7 +59,7 @@ class TerrenoController:
                         formdata['cep'],formdata['valor'],formdata['porcentagem'],formdata['valorvenda'],formdata['repasse'],placa,formdata['url'],formdata['dataplaca'],
                         formdata['datavis'],formdata['dataultvis'],formdata['codanun'],formdata['infoanun'],formdata['inflocal'],formdata['infoarea'],formdata['proprietario'],formdata['corretor'],imob_id=id)
         result = dao.imovel.salvar(terreno)
-        if result and result.args[0] == UNIQUE_ERROR_CODE:
+        if type(result) == tuple and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('editar_terreno', id=id))
         return redirect(url_for('index'))
