@@ -1,6 +1,7 @@
-from config import server as app
+from config import server
 from routes import Routes
 
+app = server
 
 routes = Routes()
 if __name__ == "__main__":
