@@ -3,4 +3,5 @@ from routes import Routes
 
 
 routes = Routes()
-server.run()
+if __name__ == "__main__":
+    server.run()
