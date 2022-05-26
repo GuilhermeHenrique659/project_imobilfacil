@@ -54,13 +54,15 @@ SQL_BUSCA_IMOB_ID ='''select * from imoveis left join proprietarios on imoveis.I
 SQL_DELETA_PROPRIETARIO = 'delete from proprietarios where ID_PROP = %s'
 
 
-SQL_CRIA_PROPRIETARIO = 'INSERT into proprietarios (NOME, CPF_CNPJ, RG_INSC_ETAD, SEXO, ENDERECO, CEP , NUMERO, PESSOA, CODIGO, RAZAO ,' \
-                        'TELEFONE, CELULAR, WHATAPPS, EMAIL,CAPITAL, PATRIMONIO, ATIVIDADE, ID_CIDADE, ID_BAIRRO) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+SQL_CRIA_PROPRIETARIO = 'INSERT into proprietarios (NOME, CPF_CNPJ, RG_INSC_ETAD, SEXO, ENDERECO, CEP , NUMERO, PESSOA, RAZAO ,' \
+                        'TELEFONE, CELULAR, WHATAPPS, EMAIL,CAPITAL, PATRIMONIO, ATIVIDADE, ID_CIDADE, ID_BAIRRO) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
 
-SQL_ATUALIZA_PROPRIETARIO = 'UPDATE proprietarios SET NOME=%s, CPF_CNPJ=%s, RG_INSC_ETAD=%s, SEXO=%s, ENDERECO=%s, CEP=%s , NUMERO=%s, PESSOA=%s, CODIGO=%s, RAZAO=%s ,' \
+SQL_ATUALIZA_PROPRIETARIO = 'UPDATE proprietarios SET NOME=%s, CPF_CNPJ=%s, RG_INSC_ETAD=%s, SEXO=%s, ENDERECO=%s, CEP=%s , NUMERO=%s, PESSOA=%s, RAZAO=%s ,' \
                         'TELEFONE=%s, CELULAR=%s, WHATAPPS=%s, EMAIL=%s,CAPITAL=%s, PATRIMONIO=%s, ATIVIDADE=%s, ID_CIDADE=%s, ID_BAIRRO=%s where ID_PROP=%s'
 
 SQL_BUSCAR_LISTA_PROP = 'SELECT ID_PROP, NOME, CPF_CNPJ, RG_INSC_ETAD, ENDERECO, TELEFONE, EMAIL, ID_CIDADE, ID_BAIRRO from proprietarios'
+
+SQL_FIND_PROP_BY_NAME = 'SELECT ID_PROP, NOME, CPF_CNPJ, RG_INSC_ETAD, ENDERECO, TELEFONE, EMAIL, ID_CIDADE, ID_BAIRRO from proprietarios where NOME like %s'
 
 SQL_PROP_POR_ID = 'SELECT * from proprietarios ' \
                   'left join cidade on proprietarios.ID_CIDADE = cidade.ID_CID ' \
