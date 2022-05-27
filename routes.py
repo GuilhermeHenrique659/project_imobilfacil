@@ -70,6 +70,8 @@ class Routes:
 #corretor
         server.app.add_url_rule('/Corretor',endpoint='Corretor',view_func=controllers.corretor.rota_corretor)
 
+        server.app.add_url_rule('/find_cor_by_name',endpoint='find_cor_by_name',view_func = controllers.corretor.find_by_name,methods=['POST','GET'])
+
         server.app.add_url_rule('/cad_corretor', endpoint='cad_corretor', view_func=controllers.corretor.criar_Corretor, methods=['POST'])
 
         server.app.add_url_rule('/editar_corretor/<int:id>', endpoint='editar_corretor' ,view_func=controllers.corretor.editar_corretor)

@@ -9,71 +9,73 @@
     $('#cpf').mask('000.000.000-00');
   });
 </script>
-      <div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3 needs-validation" action="{{url_for('novo_bairro')}}" method="post" novalidate>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Criar bairro</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
+<div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3 needs-validation" id="form_bairro" action="{{url_for('novo_bairro')}}" method="post" novalidate>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Criar bairro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
           <input type="hidden" name="previous" value="/Corretor">
           <div class="form-group">
             <label for="cidade_bairro">Cidade</label>
             <select class="form-select" id="cidade_bairro" name="cidade_bairro" required>
-                <option value="" selected>Selecione a tipo</option>
-                    {% for cidade in cidades %}
-                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
-                    {% endfor %}
-            </select><div class="invalid-feedback">
+              <option value="" selected>Selecione a tipo</option>
+              {% for cidade in cidades %}
+              <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+              {% endfor %}
+            </select>
+            <div class="invalid-feedback">
               Por favor insira uma cidade.
-              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="bairro">Bairro</label>
             <input type="text" id="bairro" name="bairro" class="form-control" required>
-              <div class="invalid-feedback">
+            <div class="invalid-feedback">
               Por favor insira um bairro.
-              </div>
+            </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+        </div>
       </div>
     </div>
-  </div></form>
+  </form>
 </div>
-      <div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3 needs-validation" action="{{url_for('nova_cidade')}}" method="post" novalidate>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="CidadeModalLabel">Criar cidade</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+<div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3 needs-validation" id="cidade_form" action="{{url_for('nova_cidade')}}" method="post" novalidate>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="CidadeModalLabel">Criar cidade</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
         <input type="hidden" name="previous" value="/Corretor">
-      <div class="modal-body">
+        <div class="modal-body">
           <div class="form-group">
             <label for="cidade">Cidade</label>
             <input type="text" id="cidade" name="cidade" class="form-control" required>
-              <div class="invalid-feedback">
+            <div class="invalid-feedback">
               Por favor insira uma cidade.
-              </div>
+            </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+        </div>
       </div>
     </div>
-  </div>
-          </form>
+  </form>
 </div>
 
 <h1>Cadastro de Corretor</h1>
-<form action="/cad_corretor" method="post" class="needs-validation" novalidate>
+<form action="/cad_corretor" method="post" class="needs-validation" id="corr_form" novalidate>
   <fieldset>
     <br>
     <div class="mb-3">
@@ -81,7 +83,7 @@
       <input type=text class="form-control" id="usuario" name="usuario_corr" required>
       <div class="invalid-feedback">
         Por favor insira um usuario.
-  </div>
+      </div>
     </div>
     <br>
     <div class="mb-3">
@@ -89,39 +91,39 @@
       <input type="email" class="form-control" id="email" name="email_corr" required>
       <div class="invalid-feedback">
         Por favor insira um email.
-  </div>
+      </div>
     </div>
     <br>
     <div class="mb-3">
       <label for="nome" class="form-label">Nome</label>
       <input type="text" name="nome_corr" class="form-control" id="nome" required>
-        <div class="invalid-feedback">
-              Por favor insira um nome.
-        </div>
+      <div class="invalid-feedback">
+        Por favor insira um nome.
+      </div>
     </div>
     <br>
     <div class="mb-3">
       <label for="creci" class="form-label">CRECI</label>
       <input type="text" class="form-control" id="creci" name="creci_corr" required>
-        <div class="invalid-feedback">
-              Por favor insira o CRECI.
-        </div>
+      <div class="invalid-feedback">
+        Por favor insira o CRECI.
+      </div>
     </div>
     <br>
     <div class="mb-3">
       <label for="celular" class="form-label">Celular</label>
       <input type="text" class="form-control" id="celular" name="celular_corr" required>
-        <div class="invalid-feedback">
-              Por favor insira um Celular.
-        </div>
+      <div class="invalid-feedback">
+        Por favor insira um Celular.
+      </div>
     </div>
     <br>
     <div class="mb-3">
       <label for="cpf" class="form-label">CPF</label>
       <input type="text" class="form-control" id="cpf" name="cpf_corr" required>
-        <div class="invalid-feedback">
-              Por favor insira um CPF.
-        </div>
+      <div class="invalid-feedback">
+        Por favor insira um CPF.
+      </div>
     </div>
     <br>
     <div class="mb-3">
@@ -129,67 +131,69 @@
       <input type="text" class="form-control" id="endereco" name="endereco_corr" required>
       <div class="invalid-feedback">
         Por favor insira um endereco.
-  </div>
+      </div>
     </div>
     <br>
-<div class="input-group">
-            <label class="input-group-text" for="cidades">Cidade</label>
-            <select class="form-select" id="cidades" name="cidades" required>
-                <option value="" selected>Selecione a cidade</option>
-                    {% for cidade in cidades %}
-                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
-                    {% endfor %}
-            </select>
-                              <div class="invalid-feedback">
-              Por favor insira uma cidade.
-              </div>
+    <div class="input-group">
+      <label class="input-group-text" for="cidades">Cidade</label>
+      <select class="form-select" id="cidades" name="cidades" required>
+        <option value="" selected>Selecione a cidade</option>
+        {% for cidade in cidades %}
+        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+        {% endfor %}
+      </select>
+      <div class="invalid-feedback">
+        Por favor insira uma cidade.
+      </div>
 
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CidadeModal"><i><img
-                      src="../static/img/icon/plus.svg" alt=""></i> Criar cidade </button>
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CidadeModal"><i><img
+            src="../static/img/icon/plus.svg" alt=""></i> Criar cidade </button>
 
-          </div>
-      <br>
-<div class="input-group">
-            <label class="input-group-text" for="bairros">Bairros</label>
-            <select class="form-select" id="bairros" name="bairros" required>
-                <option value="" selected>Selecione o bairro</option>
-                    {% for bairro in bairros %}
+    </div>
+    <br>
+    <div class="input-group">
+      <label class="input-group-text" for="bairros">Bairros</label>
+      <select class="form-select" id="bairros" name="bairros" required>
+        <option value="" selected>Selecione o bairro</option>
+        {% for bairro in bairros %}
 
-                        <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}}</option>
-                    {% endfor %}
-            </select>
-                              <div class="invalid-feedback">
-              Por favor insira um bairro.
-              </div>
+        <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
+          {{bairro._bairro_cid_nome}}</option>
+        {% endfor %}
+      </select>
+      <div class="invalid-feedback">
+        Por favor insira um bairro.
+      </div>
 
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#BairroModal"><i><img
-                      src="../static/img/icon/plus.svg" alt=""></i> Criar bairro </button>
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#BairroModal"><i><img
+            src="../static/img/icon/plus.svg" alt=""></i> Criar bairro </button>
 
-          </div>
-          <br>
+    </div>
+    <br>
     <div class="mb-3">
       <label for="senha" class="form-label">Senha</label>
       <input type="password" class="form-control" id="senha" name="senha_corr" required>
       <div class="invalid-feedback">
         Por favor insira uma senha.
-  </div>
-                <input type="checkbox" id="senha_mostrar" name="Senha_mostrar" onclick="Mostrar_senha()">
-        <label for="senha_mostrar"> Mostrar senha!</label><br>
+      </div>
+      <input type="checkbox" id="senha_mostrar" name="Senha_mostrar" onclick="Mostrar_senha()">
+      <label for="senha_mostrar"> Mostrar senha!</label><br>
 
     </div>
     <button type="submit" class="btn btn-dark">Salvar</button>
     <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
   </fieldset>
 </form>
+<script src="{{url_for('static',filename='js/storege_form_corr.js')}}"></script>
 <script>
-    function Mostrar_senha(){
-        var tipo = document.getElementById("senha")
-        if(tipo.type == "password"){
-            tipo.type = "text"
-        }else{
-            tipo.type = "password"
-        }
+  function Mostrar_senha() {
+    var tipo = document.getElementById("senha")
+    if (tipo.type == "password") {
+      tipo.type = "text"
+    } else {
+      tipo.type = "password"
     }
+  }
 </script>
 
 {% endblock %}

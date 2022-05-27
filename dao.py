@@ -83,9 +83,15 @@ class CorretorDao:
                                                  corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
         except MySQLdb.IntegrityError as error:
             return error
+        print(cursor.lastrowid)
         self.__db.connection.commit()
-        del corretor
         return cursor.lastrowid
+
+    def find_by_name(self, name):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_FIND_CORR_BY_NAME,(name,))
+        return self.traduz_para_lista_corr(cursor.fetchall())
+    
 
     # faz lista de corretores para mostrar no index
     def listar(self):
@@ -125,12 +131,10 @@ class CorretorDao:
 
 #tranforma dodos do bd em uma lista de objetos
     def traduz_para_lista_corr(self,corr_dictlist):
-        ADMIN_USER = 0
         def traduz_para_objeto(corr_dict):
             return Corretores(corr_dict['USUARIO'],corr_dict['EMAIL'],corr_dict['NOME'],corr_dict['CRECI'],corr_dict['CELULAR'],
                       corr_dict['CPF'],corr_dict['ENDERECO'],corr_dict['SENHA'],corr_dict['ID_CIDADE'],corr_dict['ID_BAIRRO'], corr_dict['ID_CORR'])
         lista_corr = list(map(traduz_para_objeto, corr_dictlist))
-        lista_corr.pop(ADMIN_USER)
         return lista_corr
 
 #imovel/

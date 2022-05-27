@@ -1,6 +1,4 @@
-from cgitb import reset
-from os import popen
-import re
+import MySQLdb
 from config import server
 from flask import jsonify, request, redirect, render_template, session, flash,url_for
 from models import Proprietario
@@ -43,7 +41,7 @@ class ProprietarioController():
                                         telefone=prop_data['telefone'], whatsapp=prop_data['whatsapp'], tipo_pessoa=tipo_pessoa, razao=prop_data['razao'], 
                                         capital=prop_data['capital'], patrimonio=prop_data['patrimonio'])
         result = dao.proprietario.salvar(proprietario)
-        if result and result.args[0] == UNIQUE_ERROR_CODE:
+        if isinstance(result,MySQLdb.IntegrityError) and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('Proprietario'))
         return redirect(url_for('index'))
@@ -73,7 +71,7 @@ class ProprietarioController():
                                         telefone=prop_data['telefone'], whatsapp=prop_data['whatsapp'], tipo_pessoa=tipo_pessoa, razao=prop_data['razao'], 
                                         capital=prop_data['capital'], patrimonio=prop_data['patrimonio'], id=id_prop)
         result = dao.proprietario.salvar(proprietario)
-        if result and result.args[0] == UNIQUE_ERROR_CODE:
+        if isinstance(result,MySQLdb.IntegrityError) and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('editar_prop', id=id_prop))
         return redirect(url_for('index'))
