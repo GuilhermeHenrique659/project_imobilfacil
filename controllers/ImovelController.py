@@ -49,11 +49,9 @@ class ImovelController():
     @server.loggin_required
     def editar_imovel(self, id):
         Imovel = dao.imovel.busca_imob_id(id)
-        lista_prop = dao.proprietario.listar()
-        lista_corr = dao.corretor.listar()
         lista_cidades = dao.cidade.lista()
         lista_bairro = dao.bairro.lista()
-        return render_template('editar_imovel.html', imovel=Imovel, proprietarios=lista_prop, corretores=lista_corr,
+        return render_template('editar_imovel.html', imovel=Imovel,
                                cidades=lista_cidades, bairros=lista_bairro)
 
     @server.loggin_required

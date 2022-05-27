@@ -1,84 +1,87 @@
 {% extends "template.html" %}
 {% block conteudo %}
-  <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
-  <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
-  <script>
-   $(document).ready(function (){
-      $('#rg').mask('00.000.000-0');
-      $('#celular').mask('(00) 0000-0000');
-      $('#cpf').mask('000.000.000-00');
+<script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
+<script>
+  $(document).ready(function () {
+    $('#rg').mask('00.000.000-0');
+    $('#celular').mask('(00) 0000-0000');
+    $('#cpf').mask('000.000.000-00');
   });
-  </script>
-      <div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3 needs-validation" action="/novo_bairro" method="post" novalidate>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Criar bairro</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
+</script>
+<div class="modal fade" id="BairroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3 needs-validation" id="form_bairro" action="/novo_bairro" method="post" novalidate>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Criar bairro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
           <input type="hidden" name="previous" value="/editar_corretor/{{corretor._id_corr}}">
           <div class="form-group">
             <label for="cidade_bairro">Cidade</label>
             <select class="form-select" id="cidade_bairro" name="cidade_bairro" required>
-                <option value="" selected>Selecione a tipo</option>
-                    {% for cidade in cidades %}
-                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
-                    {% endfor %}
-            </select><div class="invalid-feedback">
+              <option value="" selected>Selecione a tipo</option>
+              {% for cidade in cidades %}
+              <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+              {% endfor %}
+            </select>
+            <div class="invalid-feedback">
               Por favor insira uma cidade.
-              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="bairro">Bairro</label>
             <input type="text" id="bairro" name="bairro" class="form-control" required>
-              <div class="invalid-feedback">
+            <div class="invalid-feedback">
               Por favor insira um bairro.
-              </div>
+            </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+        </div>
       </div>
     </div>
-  </div></form>
+  </form>
 </div>
-      <div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <form class="row g-3 needs-validation" action="/nova_cidade" method="post" novalidate>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="CidadeModalLabel">Criar cidade</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
+<div class="modal fade" id="CidadeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form class="row g-3 needs-validation" id="cidade_form" action="/nova_cidade" method="post" novalidate>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="CidadeModalLabel">Criar cidade</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
           <input type="hidden" name="previous" value="/editar_corretor/{{corretor._id_corr}}">
           <div class="form-group">
             <label for="cidade">Cidade</label>
             <input type="text" id="cidade" name="cidade" class="form-control" required>
-              <div class="invalid-feedback">
+            <div class="invalid-feedback">
               Por favor insira uma cidade.
-              </div>
+            </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
           <button type="submit" class="btn btn-dark btn-salvar">Salvar</button>
+        </div>
       </div>
     </div>
-  </div></form>
+  </form>
 </div>
 <h1>Editar Corretor</h1>
-<form action="/atualizar_corretor" method="post" class="needs-validation" novalidate>
+<form action="/atualizar_corretor" id="corr_form" method="post" class="needs-validation" novalidate>
   <fieldset>
     <input type="hidden" name="id_corr" value="{{corretor._id_corr}}">
-       <input type="hidden" name="ussuario_verif" value="{{corretor._usuario}}">
+    <input type="hidden" name="ussuario_verif" value="{{corretor._usuario}}">
     <br>
     <div class="mb-3">
       <label for="usuario" class="form-label">Usuário</label>
-      <input type=text class="form-control" id="usuario" name="usuario_corr" value="{{corretor._usuario}}" >
+      <input type=text class="form-control" id="usuario" name="usuario_corr" value="{{corretor._usuario}}">
     </div>
     <br>
     <div class="mb-3">
@@ -90,32 +93,32 @@
       <label for="nome" class="form-label">Nome</label>
       <input type="text" name="nome_corr" class="form-control" id="nome" value="{{corretor._nome}}" required>
       <div class="invalid-feedback">
-              Por favor insira um Nome.
-        </div>
+        Por favor insira um Nome.
+      </div>
     </div>
     <br>
     <div class="mb-3">
       <label for="creci" class="form-label">CRECI</label>
       <input type="text" class="form-control" id="creci" name="creci_corr" value="{{corretor._creci}}" required>
       <div class="invalid-feedback">
-              Por favor insira um CRECI.
-        </div>
+        Por favor insira um CRECI.
+      </div>
     </div>
     <br>
     <div class="mb-3">
-        <label for="celular" class="form-label">Celular</label>
-        <input type="text" class="form-control" id="celular" name="celular_corr" value="{{corretor._celular}}" required>
+      <label for="celular" class="form-label">Celular</label>
+      <input type="text" class="form-control" id="celular" name="celular_corr" value="{{corretor._celular}}" required>
       <div class="invalid-feedback">
-              Por favor insira um Celular.
-        </div>
+        Por favor insira um Celular.
+      </div>
     </div>
     <br>
     <div class="mb-3">
       <label for="cpf" class="form-label">CPF</label>
       <input type="text" class="form-control" id="cpf" name="cpf_corr" value="{{corretor._cpf}}" required>
       <div class="invalid-feedback">
-              Por favor insira um CPF.
-        </div>
+        Por favor insira um CPF.
+      </div>
     </div>
     <br>
     <div class="mb-3">
@@ -125,43 +128,44 @@
 
 
     <br>
-<div class="input-group">
-            <label class="input-group-text" for="cidades">Cidade</label>
-            <select class="form-select" id="cidades" name="cidades" required>
-                <option value="{{corretor._cidade._id_cidade}}" selected>{{corretor._cidade._cidade_nome}}</option>
-                    {% for cidade in cidades %}
-                        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
-                    {% endfor %}
-            </select>
-                              <div class="invalid-feedback">
-              Por favor insira uma cidade.
-              </div>
+    <div class="input-group">
+      <label class="input-group-text" for="cidades">Cidade</label>
+      <select class="form-select" id="cidades" name="cidades" required>
+        <option value="{{corretor._cidade._id_cidade}}" selected>{{corretor._cidade._cidade_nome}}</option>
+        {% for cidade in cidades %}
+        <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+        {% endfor %}
+      </select>
+      <div class="invalid-feedback">
+        Por favor insira uma cidade.
+      </div>
 
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CidadeModal"><i><img
-                      src="../static/img/icon/plus.svg" alt=""></i> Criar cidade </button>
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CidadeModal"><i><img
+            src="../static/img/icon/plus.svg" alt=""></i> Criar cidade </button>
 
-          </div>
-      <br>
+    </div>
+    <br>
 
 
-<div class="input-group">
-            <label class="input-group-text" for="bairros">Bairros</label>
-            <select class="form-select" id="bairros" name="bairros" required>
-                <option value="{{ corretor._bairro._id_bairro }}" selected>{{corretor._bairro._bairro_nome}}</option>
-                    {% for bairro in bairros %}
+    <div class="input-group">
+      <label class="input-group-text" for="bairros">Bairros</label>
+      <select class="form-select" id="bairros" name="bairros" required>
+        <option value="{{ corretor._bairro._id_bairro }}" selected>{{corretor._bairro._bairro_nome}}</option>
+        {% for bairro in bairros %}
 
-                        <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} / {{bairro._bairro_cid_nome}}</option>
-                    {% endfor %}
-            </select>
-                              <div class="invalid-feedback">
-              Por favor insira um bairro.
-              </div>
+        <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
+          {{bairro._bairro_cid_nome}}</option>
+        {% endfor %}
+      </select>
+      <div class="invalid-feedback">
+        Por favor insira um bairro.
+      </div>
 
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#BairroModal"><i><img
-                      src="../static/img/icon/plus.svg" alt=""></i> Criar bairro </button>
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#BairroModal"><i><img
+            src="../static/img/icon/plus.svg" alt=""></i> Criar bairro </button>
 
-          </div>
-        <br>
+    </div>
+    <br>
     <div class="mb-3">
       <label for="senha" class="form-label">Senha</label>
       <input type="password" class="form-control" id="senha" name="senha_corr">
@@ -170,5 +174,6 @@
     <a href="{{url_for('index')}}"><button type="button" class="btn btn-danger">Voltar</button></a>
   </fieldset>
 </form>
+<script src="{{url_for('static',filename='js/storege_form_corr.js')}}"></script>
 
 {% endblock %}

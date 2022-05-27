@@ -16,12 +16,12 @@ class ProprietarioDao:
         try:
             if (proprietario._id):
                 cursor.execute(SQL_ATUALIZA_PROPRIETARIO, (proprietario._nome,proprietario._rg_insc_estadual, proprietario._cpf_cnpj, proprietario._sexo,proprietario._endereco_prop,proprietario._cep,
-                                                     proprietario._end_numero, proprietario._tipo_pessoa, proprietario._codigo, proprietario._razao,proprietario._telefone,
+                                                     proprietario._end_numero, proprietario._tipo_pessoa, proprietario._razao,proprietario._telefone,
                                                      proprietario._celular, proprietario._whatsapp, proprietario._email, proprietario._capital, proprietario._patrimonio,
                                                      proprietario._atividade, proprietario._cidade,proprietario._bairro,proprietario._id,))
             else:
                 cursor.execute(SQL_CRIA_PROPRIETARIO, (proprietario._nome,proprietario._rg_insc_estadual, proprietario._cpf_cnpj, proprietario._sexo,proprietario._endereco_prop,proprietario._cep,
-                                                     proprietario._end_numero, proprietario._tipo_pessoa, proprietario._codigo, proprietario._razao,proprietario._telefone,
+                                                     proprietario._end_numero, proprietario._tipo_pessoa, proprietario._razao,proprietario._telefone,
                                                      proprietario._celular, proprietario._whatsapp, proprietario._email, proprietario._capital, proprietario._patrimonio,
                                                      proprietario._atividade, proprietario._cidade,proprietario._bairro))
         except MySQLdb.IntegrityError as error:
@@ -29,6 +29,11 @@ class ProprietarioDao:
         self.__db.connection.commit()
         del proprietario
         return None
+
+    def find_by_name(self,prop_name):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_FIND_PROP_BY_NAME,(prop_name,))
+        return self.traduz_para_lista(cursor.fetchall())
 
     def listar(self):
         cursor = self.__db.connection.cursor()
@@ -48,7 +53,7 @@ class ProprietarioDao:
                                     id=prop_dict['ID_PROP'],atividade=prop_dict['ATIVIDADE'],telefone=prop_dict['TELEFONE'],
                                     razao=prop_dict['RAZAO'], capital=prop_dict['CAPITAL'],patrimonio=prop_dict['PATRIMONIO'],
                                     whatsapp=prop_dict['WHATAPPS'],data_cad=prop_dict['DATA_CAD'],tipo_pessoa=prop_dict['PESSOA'],
-                                    codigo=prop_dict['CODIGO'],sexo=prop_dict['SEXO'])
+                                    sexo=prop_dict['SEXO'])
         del cidade,bairro
         return proprietario
 
@@ -78,9 +83,15 @@ class CorretorDao:
                                                  corretor._celular,corretor._cpf,corretor._endereco,corretor._senha,corretor._cidade,corretor._bairro))
         except MySQLdb.IntegrityError as error:
             return error
+        print(cursor.lastrowid)
         self.__db.connection.commit()
-        del corretor
         return cursor.lastrowid
+
+    def find_by_name(self, name):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_FIND_CORR_BY_NAME,(name,))
+        return self.traduz_para_lista_corr(cursor.fetchall())
+    
 
     # faz lista de corretores para mostrar no index
     def listar(self):
@@ -120,12 +131,10 @@ class CorretorDao:
 
 #tranforma dodos do bd em uma lista de objetos
     def traduz_para_lista_corr(self,corr_dictlist):
-        ADMIN_USER = 0
         def traduz_para_objeto(corr_dict):
             return Corretores(corr_dict['USUARIO'],corr_dict['EMAIL'],corr_dict['NOME'],corr_dict['CRECI'],corr_dict['CELULAR'],
                       corr_dict['CPF'],corr_dict['ENDERECO'],corr_dict['SENHA'],corr_dict['ID_CIDADE'],corr_dict['ID_BAIRRO'], corr_dict['ID_CORR'])
         lista_corr = list(map(traduz_para_objeto, corr_dictlist))
-        lista_corr.pop(ADMIN_USER)
         return lista_corr
 
 #imovel/

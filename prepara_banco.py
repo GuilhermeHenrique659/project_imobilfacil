@@ -6,8 +6,7 @@ print('Conectando...')
 
 #Bancos de dados do Heroku de teste
 
-conn = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
-
+conn:MySQLdb = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
 #Bancos de dados do Heroku de produção
 
 #conn = MySQLdb.connect(user='bdbbbc8d2b231a', passwd='5deebf3c', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
@@ -87,7 +86,6 @@ conn.commit()
 
 criar_tabela_proprietario = '''CREATE TABLE `PROPRIETARIOS` (
         `ID_PROP` INT NOT NULL AUTO_INCREMENT,
-        `CODIGO` INT NOT NULL UNIQUE,
         `PESSOA` INT NOT NULL,
         `NOME` VARCHAR(45) NULL,
         `RAZAO` VARCHAR(45) NULL,
@@ -262,6 +260,13 @@ criar_tabela_financeiro = '''CREATE TABLE `FINANCEIRO` (
 '''
 conn.cursor().execute(criar_tabela_financeiro)
 conn.commit()
+
+id_auto_increment_start_1000 = '''ALTER TABLE IMOVEIS AUTO_INCREMENT=1000;
+    ALTER TABLE CORRETORES AUTO_INCREMENT=1000;
+    ALTER TABLE PROPRIETARIOS AUTO_INCREMENT=1000;
+'''
+
+conn.cursor().execute(id_auto_increment_start_1000)
 
 # inserindo usuarios
 cursor = conn.cursor()

@@ -56,6 +56,8 @@ class Routes:
 #Criar Proprietario
         server.app.add_url_rule('/Proprietario', endpoint='Proprietario',view_func=controllers.proprietario.rota_proprietario,methods=['GET'])
 
+        server.app.add_url_rule('/find_prop_by_name',endpoint='find_prop_by_name',view_func = controllers.proprietario.find_prop_by_nome,methods=['POST','GET'])
+
         server.app.add_url_rule('/cad_prop',endpoint='cad_prop',view_func=controllers.proprietario.criar_proprietario, methods=['POST'])
 
         server.app.add_url_rule('/editar_prop/<int:id>', endpoint='editar_prop' ,view_func=controllers.proprietario.editar_proprietario, methods=['GET'])
@@ -67,6 +69,8 @@ class Routes:
 
 #corretor
         server.app.add_url_rule('/Corretor',endpoint='Corretor',view_func=controllers.corretor.rota_corretor)
+
+        server.app.add_url_rule('/find_cor_by_name',endpoint='find_cor_by_name',view_func = controllers.corretor.find_by_name,methods=['POST','GET'])
 
         server.app.add_url_rule('/cad_corretor', endpoint='cad_corretor', view_func=controllers.corretor.criar_Corretor, methods=['POST'])
 

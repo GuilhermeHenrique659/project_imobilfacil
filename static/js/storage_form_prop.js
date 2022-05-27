@@ -1,7 +1,6 @@
 
 function session_storege_cpf(){
     sessionStorage.setItem('nome',document.getElementById('nome').value)
-    sessionStorage.setItem('codigo',document.getElementById('codigo').value)
     sessionStorage.setItem('cpf',document.getElementById('cpf').value)
     sessionStorage.setItem('rg',document.getElementById('rg').value)
     sessionStorage.setItem('sexo',document.getElementById('sexo').value)
@@ -18,7 +17,6 @@ function session_storege_cpf(){
 function session_storege_cnpj(){
     sessionStorage.setItem('nome-fantasia',document.getElementById('nome-fantasia').value)
     sessionStorage.setItem('razao',document.getElementById('razao').value)
-    sessionStorage.setItem('codigo-jur',document.getElementById('codigo-jur').value)
     sessionStorage.setItem('doc_federal',document.getElementById('doc_federal').value)
     sessionStorage.setItem('doc_estadual',document.getElementById('doc_estadual').value)
     sessionStorage.setItem('atividade',document.getElementById('atividade').value)

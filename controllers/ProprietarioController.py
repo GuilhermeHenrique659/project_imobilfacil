@@ -1,8 +1,6 @@
-from cgitb import reset
-from os import popen
-import re
+import MySQLdb
 from config import server
-from flask import request, redirect, render_template, session, flash,url_for
+from flask import jsonify, request, redirect, render_template, session, flash,url_for
 from models import Proprietario
 from daofactory import dao
 
@@ -21,6 +19,13 @@ class ProprietarioController():
         return error_message
 
     @server.loggin_required
+    def find_prop_by_nome(self):
+        prop_name = request.get_json()
+        prop_list:list = dao.proprietario.find_by_name("%" + prop_name['name'] + "%")
+        prop_list_json = [prop.__dict__ for prop in prop_list]
+        return jsonify(prop_list_json),200
+
+    @server.loggin_required
     def criar_proprietario(self):
         tipo_pessoa = int(request.args['tipo_pessoa'])
         prop_data = request.form
@@ -29,14 +34,14 @@ class ProprietarioController():
                                         prop_data['endereco'],prop_data['numero'],prop_data['cep'],
                                         prop_data['celular'],prop_data['email'],prop_data['cidades'],prop_data['bairros'], 
                                         sexo=prop_data['sexo'],telefone=prop_data['telefone'], whatsapp=prop_data['whatsapp'], 
-                                        tipo_pessoa=tipo_pessoa, codigo=prop_data['codigo'])
+                                        tipo_pessoa=tipo_pessoa)
         else:
             proprietario = Proprietario(prop_data['nome'],prop_data['doc_federal'],prop_data['doc_estadual'],prop_data['endereco'],prop_data['numero'],prop_data['cep'],
                                         prop_data['celular'],prop_data['email'],prop_data['cidades'],prop_data['bairros'], atividade=prop_data['atividade'],
                                         telefone=prop_data['telefone'], whatsapp=prop_data['whatsapp'], tipo_pessoa=tipo_pessoa, razao=prop_data['razao'], 
-                                        codigo=prop_data['codigo'], capital=prop_data['capital'], patrimonio=prop_data['patrimonio'])
+                                        capital=prop_data['capital'], patrimonio=prop_data['patrimonio'])
         result = dao.proprietario.salvar(proprietario)
-        if result and result.args[0] == UNIQUE_ERROR_CODE:
+        if isinstance(result,MySQLdb.IntegrityError) and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('Proprietario'))
         return redirect(url_for('index'))
@@ -59,14 +64,14 @@ class ProprietarioController():
                                         prop_data['endereco'],prop_data['numero'],prop_data['cep'],
                                         prop_data['celular'],prop_data['email'],prop_data['cidades'],prop_data['bairros'], 
                                         sexo=prop_data['sexo'],telefone=prop_data['telefone'], whatsapp=prop_data['whatsapp'], 
-                                        tipo_pessoa=tipo_pessoa, codigo=prop_data['codigo'], id=id_prop)
+                                        tipo_pessoa=tipo_pessoa, id=id_prop)
         else:
             proprietario = Proprietario(prop_data['nome'],prop_data['doc_federal'],prop_data['doc_estadual'],prop_data['endereco'],prop_data['numero'],prop_data['cep'],
                                         prop_data['celular'],prop_data['email'],prop_data['cidades'],prop_data['bairros'], atividade=prop_data['atividade'],
                                         telefone=prop_data['telefone'], whatsapp=prop_data['whatsapp'], tipo_pessoa=tipo_pessoa, razao=prop_data['razao'], 
-                                        codigo=prop_data['codigo'], capital=prop_data['capital'], patrimonio=prop_data['patrimonio'], id=id_prop)
+                                        capital=prop_data['capital'], patrimonio=prop_data['patrimonio'], id=id_prop)
         result = dao.proprietario.salvar(proprietario)
-        if result and result.args[0] == UNIQUE_ERROR_CODE:
+        if isinstance(result,MySQLdb.IntegrityError) and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('editar_prop', id=id_prop))
         return redirect(url_for('index'))
