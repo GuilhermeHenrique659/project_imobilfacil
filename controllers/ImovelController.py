@@ -1,3 +1,4 @@
+import MySQLdb
 from flask import request, redirect, render_template, session, flash,url_for
 from models import Imovel, Financeiro, Descricao_imovel
 from daofactory import dao
@@ -34,7 +35,7 @@ class ImovelController():
                         tipo=imovel_form['tipo'],subtipo=imovel_form['subtipo'])
         
         result = dao.imovel.salvar(imovel)
-        if type(result) == tuple and result.args[0] == UNIQUE_ERROR_CODE:
+        if isinstance(result,MySQLdb.IntegrityError) and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('novo_imovel'))
         imovel_desc = Descricao_imovel(imovel_form['vagas'],imovel_form['banheiro'],imovel_form['suites'],imovel_form['dormitorios'],imovel_form['area_serve'],imovel_form['copa'],imovel_form['desc_edicula'],
@@ -69,7 +70,7 @@ class ImovelController():
                         tipo=imovel_form['tipo'],subtipo=imovel_form['subtipo'],imob_id=id_imob)
         
         result = dao.imovel.salvar(imovel)
-        if type(result) == tuple and result.args[0] == UNIQUE_ERROR_CODE:
+        if isinstance(result,MySQLdb.IntegrityError) and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('editar_imovel', id=id_imob))
         imovel_desc = Descricao_imovel(imovel_form['vagas'],imovel_form['banheiro'],imovel_form['suites'],imovel_form['dormitorios'],imovel_form['area_serve'],imovel_form['copa'],imovel_form['desc_edicula'],
