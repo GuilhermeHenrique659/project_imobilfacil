@@ -84,7 +84,8 @@
 
 <br>
 <fieldset>
-  <form id="imovel" action="{{ url_for('atualizar_imovel', id_imob=imovel._imob_id, id_desc=imovel._desc._id_desc) }}" method="post" class="needs-validation" novalidate>
+  <form id="imovel" action="{{ url_for('atualizar_imovel', id_imob=imovel._imob_id, id_desc=imovel._desc._id_desc) }}"
+    method="post" class="needs-validation" novalidate>
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <a class="nav-link active" id="nav-imovel-tab" data-bs-toggle="tab" href="#nav-imovel" role="tab"
@@ -120,28 +121,32 @@
         <div class="row">
           <div class="col-3">
             <label for="vagas" class="form-label">Vagas</label>
-            <input type="number" class="form-control" id="vagas" name="vagas" value="{{ imovel._desc._vagas }}" required>
+            <input type="number" class="form-control" id="vagas" name="vagas" value="{{ imovel._desc._vagas }}"
+              required>
             <div class="invalid-feedback">
               Por favor insira o vagas.
             </div>
           </div>
           <div class="col-3">
             <label for="banheiro" class="form-label">Banheiro</label>
-            <input type="number" class="form-control" id="banheiro" name="banheiro" value="{{ imovel._desc._banheiro }}" required>
+            <input type="number" class="form-control" id="banheiro" name="banheiro" value="{{ imovel._desc._banheiro }}"
+              required>
             <div class="invalid-feedback">
               Por favor insira o banheiro.
             </div>
           </div>
           <div class="col-3">
             <label for="suites" class="form-label">Suites</label>
-            <input type="number" class="form-control" id="suites" name="suites" value="{{ imovel._desc._suite }}" required>
+            <input type="number" class="form-control" id="suites" name="suites" value="{{ imovel._desc._suite }}"
+              required>
             <div class="invalid-feedback">
               Por favor insira o suites.
             </div>
           </div>
           <div class="col-3">
             <label for="dormitorios" class="form-label">Dormitorios</label>
-            <input type="number" class="form-control" id="dormitorios" name="dormitorios" value="{{ imovel._desc._dormitorio }}" required>
+            <input type="number" class="form-control" id="dormitorios" name="dormitorios"
+              value="{{ imovel._desc._dormitorio }}" required>
             <div class="invalid-feedback">
               Por favor insira o dormitorios.
             </div>
@@ -154,90 +159,201 @@
             <div class="row">
               <h4>Descrição</h4>
               <div class="col-3">
+                <div class="form-check">
+                  <label for="area_serve" class="form-check-label">Area de servico</label>
+                  <input type="checkbox" class="form-check-input" id="area_serve" name="area_serve" value="1"
+                    {% if imovel._desc._area_serve%} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="copa" class="form-check-label">Copa</label>
+                  <input type="checkbox" class="form-check-input" id="copa" name="copa" value="1"
+                    {% if imovel._desc._copa%} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="desc_edicula" class="form-check-label">Edicula</label>
+                  <input type="checkbox" class="form-check-input" id="desc_edicula" name="desc_edicula" value="1"
+                    {% if imovel._desc._edicula %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="lareira" class="form-check-label">Lareira</label>
+                  <input type="checkbox" class="form-check-input" id="lareira" name="lareira" value="1"
+                    {% if imovel._desc._lareira %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="portao_elec" class="form-check-label">Portao eletronico</label>
+                  <input type="checkbox" class="form-check-input" id="portao_elec" name="portao_elec" value="1"
+                    {% if imovel._desc._portao_elec %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="hidromsg" class="form-check-label">Hidromassagem</label>
+                  <input type="checkbox" class="form-check-input" id="hidromsg" name="hidromsg" value="1"
+                    {% if imovel._desc._hidromsg %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="piso" class="form-check-label">Piso</label>
+                  <input type="checkbox" class="form-check-input" id="piso" name="piso" value="1"
+                    {% if imovel._desc._piso %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="sacada" class="form-check-label">Sacada</label>
+                  <input type="checkbox" class="form-check-input" id="sacada" name="sacada" value="1"
+                    {% if imovel._desc._sacada %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="sala_vist" class="form-check-label">Sala de Visita</label>
+                  <input type="checkbox" class="form-check-input" id="sala_vist" name="sala_vist" value="1"
+                    {% if imovel._desc._sala_vist %} checked {%else%} {%endif%}>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-check">
+                  <label for="sala_estar" class="form-check-label">Sala de estar</label>
+                  <input type="checkbox" class="form-check-input" id="sala_estar" name="sala_estar" value="1"
+                    {% if imovel._desc._sala_estar %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="sotao" class="form-check-label">Sotao</label>
+                  <input type="checkbox" class="form-check-input" id="sotao" name="sotao" value="1"
+                    {% if imovel._desc._sotao %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="amarinho" class="form-check-label">Amarinho</label>
+                  <input type="checkbox" class="form-check-input" id="amarinho" name="amarinho" value="1"
+                    {% if imovel._desc._amarinho %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="cozinha" class="form-check-label">Cozinha</label>
+                  <input type="checkbox" class="form-check-input" id="cozinha" name="cozinha" value="1"
+                    {% if imovel._desc._cozinha %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="escritorio" class="form-check-label">Escritorio</label>
+                  <input type="checkbox" class="form-check-input" id="escritorio" name="escritorio" value="1"
+                    {% if imovel._desc._escritorio %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="lavabo" class="form-check-label">Lavabo</label>
+                  <input type="checkbox" class="form-check-input" id="lavabo" name="lavabo" value="1"
+                    {% if imovel._desc._lavabo %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="sala_jantar" class="form-check-label">Sala de jantar</label>
+                  <input type="checkbox" class="form-check-input" id="sala_jantar" name="sala_jantar" value="1"
+                    {% if imovel._desc._sala_jantar %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="varanda" class="form-check-label">Varanda</label>
+                  <input type="checkbox" class="form-check-input" id="varanda" name="varanda" value="1"
+                    {% if imovel._desc._varanda %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="claraboia" class="form-check-label">Claraboia</label>
+                  <input type="checkbox" class="form-check-input" id="claraboia" name="claraboia" value="1"
+                    {% if imovel._desc._claraboia %} checked {%else%} {%endif%}>
+                </div>
+              </div>
+              <div class="col-3">
 
-                <label for="area_serve" class="form-label">Area de servico</label>
-                <input type="number" class="form-control" id="area_serve" name="area_serve" value="{{ imovel._desc._area_serve }}">
-                <label for="copa" class="form-label">Copa</label>
-                <input type="number" class="form-control" id="copa" name="copa" value="{{ imovel._desc._copa }}">
-                <label for="desc_edicula" class="form-label">Edicula</label>
-                <input type="number" class="form-control" id="desc_edicula" name="desc_edicula" value="{{ imovel._desc._edicula }}">
-                <label for="lareira" class="form-label">Lareira</label>
-                <input type="number" class="form-control" id="lareira" name="lareira" value="{{ imovel._desc._lareira }}">
-                <label for="portao_elec" class="form-label">Portao eletronico</label>
-                <input type="number" class="form-control" id="portao_elec" name="portao_elec" value="{{ imovel._desc._portao_elec }}">
-                <label for="hidromsg" class="form-label">Hidromassagem</label>
-                <input type="number" class="form-control" id="hidromsg" name="hidromsg" value="{{ imovel._desc._hidromsg }}">
-                <label for="piso" class="form-label">Piso</label>
-                <input type="number" class="form-control" id="piso" name="piso" value="{{ imovel._desc._piso }}">
-                <label for="sacada" class="form-label">Sacada</label>
-                <input type="number" class="form-control" id="sacada" name="sacada" value="{{ imovel._desc._sacada }}">
-                <label for="sala_vist" class="form-label">Sala de Visita</label>
-                <input type="number" class="form-control" id="sala_vist" name="sala_vist" value="{{ imovel._desc._sala_vist }}">
-              </div>
-              <div class="col-3">
-                <label for="sala_estar" class="form-label">Sala de estar</label>
-                <input type="number" class="form-control" id="sala_estar" name="sala_estar" value="{{ imovel._desc._sala_estar }}">
-                <label for="sotao" class="form-label">Sotao</label>
-                <input type="number" class="form-control" id="sotao" name="sotao" value="{{ imovel._desc._sotao }}">
-                <label for="amarinho" class="form-label">Amarinho</label>
-                <input type="number" class="form-control" id="amarinho" name="amarinho" value="{{ imovel._desc._amarinho }}">
-                <label for="cozinha" class="form-label">Cozinha</label>
-                <input type="number" class="form-control" id="cozinha" name="cozinha" value="{{ imovel._desc._cozinha }}">
-                <label for="escritorio" class="form-label">Escritorio</label>
-                <input type="number" class="form-control" id="escritorio" name="escritorio" value="{{ imovel._desc._escritorio }}">
-                <label for="lavabo" class="form-label">Lavabo</label>
-                <input type="number" class="form-control" id="lavabo" name="lavabo" value="{{ imovel._desc._lavabo }}">
-                <label for="sala_jantar" class="form-label">Sala de jantar</label>
-                <input type="number" class="form-control" id="sala_jantar" name="sala_jantar" value="{{ imovel._desc._sala_jantar }}">
-                <label for="varanda" class="form-label">Varanda</label>
-                <input type="number" class="form-control" id="varanda" name="varanda" value="{{ imovel._desc._varanda }}">
-                <label for="claraboia" class="form-label">Claraboia</label>
-                <input type="number" class="form-control" id="claraboia" name="claraboia" value="{{ imovel._desc._claraboia }}">
-              </div>
-              <div class="col-3">
-                <label for="dep_empregada" class="form-label">Dep. empregada</label>
-                <input type="number" class="form-control" id="dep_empregada" name="dep_empregada" value="{{ imovel._desc._dep_empregada }}">
-                <label for="garage" class="form-label">Garage</label>
-                <input type="number" class="form-control" id="garage" name="garage" value="{{ imovel._desc._garage }}">
-                <label for="living_room" class="form-label">Living room</label>
-                <input type="number" class="form-control" id="living_room" name="living_room" value="{{ imovel._desc._living_room }}">
-                <label for="quintal" class="form-label">Quintal</label>
-                <input type="number" class="form-control" id="quintal" name="quintal" value="{{ imovel._desc._quintal }}">
-                <label for="sala_tv" class="form-label">Sala tv</label>
-                <input type="number" class="form-control" id="sala_tv" name="sala_tv" value="{{ imovel._desc._sala_tv }}">
-                <label for="w_c_empregada" class="form-label">w.c. empregada</label>
-                <input type="number" class="form-control" id="w_c_empregada" name="w_c_empregada" value="{{ imovel._desc._w_c_empregada }}">
-                <label for="closet" class="form-label">Closet</label>
-                <input type="number" class="form-control" id="closet" name="closet" value="{{ imovel._desc._closet }}">
-                <label for="despensa" class="form-label">Despensa</label>
-                <input type="number" class="form-control" id="despensa" name="despensa" value="{{ imovel._desc._despensa }}">
+                <div class="form-check">
+                  <label for="dep_empregada" class="form-check-label">Dep. empregada</label>
+                  <input type="checkbox" class="form-check-input" id="dep_empregada" name="dep_empregada" value="1"
+                    {% if imovel._desc._dep_empregada %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="garage" class="form-check-label">Garage</label>
+                  <input type="checkbox" class="form-check-input" id="garage" name="garage" value="1"
+                    {% if imovel._desc._garage %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="living_room" class="form-check-label">Living room</label>
+                  <input type="checkbox" class="form-check-input" id="living_room" name="living_room" value="1"
+                    {% if imovel._desc._living_room %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="quintal" class="form-check-label">Quintal</label>
+                  <input type="checkbox" class="form-check-input" id="quintal" name="quintal" value="1"
+                    {% if imovel._desc._quintal %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="sala_tv" class="form-check-label">Sala tv</label>
+                  <input type="checkbox" class="form-check-input" id="sala_tv" name="sala_tv" value="1"
+                    {% if imovel._desc._sala_tv %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="w_c_empregada" class="form-check-label">w.c. empregada</label>
+                  <input type="checkbox" class="form-check-input" id="w_c_empregada" name="w_c_empregada" value="1"
+                    {% if imovel._desc._w_c_empregada %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="closet" class="form-check-label">Closet</label>
+                  <input type="checkbox" class="form-check-input" id="closet" name="closet" value="1"
+                    {% if imovel._desc._closet %} checked {%else%} {%endif%}>
+                </div>
+                <div class="form-check">
+                  <label for="despensa" class="form-check-label">Despensa</label>
+                  <input type="checkbox" class="form-check-input" id="despensa" name="despensa" value="1"
+                    {% if imovel._desc._despensa %} checked {%else%} {%endif%}>
+                </div>
               </div>
             </div>
           </div>
           <div class="col-4">
             <h4>Area Comum</h4>
-            <label for="churrasqueira" class="form-label">Churrasqueira</label>
-            <input type="number" class="form-control" id="churrasqueira" name="churrasqueira" value="{{ imovel._desc._churrasqueira }}">
-            <label for="portaria_24h" class="form-label">Portaria 24 horas</label>
-            <input type="number" class="form-control" id="portaria_24h" name="portaria_24h" value="{{ imovel._desc._portaria_24h }}">
-            <label for="salao_festa" class="form-label">Salao de Festa</label>
-            <input type="number" class="form-control" id="salao_festa" name="salao_festa" value="{{ imovel._desc._salao_festa }}">
-            <label for="jd_inverno" class="form-label">jd. de inverno</label>
-            <input type="number" class="form-control" id="jd_inverno" name="jd_inverno" value="{{ imovel._desc._jd_inverno }}">
-            <label for="quadra" class="form-label">Quadra</label>
-            <input type="number" class="form-control" id="quadra" name="quadra" value="{{ imovel._desc._quadra }}">
-            <label for="sauna" class="form-label">Sauna</label>
-            <input type="number" class="form-control" id="sauna" name="sauna" value="{{ imovel._desc._sauna }}">
-            <label for="piscina" class="form-label">Piscina</label>
-            <input type="number" class="form-control" id="piscina" name="piscina" value="{{ imovel._desc._pescina }}">
-            <label for="entrada_ind" class="form-label">Entrada independente</label>
-            <input type="number" class="form-control" id="entrada_ind" name="entrada_ind" value="{{ imovel._desc._entrada_ind }}">
-            <label for="quadra_tenis" class="form-label">Quadra de tenis</label>
-            <input type="number" class="form-control" id="quadra_tenis" name="quadra_tenis" value="{{ imovel._desc._quadra_tenis }}">
-            <label for="playground" class="form-label">Playground</label>
-            <input type="number" class="form-control" id="playground" name="playground" value="{{ imovel._desc._playground }}">
-            <label for="sala_ginastica" class="form-label">Sala de ginastica</label>
-            <input type="number" class="form-control" id="sala_ginastica" name="sala_ginastica" value="{{ imovel._desc._sala_ginastica }}">
+            <div class="form-check">
+              <label for="churrasqueira" class="form-check-label">Churrasqueira</label>
+              <input type="checkbox" class="form-check-input" id="churrasqueira" name="churrasqueira" value="1"
+                {% if imovel._desc._churrasqueira %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="portaria_24h" class="form-check-label">Portaria 24 horas</label>
+              <input type="checkbox" class="form-check-input" id="portaria_24h" name="portaria_24h" value="1"
+                {% if imovel._desc._portaria_24h %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="salao_festa" class="form-check-label">Salao de Festa</label>
+              <input type="checkbox" class="form-check-input" id="salao_festa" name="salao_festa" value="1"
+                {% if imovel._desc._salao_festa %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="jd_inverno" class="form-check-label">jd. de inverno</label>
+              <input type="checkbox" class="form-check-input" id="jd_inverno" name="jd_inverno" value="1"
+                {% if imovel._desc._jd_inverno %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="quadra" class="form-check-label">Quadra</label>
+              <input type="checkbox" class="form-check-input" id="quadra" name="quadra" value="1"
+                {% if imovel._desc._quadra %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="sauna" class="form-check-label">Sauna</label>
+              <input type="checkbox" class="form-check-input" id="sauna" name="sauna" value="1"
+                {% if imovel._desc._sauna %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="piscina" class="form-check-label">Piscina</label>
+              <input type="checkbox" class="form-check-input" id="piscina" name="piscina" value="1"
+                {% if imovel._desc._pescina %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="entrada_ind" class="form-check-label">Entrada independente</label>
+              <input type="checkbox" class="form-check-input" id="entrada_ind" name="entrada_ind" value="1"
+                {% if imovel._desc._entrada_ind %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="quadra_tenis" class="form-check-label">Quadra de tenis</label>
+              <input type="checkbox" class="form-check-input" id="quadra_tenis" name="quadra_tenis" value="1"
+                {% if imovel._desc._quadra_tenis %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="playground" class="form-check-label">Playground</label>
+              <input type="checkbox" class="form-check-input" id="playground" name="playground" value="1"
+                {% if imovel._desc._playground %} checked {%else%} {%endif%}>
+            </div>
+            <div class="form-check">
+              <label for="sala_ginastica" class="form-check-label">Sala de ginastica</label>
+              <input type="checkbox" class="form-check-input" id="sala_ginastica" name="sala_ginastica" value="1"
+                {% if imovel._desc._sala_ginastica %} checked {%else%} {%endif%}>
+            </div>
           </div>
         </div>
       </div>
@@ -344,8 +460,10 @@
             </div>
           </div>
           <div class="col-6">
-            <label for="infoarea" class="form-label">Informações adcionais</label>
-            <textarea name="infoarea" id="infoarea" cols="60" rows="5">{{imovel._info_area}}</textarea>
+            <div class="form-group">
+            <label for="infoarea">Informações adcionais</label>
+            <textarea class="form-control" name="infoarea" id="infoarea" cols="60" rows="5">{{imovel._info_area}}</textarea>
+          </div>
           </div>
         </div>
       </div>
@@ -412,20 +530,20 @@
 
         </div>
         <br>
-        <label for="inflocal" class="form-label"></label>
-        <textarea name="inflocal" id="inflocal" cols="60" rows="5">{{ imovel._info_end }}</textarea>
+        <div class="form-group">
+          <label for="inflocal">Informações adcionais</label>
+          <textarea class="form-control" name="inflocal" id="inflocal" cols="60"
+            rows="5">{{ imovel._info_end }}</textarea>
+        </div>
       </div>
       <br>
       <div class="tab-pane fade" id="nav-anuncio" role="tabpanel" aria-labelledby="nav-anuncio-tab">
         <div class="row">
           <div class="col-4">
-            <div class="input-group-checkbox">
-              <label for="placa" class="form-label">Fixar Placa:</label>
-              {% if imovel._placa == 1 %}
-              <input type="checkbox" name="placa" id="placa" value="1" checked>
-              {% else %}
-              <input type="checkbox" name="placa" id="placa" value="1">
-              {% endif %}
+            <div class="form-check">
+              <label for="placa" class="form-check-label">Fixar Placa</label>
+              <input type="checkbox" class="form-check-input" name="placa" id="placa" value="1"
+                {% if imovel._placa == 1 %} checked {% else %} {%endif%}>
             </div>
           </div>
           <div class="col-8">
@@ -484,12 +602,13 @@
           <div class="col-4">
             <div class="input-group-text">
               <label for="prop" class="form-label">Proprietario</label>
-              <input type="text" class="form-control" name="prop" id="prop" readonly
-                required value="{{imovel._proprietario._nome}}">
+              <input type="text" class="form-control" name="prop" id="prop" readonly required
+                value="{{imovel._proprietario._nome}}">
             </div>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal" data-bs-target="#propModal">
+            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal"
+              data-bs-target="#propModal">
               Procurar Proprietario
             </button>
             <div class="modal fade" id="propModal" data-bs-backdrop="static" tabindex="-1"
@@ -524,7 +643,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="select-prop" data-bs-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-primary" id="select-prop"
+                      data-bs-dismiss="modal">Confirmar</button>
                   </div>
                 </div>
               </div>
@@ -546,12 +666,13 @@
           <div class="col-4">
             <div class="input-group-text">
               <label for="corr" class="form-label">Corretor</label>
-              <input type="text" class="form-control" name="corr" id="corr" readonly
-                required value="{{imovel._corretor._nome}}">
+              <input type="text" class="form-control" name="corr" id="corr" readonly required
+                value="{{imovel._corretor._nome}}">
             </div>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal" data-bs-target="#corrModal">
+            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal"
+              data-bs-target="#corrModal">
               Procurar corretor
             </button>
             <div class="modal fade" id="corrModal" data-bs-backdrop="static" tabindex="-1"
@@ -586,7 +707,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="select-corr" data-bs-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-primary" id="select-corr"
+                      data-bs-dismiss="modal">Confirmar</button>
                   </div>
                 </div>
               </div>
@@ -596,7 +718,7 @@
         <br>
         <div class="form-group">
           <label for="valor">Valor do imovel</label>
-          <input type="text" id="valor" name="valor" class="form-control" required value="{{ imovel._valor_imovel }}">
+          <input type="text" id="valor" name="valor" class="form-control" required value="{{ imovel._valor_imovel|round|int }}">
           <div class="invalid-feedback">
             Por favor insira um valor.
           </div>
@@ -643,6 +765,10 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="{{ url_for('static', filename='js/storage_form_imovel.js')}}"></script>
 <script>
+  window.addEventListener('loan', () => {
+
+  })
+
   document.getElementById('porcentagem').addEventListener('keyup', (event) => {
     console.log(event)
     valorimovel = document.getElementById('valor').value.replace('.', '')
@@ -672,7 +798,7 @@
 
   async function search_prop_by_name() {
     let propname = document.querySelector('#prop_name').value
-    if(!propname){
+    if (!propname) {
       return null
     }
     const response = await fetch("{{url_for('find_prop_by_name')}}", {
@@ -724,11 +850,12 @@
     remove_propList(list)
     buildspinnerProp()
     const props_json = await search_prop_by_name()
-    if (props_json && props_json.length>0)
+    if (props_json && props_json.length > 0)
       make_prop_list(props_json)
     else {
       const prop_list_ul = document.querySelector('#list-prop')
-      prop_list_ul.innerHTML += `<a href="#" id="prop_item" class="list-group-item list-group-item-action">Proprietario nao encontrado</a>` 
+      prop_list_ul.innerHTML +=
+        `<a href="#" id="prop_item" class="list-group-item list-group-item-action">Proprietario nao encontrado</a>`
       hiddenspinnerProp()
     }
   }
@@ -745,11 +872,11 @@
 </script>
 <script>
   document.querySelector('#select-corr').addEventListener('click', (e) => {
-    prop_item = document.querySelector('.list-group-item.list-group-item-action.active').children.namedItem(
+    corr_item = document.querySelector('.corr.list-group-item.list-group-item-action.active').children.namedItem(
       'item_corr')
-    prop_id = prop_item.children.namedItem('id_corr').textContent
+    prop_id = corr_item.children.namedItem('id_corr').textContent
     document.querySelector('#corr_id').value = prop_id
-    corr = prop_item.children.namedItem('name_corr').textContent
+    corr = corr_item.children.namedItem('name_corr').textContent
     document.querySelector('#corr').value = corr
   })
 
@@ -761,7 +888,7 @@
 
   async function search_corr_by_name() {
     let corrname = document.querySelector('#corr_name').value
-    if(!corrname){
+    if (!corrname) {
       return null
     }
     const response = await fetch("{{url_for('find_cor_by_name')}}", {
@@ -784,7 +911,7 @@
 
     corr_list.forEach((corr) => {
       corr_list_ul.innerHTML += `
-      <a class="list-group-item list-group-item-action" id="corr_item" data-bs-toggle="list" href="#list-corr" role="tab" aria-controls="list-corr">
+      <a class="corr list-group-item list-group-item-action" id="corr_item" data-bs-toggle="list" href="#list-corr" role="tab" aria-controls="list-corr">
         <div class='row' name='item_corr'>
           <div class='col-1' name='id_corr'>${corr._id_corr}</div>
           <div class='col-3' name='name_corr'>${corr._nome}</div>
@@ -817,7 +944,8 @@
       make_corr_list(corrs_json)
     else {
       const corr_list_ul = document.querySelector('#list-corr')
-      corr_list_ul.innerHTML += `<a href="#" id="corr_item" class="list-group-item list-group-item-action">Corretor nao encontrado</a>` 
+      corr_list_ul.innerHTML +=
+        `<a href="#" id="corr_item" class="list-group-item list-group-item-action">Corretor nao encontrado</a>`
       hiddenspinner()
     }
   }
@@ -825,7 +953,7 @@
 
 
 
-document.querySelector('#button-corr').addEventListener('click', async (event) => {
+  document.querySelector('#button-corr').addEventListener('click', async (event) => {
     handleSearchCorr()
   }, 5000)
   document.querySelector('#corr_name').addEventListener('keyup', async (evenv) => {
@@ -833,6 +961,6 @@ document.querySelector('#button-corr').addEventListener('click', async (event) =
     if (event.keyCode == ENTER_KEY_ID)
       handleSearchCorr()
 
-})
+  })
 </script>
 {% endblock %}

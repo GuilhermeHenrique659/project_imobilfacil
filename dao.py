@@ -168,15 +168,15 @@ class imovelDao:
                                             imovel._forma,imovel._ladodir,imovel._ladoesq,imovel._frente, imovel._fundo,imovel._m_total, imovel._topografia,
                                             imovel._area_util,imovel._area_contruida,imovel._edicula,imovel._info_area,imovel._tipo,imovel._subtipo,
                                             imovel._endereco, imovel._numero,imovel._cep, imovel._info_end, imovel._placa,imovel._data_placa, imovel._data_visita,
-                                            imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel._valor_imovel,imovel._valor_venda, 
-                                            imovel._taxa, imovel._repasse,imovel._imob_id))
+                                            imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel.get_valor_imovel(),imovel._valor_venda, 
+                                            imovel.get_taxa(), imovel._repasse,imovel._imob_id))
             else:
                 cursor.execute(SQL_CRIA_IMOVEL,(imovel._corretor,imovel._proprietario,imovel._cidade, imovel._bairro, imovel._categoria,
                                             imovel._forma,imovel._ladodir,imovel._ladoesq,imovel._frente, imovel._fundo,imovel._m_total, imovel._topografia,
                                             imovel._area_util,imovel._area_contruida,imovel._edicula,imovel._info_area,imovel._tipo,imovel._subtipo,
                                             imovel._endereco, imovel._numero,imovel._cep, imovel._info_end, imovel._placa,imovel._data_placa, imovel._data_visita,
-                                            imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel._valor_imovel,imovel._valor_venda, 
-                                            imovel._taxa, imovel._repasse))
+                                            imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel.get_valor_imovel(),imovel._valor_venda, 
+                                            imovel.get_taxa(), imovel._repasse))
         except MySQLdb.IntegrityError as error:
             return error
         self.__db.connection.commit()
@@ -205,14 +205,13 @@ class imovelDao:
         
         
         descricao = Descricao_imovel( imob_dict['VAGAS'] ,imob_dict['BANHEIRO'] ,imob_dict['SUITE'] ,imob_dict['DORMITORIOS'] ,imob_dict['AREA_SERVICO'] ,imob_dict['COPA'] ,
-                        imob_dict['EDICULA'] ,imob_dict['LAREIRA'] ,imob_dict['PORTAO_ELEC'] ,imob_dict['HIDROMSG'] ,
+                        imob_dict['LAREIRA'] ,imob_dict['EDICULA'] ,imob_dict['PORTAO_ELEC'] ,imob_dict['HIDROMSG'] ,
                         imob_dict['PISO'] ,imob_dict['SACADA'] ,imob_dict['SALA_VIST'] ,imob_dict['SALA_ESTAR'] ,imob_dict['SOTAO'] ,imob_dict['AMARINHO'] ,
                         imob_dict['COZINHA'] ,imob_dict['ESCRITORIO'] ,imob_dict['LAVABO'] ,imob_dict['SALA_JANTAR'] ,imob_dict['VARANDA'] ,
                         imob_dict['CLARABOIA'] ,imob_dict['DEP_EMPREGADA'] ,imob_dict['GARAGE'] ,imob_dict['LIVING_ROOM'] ,imob_dict['QUINTAL'] ,
                         imob_dict['SALA_TV'] ,imob_dict['W_C_EMPREGADA'] ,imob_dict['CLOSET'] ,imob_dict['DESPENSA'] ,imob_dict['CHURRASQUEIRA'] ,
-                        imob_dict['PORTARIA_24H'] ,imob_dict['SALAO_FESTA'] ,imob_dict['JD_INVERNO'] ,imob_dict['QUADRA'] ,imob_dict['SAUNA'] ,
+                        imob_dict['PORTARIA_24H'] ,imob_dict['SALAO_FESTA'] ,imob_dict['JD_INVERNO'] ,imob_dict['QUADRA'] ,imob_dict['SAUNA'],
                         imob_dict['PISCINA'] ,imob_dict['ENTRADA_INDEP'] ,imob_dict['QUADRA_TENIS'] ,imob_dict['PLAYGROUND'] ,imob_dict['SALA_GINASTICA'],id_desc=imob_dict['ID_DESC'])
-
 
         imovel = Imovel(imob_dict['CATEGORIA'],imob_dict['FORMA'],imob_dict['LADO_ESQ'],imob_dict['LADO_DIR'],imob_dict['LADO_FRE'],imob_dict['LADO_FUN'],
                         imob_dict['TOTAL'],imob_dict['TOPOGRAFIA'],imob_dict['AREA_UTIL'],imob_dict['CONSTRUIDA'],imob_dict['EDICULA'],cidade,bairro,

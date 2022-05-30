@@ -38,12 +38,12 @@ class ImovelController():
         if isinstance(result,MySQLdb.IntegrityError) and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('novo_imovel'))
-        imovel_desc = Descricao_imovel(imovel_form['vagas'],imovel_form['banheiro'],imovel_form['suites'],imovel_form['dormitorios'],imovel_form['area_serve'],imovel_form['copa'],imovel_form['desc_edicula'],
-                                        imovel_form['lareira'],imovel_form['portao_elec'],imovel_form['hidromsg'],imovel_form['piso'],imovel_form['sacada'],imovel_form['sala_vist'],imovel_form['sala_estar'],
-                                        imovel_form['sotao'],imovel_form['amarinho'],imovel_form['cozinha'],imovel_form['escritorio'],imovel_form['lavabo'],imovel_form['sala_jantar'],imovel_form['varanda'],imovel_form['claraboia'],
-                                        imovel_form['dep_empregada'],imovel_form['garage'],imovel_form['living_room'],imovel_form['quintal'],imovel_form['sala_tv'],imovel_form['w_c_empregada'],imovel_form['closet'],
-                                        imovel_form['despensa'],imovel_form['churrasqueira'],imovel_form['portaria_24h'],imovel_form['salao_festa'],imovel_form['jd_inverno'],imovel_form['quadra'],imovel_form['piscina'],
-                                        imovel_form['sauna'],imovel_form['entrada_ind'],imovel_form['quadra_tenis'],imovel_form['playground'],imovel_form['sala_ginastica'],result)
+        imovel_desc = Descricao_imovel(imovel_form['vagas'],imovel_form['banheiro'],imovel_form['suites'],imovel_form['dormitorios'],imovel_form.get('area_serve'),imovel_form.get('copa'),imovel_form.get('desc_edicula'),
+                                        imovel_form.get('lareira'),imovel_form.get('portao_elec'),imovel_form.get('hidromsg'),imovel_form.get('piso'),imovel_form.get('sacada'),imovel_form.get('sala_vist'),imovel_form.get('sala_estar'),
+                                        imovel_form.get('sotao'),imovel_form.get('amarinho'),imovel_form.get('cozinha'),imovel_form.get('escritorio'),imovel_form.get('lavabo'),imovel_form.get('sala_jantar'),imovel_form.get('varanda'),imovel_form.get('claraboia'),
+                                        imovel_form.get('dep_empregada'),imovel_form.get('garage'),imovel_form.get('living_room'),imovel_form.get('quintal'),imovel_form.get('sala_tv'),imovel_form.get('w_c_empregada'),imovel_form.get('closet'),
+                                        imovel_form.get('despensa'),imovel_form.get('churrasqueira'),imovel_form.get('portaria_24h'),imovel_form.get('salao_festa'),imovel_form.get('jd_inverno'),imovel_form.get('quadra'),imovel_form.get('piscina'),
+                                        imovel_form.get('sauna'),imovel_form.get('entrada_ind'),imovel_form.get('quadra_tenis'),imovel_form.get('playground'),imovel_form.get('sala_ginastica'),result)
         dao.imovel.salvar_desc(imovel_desc)
         return redirect(url_for('index'))
 
@@ -73,12 +73,12 @@ class ImovelController():
         if isinstance(result,MySQLdb.IntegrityError) and result.args[0] == UNIQUE_ERROR_CODE:
             flash(self.take_message_error(result.args[1]) +' ja está sendo ultilizado')
             return redirect(url_for('editar_imovel', id=id_imob))
-        imovel_desc = Descricao_imovel(imovel_form['vagas'],imovel_form['banheiro'],imovel_form['suites'],imovel_form['dormitorios'],imovel_form['area_serve'],imovel_form['copa'],imovel_form['desc_edicula'],
-                                        imovel_form['lareira'],imovel_form['portao_elec'],imovel_form['hidromsg'],imovel_form['piso'],imovel_form['sacada'],imovel_form['sala_vist'],imovel_form['sala_estar'],
-                                        imovel_form['sotao'],imovel_form['amarinho'],imovel_form['cozinha'],imovel_form['escritorio'],imovel_form['lavabo'],imovel_form['sala_jantar'],imovel_form['varanda'],imovel_form['claraboia'],
-                                        imovel_form['dep_empregada'],imovel_form['garage'],imovel_form['living_room'],imovel_form['quintal'],imovel_form['sala_tv'],imovel_form['w_c_empregada'],imovel_form['closet'],
-                                        imovel_form['despensa'],imovel_form['churrasqueira'],imovel_form['portaria_24h'],imovel_form['salao_festa'],imovel_form['jd_inverno'],imovel_form['quadra'],imovel_form['piscina'],
-                                        imovel_form['sauna'],imovel_form['entrada_ind'],imovel_form['quadra_tenis'],imovel_form['playground'],imovel_form['sala_ginastica'],result, id_desc=id_desc)
+        imovel_desc = Descricao_imovel(imovel_form['vagas'],imovel_form['banheiro'],imovel_form['suites'],imovel_form['dormitorios'],imovel_form.get('area_serve'),imovel_form.get('copa'),imovel_form.get('desc_edicula'),
+                                        imovel_form.get('lareira'),imovel_form.get('portao_elec'),imovel_form.get('hidromsg'),imovel_form.get('piso'),imovel_form.get('sacada'),imovel_form.get('sala_vist'),imovel_form.get('sala_estar'),
+                                        imovel_form.get('sotao'),imovel_form.get('amarinho'),imovel_form.get('cozinha'),imovel_form.get('escritorio'),imovel_form.get('lavabo'),imovel_form.get('sala_jantar'),imovel_form.get('varanda'),imovel_form.get('claraboia'),
+                                        imovel_form.get('dep_empregada'),imovel_form.get('garage'),imovel_form.get('living_room'),imovel_form.get('quintal'),imovel_form.get('sala_tv'),imovel_form.get('w_c_empregada'),imovel_form.get('closet'),
+                                        imovel_form.get('despensa'),imovel_form.get('churrasqueira'),imovel_form.get('portaria_24h'),imovel_form.get('salao_festa'),imovel_form.get('jd_inverno'),imovel_form.get('quadra'),imovel_form.get('piscina'),
+                                        imovel_form.get('sauna'),imovel_form.get('entrada_ind'),imovel_form.get('quadra_tenis'),imovel_form.get('playground'),imovel_form.get('sala_ginastica'),result,id_desc)
         dao.imovel.salvar_desc(imovel_desc)
         return redirect(url_for('index'))
 

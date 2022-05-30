@@ -196,8 +196,10 @@
             </div>
           </div>
           <div class="col-6">
-            <label for="infoarea" class="form-label">Informações adcionais</label>
-            <textarea name="infoarea" id="infoarea" cols="60" rows="5"></textarea>
+            <div class="form-group">
+              <label for="inflocal">Informações adcionais</label>
+              <textarea class="form-control" name="infoarea" id="inflocal" cols="60" rows="5"></textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -263,16 +265,18 @@
 
         </div>
         <br>
-        <label for="inflocal" class="form-label"></label>
-        <textarea name="inflocal" id="inflocal" cols="60" rows="5"></textarea>
+        <div class="form-group">
+          <label for="inflocal">Informações adcionais</label>
+          <textarea class="form-control" name="inflocal" id="inflocal" cols="60" rows="5"></textarea>
+        </div>
       </div>
       <br>
       <div class="tab-pane fade" id="nav-anuncio" role="tabpanel" aria-labelledby="nav-anuncio-tab">
         <div class="row">
           <div class="col-4">
-            <div class="input-group-checkbox">
-              <label for="placa" class="form-label">Fixar Placa: </label>
-              <input type="checkbox" name="placa" id="placa" value="1">
+            <div class="form-check">
+              <label for="placa" class="form-check-label">Fixar Placa</label>
+              <input type="checkbox" class="form-check-input" name="placa" id="placa" value="1">
             </div>
           </div>
           <div class="col-8">
@@ -574,7 +578,7 @@
 </script>
 <script>
   document.querySelector('#select-corr').addEventListener('click', (e) => {
-    prop_item = document.querySelector('.list-group-item.list-group-item-action.active').children.namedItem(
+    prop_item = document.querySelector('.corr.list-group-item.list-group-item-action.active').children.namedItem(
       'item_corr')
     prop_id = prop_item.children.namedItem('id_corr').textContent
     document.querySelector('#corr_id').value = prop_id
@@ -613,7 +617,7 @@
 
     corr_list.forEach((corr) => {
       corr_list_ul.innerHTML += `
-      <a class="list-group-item list-group-item-action" id="corr_item" data-bs-toggle="list" href="#list-corr" role="tab" aria-controls="list-corr">
+      <a class="corr list-group-item list-group-item-action" id="corr_item" data-bs-toggle="list" href="#list-corr" role="tab" aria-controls="list-corr">
         <div class='row' name='item_corr'>
           <div class='col-1' name='id_corr'>${corr._id_corr}</div>
           <div class='col-3' name='name_corr'>${corr._nome}</div>

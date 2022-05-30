@@ -104,6 +104,12 @@ class Imovel:
         self._corretor = corretor
         self._desc = desc
 
+    def get_taxa(self):
+        return float(self._taxa.replace('%',''))
+
+    def get_valor_imovel(self):
+        return float(self._valor_imovel.replace('.',''))
+
 class Proprietario:
     def __init__(self, nome=None, cpf_cnpj=None, rg_insc_estadual=None, endereco=None, numero=None, cep=None,
                 celular=None, email=None, cidade=None, bairro=None, id = None, atividade = None,
