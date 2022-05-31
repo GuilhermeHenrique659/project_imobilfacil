@@ -750,18 +750,7 @@
 
 
 </fieldset>
-<script>
-  document.getElementById('porcentagem').addEventListener('keyup', (event) => {
-    console.log(event)
-    valorimovel = document.getElementById('valor').value.replace('.', '')
-    taxa = document.getElementById('porcentagem').value.replace('%', '')
-    valorvenda = parseInt(valorimovel) + (parseInt(valorimovel) * parseFloat(taxa / 100))
-    repasse = (parseInt(valorimovel) * parseFloat(taxa / 100))
-    console.log(valorvenda)
-    document.getElementById('valorvenda').value = valorvenda
-    document.getElementById('repasse').value = repasse
-  })
-</script>
+<script src="{{ url_for('static', filename='js/script.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="{{ url_for('static', filename='js/storage_form_imovel.js')}}"></script>
 <script>

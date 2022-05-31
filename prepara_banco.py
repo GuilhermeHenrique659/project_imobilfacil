@@ -6,15 +6,15 @@ print('Conectando...')
 
 #Bancos de dados do Heroku de teste
 
-conn:MySQLdb = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
+conn:MySQLdb = MySQLdb.connect(user='appimo28_admindb', passwd='admindb123', host='108.179.252.251', port=3306, charset='utf8')
 #Bancos de dados do Heroku de produção
 
 #conn = MySQLdb.connect(user='bdbbbc8d2b231a', passwd='5deebf3c', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
 # Descomente se quiser desfazer o banco...
 
 conn.cursor().execute("SET NAMES utf8;")
-conn.cursor().execute("DROP DATABASE `heroku_7f17bca4c88d1c7`;")
-conn.cursor().execute("CREATE DATABASE `heroku_7f17bca4c88d1c7`;")
+conn.cursor().execute("DROP DATABASE `appimo28_imobilfacilapp`;")
+conn.cursor().execute("CREATE DATABASE `appimo28_imobilfacilapp`;")
 conn.commit()
 
 '''
@@ -25,7 +25,7 @@ conn.commit()
 
 conn.cursor().execute("USE `heroku_405b84a0ef05c35`;")
 '''
-conn.cursor().execute("USE `heroku_7f17bca4c88d1c7`;")
+conn.cursor().execute("USE `appimo28_imobilfacilapp`;")
 
 criar_tabela_cidade = '''CREATE TABLE `CIDADE` (
         `ID_CID` INT NOT NULL AUTO_INCREMENT,

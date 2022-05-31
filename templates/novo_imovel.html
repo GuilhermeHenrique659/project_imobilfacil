@@ -694,27 +694,7 @@
   </form>
 </fieldset>
 <script src="{{ url_for('static', filename='js/storage_form_imovel.js')}}"></script>
-<script>
-  document.getElementById('porcentagem').addEventListener('keyup', (event) => {
-    valorimovel = document.getElementById('valor').value.replace('.', '')
-    taxa = document.getElementById('porcentagem').value.replace('%', '')
-    valorvenda = parseInt(valorimovel) + (parseInt(valorimovel) * parseFloat(taxa / 100))
-    repasse = (parseInt(valorimovel) * parseFloat(taxa / 100))
-
-    document.getElementById('valorvenda').value = valorvenda
-    document.getElementById('repasse').value = repasse
-  })
-  document.getElementById('valor').addEventListener('keyup', ()=>{
-
-    valorimovel = document.getElementById('valor').value.replace('.', '')
-    taxa = document.getElementById('porcentagem').value.replace('%', '')
-    valorvenda = parseInt(valorimovel) + (parseInt(valorimovel) * parseFloat(taxa / 100))
-    repasse = (parseInt(valorimovel) * parseFloat(taxa / 100))
-
-    document.getElementById('valorvenda').value = valorvenda
-    document.getElementById('repasse').value = repasse
-  })
-</script>
+<script src="{{ url_for('static', filename='js/script.js')}}"></script>
 <script>
   document.querySelector('#select-prop').addEventListener('click', (e) => {
     prop_item = document.querySelector('.list-group-item.list-group-item-action.active').children.namedItem(
