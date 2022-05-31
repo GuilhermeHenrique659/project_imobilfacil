@@ -47,7 +47,7 @@ class ProprietarioDao:
         cursor.execute(SQL_PROP_POR_ID, (id,))
         prop_dict = cursor.fetchone()
         cidade = Cidade(prop_dict['CIDADE'], prop_dict['ID_CIDADE'])
-        bairro = Bairro(prop_dict['BAIRRO'],prop_dict['CIDADE_ID_CID'],prop_dict['bairro.ID_BAIRRO'],prop_dict['CIDADE'])
+        bairro = Bairro(prop_dict['BAIRRO'],prop_dict['CIDADE_ID_CID'],prop_dict['BAIRRO.ID_BAIRRO'],prop_dict['CIDADE'])
         proprietario = Proprietario(prop_dict['NOME'], prop_dict['CPF_CNPJ'], prop_dict['RG_INSC_ETAD'], prop_dict['ENDERECO'],
                                     prop_dict['NUMERO'],prop_dict['CEP'],prop_dict['CELULAR'],prop_dict['EMAIL'],cidade=cidade,bairro=bairro,
                                     id=prop_dict['ID_PROP'],atividade=prop_dict['ATIVIDADE'],telefone=prop_dict['TELEFONE'],
@@ -114,7 +114,7 @@ class CorretorDao:
         cursor.execute(SQL_BUSCA_CORR_POR_ID, (id,))
         corr_dict = cursor.fetchone()
         cidade = Cidade(corr_dict['CIDADE'], corr_dict['ID_CIDADE'])
-        bairro = Bairro(corr_dict['BAIRRO'],corr_dict['CIDADE_ID_CID'],corr_dict['bairro.ID_BAIRRO'],corr_dict['CIDADE'])
+        bairro = Bairro(corr_dict['BAIRRO'],corr_dict['CIDADE_ID_CID'],corr_dict['BAIRRO.ID_BAIRRO'],corr_dict['CIDADE'])
         corretor = Corretores(corr_dict['USUARIO'], corr_dict['EMAIL'], corr_dict['NOME'], corr_dict['CRECI'], corr_dict['CELULAR'],
                               corr_dict['CPF'], corr_dict['ENDERECO'], corr_dict['SENHA'],cidade,bairro,corr_dict['ID_CORR'])
         del cidade,bairro
@@ -195,9 +195,9 @@ class imovelDao:
         imob_dict = cursor.fetchone()
         cidade = Cidade(imob_dict['CIDADE'], imob_dict['ID_CID'])
 
-        bairro = Bairro(imob_dict['BAIRRO'], imob_dict['CIDADE_ID_CID'], imob_dict['bairro.ID_BAIRRO'], imob_dict['CIDADE'])
+        bairro = Bairro(imob_dict['BAIRRO'], imob_dict['CIDADE_ID_CID'], imob_dict['BAIRRO.ID_BAIRRO'], imob_dict['CIDADE'])
 
-        corretor = Corretores(imob_dict['USUARIO'],imob_dict['EMAIL'],imob_dict['corretores.NOME'],imob_dict['CRECI'],imob_dict['CELULAR'],
+        corretor = Corretores(imob_dict['USUARIO'],imob_dict['EMAIL'],imob_dict['CORRETORES.NOME'],imob_dict['CRECI'],imob_dict['CELULAR'],
                       imob_dict['CPF'],imob_dict['ENDERECO'],imob_dict['SENHA'],imob_dict['ID_CIDADE'],imob_dict['ID_BAIRRO'], imob_dict['ID_CORR'])
 
         proprietario = Proprietario(imob_dict['NOME'], imob_dict['CPF_CNPJ'], imob_dict['RG_INSC_ETAD'], imob_dict['ENDERECO'], imob_dict['TELEFONE'],
