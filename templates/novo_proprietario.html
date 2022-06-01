@@ -409,7 +409,7 @@ cidades.addEventListener('change',()=>{
 const bairro_select_jur = document.querySelector("#bairros-jur")
 const search_jur = document.querySelector('#search_barr-jur')
 
-async function search_bairro(){
+async function search_bairro_jur(){
     let cidade = cidades_jur.value
     let bairro = search_jur.value
     const response = await fetch("/procura_bairro",{
@@ -426,14 +426,14 @@ async function search_bairro(){
     return bairro_reposense
 }
 
-function make_bairro_select(bairro_list){
+function make_bairro_select_jur(bairro_list){
       
       bairro_list.forEach(bairro => {
           bairro_select_jur.innerHTML += `<option value="${bairro._id_bairro}">${bairro._bairro_nome}</option>`
       });
 }
 
-function remove_selectOptionBairro(list) {
+function remove_selectOptionBairro_jur(list) {
   for (item of list) {
     item.remove()
   }
@@ -444,10 +444,10 @@ search.addEventListener('keyup', async ()=>{
   if (event.keyCode == ENTER_KEY_ID){
     let option_to_remove = bairro_select_jur.children
     console.log(bairro_select_jur.children)
-    await remove_selectOptionBairro(option_to_remove)
-    let bairro_list = await search_bairro()
+    await remove_selectOptionBairro_jur(option_to_remove)
+    let bairro_list = await search_bairro_jur()
     if (bairro_list.length > 0)
-        make_bairro_select(bairro_list)
+      make_bairro_select_jur(bairro_list)
   }
 })
 </script>
