@@ -1,6 +1,6 @@
 import MySQLdb
 from flask_mysqldb import MySQL
-from models import (Bairro, Cidade, Corretores, Financeiro, Imovel,
+from models import (Bairro, Cidade, Corretores, Imovel,
                     Proprietario, Descricao_imovel)
 from SQL import *
 
@@ -245,63 +245,17 @@ class imovelDao:
                              proprietario=proprietario, imob_id=imob_dict['ID_IMOB'])
         return list(map(traduz_para_objct_imob, imob_dictlist))
 
-class financeiroDao:
-    def __init__(self, db):
-        self.__db = db
-    def salvar(self,finaceiro):
-        cursor = self.__db.connection.cursor()
-        if(finaceiro._id_fin):
-            cursor.execute(SQL_ATUALIZA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
-                                             finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._id_fin))
-        else:
-            cursor.execute(SQL_CRIA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
-                                         finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._imob))
-        cursor._id = cursor.lastrowid
-        self.__db.connection.commit()
-        del finaceiro
-        return cursor._id
-
-    def pocurar(self, id):
-        cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_BUSCA_FIN_ID, (id,))
-        fin_dict = cursor.fetchone()
-        if fin_dict:
-            fin = Financeiro(fin_dict['HONORARIOS_CORR'],fin_dict['PORCENTAGEM_CORR'],
-                         fin_dict['HONORARIOS_IMOB'],fin_dict['PORCENTAGEM_IMOB'], id_fin=fin_dict['ID_FIN'])
-            return fin
-        else:
-            return None
-
-    def deletar(self,id):
-        self.__db.connection.cursor().execute(SQL_DELETA_FIN, (id,))
-        self.__db.connection.commit()
-
-    def lista(self):
-        cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_LISTA_FIN)
-        fin = self.traduz_para_lista_fin(cursor.fetchall())
-        return fin
-
-    def filtro(self,filtro):
-        cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_LISTA_FIN_CORR, (filtro,))
-        fin = self.traduz_para_lista_fin(cursor.fetchall())
-        return fin
-
-    def traduz_para_lista_fin(self,fin_dictlist):
-        def traduz_para_objeto_fin(fin_dict):
-            return Financeiro(fin_dict['HONORARIOS_CORR'],fin_dict['PORCENTAGEM_CORR'],fin_dict['HONORARIOS_IMOB'],fin_dict['PORCENTAGEM_IMOB'],
-                              fin_dict['HONORARIOS'],fin_dict['VALOR_VENDA'],fin_dict['ENDERECO_IMOVEL'],fin_dict['NOME'],corr_id=fin_dict['ID_CORR_FIN'],id_fin=fin_dict['ID_FIN'])
-        return list(map(traduz_para_objeto_fin, fin_dictlist))
-
 
 class ciadadeDao:
     def __init__(self, db):
         self.__db = db
 
-    def salvar(self, cidade):
+    def salvar(self, cidade:Cidade):
         cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_CRIA_CIDADE,(cidade._id_cidade,cidade._cidade_nome))
+        try:
+            cursor.execute(SQL_CRIA_CIDADE,(cidade._id_cidade,cidade._cidade_nome, cidade._uf))
+        except MySQLdb.IntegrityError as error:
+            raise Exception(error.args[1])
         cursor._id = cursor.lastrowid
         self.__db.connection.commit()
         del cidade
@@ -314,16 +268,20 @@ class ciadadeDao:
 
     def traduz_para_lista_cidade(self, cidade_dictlist):
         def traduz_para_objct_cidade(cidade_dict):
-                return Cidade(cidade_dict['CIDADE'],cidade_dict['ID_CID'])
+                return Cidade(cidade_dict['CIDADE'],cidade_dict['UF'],cidade_dict['ID_CID'])
         return list(map(traduz_para_objct_cidade, cidade_dictlist))
 
 class bairroDao:
     def __init__(self, db):
         self.__db = db
 
-    def salvar(self, bairro):
+    def salvar(self, bairro:Bairro):
         cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_CRIA_BAIRRO,(bairro._id_bairro,bairro._bairro_nome,bairro._id_cid))
+        try:
+            cursor.execute(SQL_CRIA_BAIRRO,(bairro._id_bairro,bairro._bairro_nome,bairro._id_cid))
+        except MySQLdb.IntegrityError as error:
+            print(error)
+            raise Exception(error.args[1])
         cursor._id = cursor.lastrowid
         self.__db.connection.commit()
         del bairro

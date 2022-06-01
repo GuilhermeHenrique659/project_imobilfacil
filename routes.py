@@ -15,15 +15,6 @@ class Routes:
 
 #financerio
 
-#atualiza_financeiro
-        server.app.add_url_rule('/atualizar_finceiro', endpoint='atualizar_finceiro', view_func=controllers.financeiro.atualizar_finceiro, methods=['POST'])
-
-#mostrar lista de vendas
-        server.app.add_url_rule('/financeiro', endpoint='financeiro', view_func=controllers.financeiro.financeiro, methods=['GET'])
-
-        server.app.add_url_rule('/financeiro/<int:filtro>', endpoint= 'financeiro_filtro' ,view_func=controllers.financeiro.finaceiro_filtro)
-
-
 #visualização do imovel
         server.app.add_url_rule('/view_imovel/<int:id>', endpoint='view_imovel',view_func=controllers.imovel.view_imovel,methods=['GET'])
 

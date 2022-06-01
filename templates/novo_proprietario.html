@@ -68,11 +68,50 @@
         <div class="modal-body">
           <input type="hidden" name="previous" value="/Proprietario">
 
-          <div class="form-group">
-            <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" class="form-control" required>
-            <div class="invalid-feedback">
-              Por favor insira uma cidade.
+          <div class="row">
+            <div class="col-8">
+              <div class="form-group">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidade" name="cidade" class="form-control" required>
+                <div class="invalid-feedback">
+                  Por favor insira uma cidade.
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div>
+                <label for="uf">UF</label>
+                <select class="form-select" id="uf" name="uf" aria-label="Default select example">
+                  <option selected></option>
+                  <option value="ac">ac</option>
+                  <option value="al">al</option>
+                  <option value="ap">ap</option>
+                  <option value="am">am</option>
+                  <option value="ba">ba</option>
+                  <option value="ce">ce</option>
+                  <option value="df">df</option>
+                  <option value="es">es</option>
+                  <option value="go">go</option>
+                  <option value="ma">ma</option>
+                  <option value="mt">mt</option>
+                  <option value="ms">ms</option>
+                  <option value="mg">mg</option>
+                  <option value="pa">pa</option>
+                  <option value="pb">pb</option>
+                  <option value="pr">pr</option>
+                  <option value="pe">pe</option>
+                  <option value="pi">pi</option>
+                  <option value="rj">rj</option>
+                  <option value="rn">rn</option>
+                  <option value="rs">rs</option>
+                  <option value="ro">ro</option>
+                  <option value="rr">rr</option>
+                  <option value="sc">sc</option>
+                  <option value="sp">sp</option>
+                  <option value="se">se</option>
+                  <option value="to">to</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -114,14 +153,14 @@
         <div class="row">
           <div class="col-4">
             <label for="cpf" class="form-label">CPF</label>
-            <input type="text" class="form-control" id="cpf" name="doc_federal" required>
+            <input type="text" class="form-control" id="cpf" name="doc_federal">
             <div class="invalid-feedback">
               Por favor insira um cpf.
             </div>
           </div>
           <div class="col-4">
             <label for="rg" class="form-label">RG</label>
-            <input type=text class="form-control" id="rg" name="doc_estadual" required>
+            <input type=text class="form-control" id="rg" name="doc_estadual">
             <div class="invalid-feedback">
               Por favor insira um rg.
             </div>

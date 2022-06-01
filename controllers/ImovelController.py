@@ -1,6 +1,6 @@
 import MySQLdb
 from flask import request, redirect, render_template, session, flash,url_for
-from models import Imovel, Financeiro, Descricao_imovel
+from models import Imovel, Descricao_imovel
 from daofactory import dao
 from config import server
 
@@ -15,11 +15,9 @@ class ImovelController():
 
     @server.loggin_required
     def novo_imovel(self):
-        lista_prop = dao.proprietario.listar()
-        lista_corr = dao.corretor.listar()
         lista_cidades = dao.cidade.lista()
         lista_bairro = dao.bairro.lista()
-        return render_template('novo_imovel.html', proprietarios=lista_prop, corretores=lista_corr,
+        return render_template('novo_imovel.html',
                             cidades=lista_cidades, bairros=lista_bairro)
 
     @server.loggin_required
@@ -114,22 +112,3 @@ class ImovelController():
                                cidades=lista_cidades, bairros=lista_bairro)
 
 
-    @server.loggin_required
-    def cria_financeiro(self,imovel):
-        fin = dao.financeiro.pocurar(imovel._imob_id)
-        if fin:
-            if imovel._status == "Vendido":
-                financeiro = Financeiro((imovel._honorarios * fin.get_porcetagem_corr()), fin._porcentagem_corr,
-                                        (imovel._honorarios * fin.get_porcetagem_imob()),
-                                        fin._porcentagem_imob, imob=imovel._imob_id, corr=imovel._corretor,
-                                        id_fin=fin._id_fin)
-                dao.financeiro.salvar(financeiro)
-                return
-            else:
-                dao.financeiro.deletar(imovel._imob_id)
-        financeiro = Financeiro((imovel.honorarios / 2), 50, (imovel.honorarios / 2), 50, imob=imovel._imob_id,
-                                corr=imovel._corretor)
-        if imovel._status == 'Vendido':
-            dao.financeiro.salvar(financeiro)
-        else:
-            return

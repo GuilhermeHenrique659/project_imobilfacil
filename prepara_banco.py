@@ -6,15 +6,15 @@ print('Conectando...')
 
 #Bancos de dados do Heroku de teste
 
-conn:MySQLdb = MySQLdb.connect(user='appimo28_admindb', passwd='admindb123', host='108.179.252.251', port=3306, charset='utf8')
+conn:MySQLdb = MySQLdb.connect(user='b8ab2bd3638752', passwd='7627e7de', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
 #Bancos de dados do Heroku de produção
 
 #conn = MySQLdb.connect(user='bdbbbc8d2b231a', passwd='5deebf3c', host='us-cdbr-east-04.cleardb.com', port=3306, charset='utf8')
 # Descomente se quiser desfazer o banco...
 
 conn.cursor().execute("SET NAMES utf8;")
-conn.cursor().execute("DROP DATABASE `appimo28_imobilfacilapp`;")
-conn.cursor().execute("CREATE DATABASE `appimo28_imobilfacilapp`;")
+conn.cursor().execute("DROP DATABASE `heroku_7f17bca4c88d1c7`;")
+conn.cursor().execute("CREATE DATABASE `heroku_7f17bca4c88d1c7`;")
 conn.commit()
 
 '''
@@ -25,11 +25,11 @@ conn.commit()
 
 conn.cursor().execute("USE `heroku_405b84a0ef05c35`;")
 '''
-conn.cursor().execute("USE `appimo28_imobilfacilapp`;")
+conn.cursor().execute("USE `heroku_7f17bca4c88d1c7`;")
 
 criar_tabela_cidade = '''CREATE TABLE `CIDADE` (
         `ID_CID` INT NOT NULL AUTO_INCREMENT,
-        `CIDADE` VARCHAR(45) NOT NULL,
+        `CIDADE` VARCHAR(45) NOT NULL UNIQUE,
         `UF` VARCHAR(2) NULL,
         PRIMARY KEY (`ID_CID`)    
     ) ENGINE=InnoDB;'''
@@ -41,6 +41,7 @@ criar_tabela_bairro = '''CREATE TABLE `BAIRRO` (
         `BAIRRO` VARCHAR(45) NOT NULL,
         `CIDADE_ID_CID` INT NOT NULL,
         PRIMARY KEY (`ID_BAIRRO`, `CIDADE_ID_CID`),
+        CONSTRAINT UK_BAIRRO_CIDADE UNIQUE(BAIRRO,CIDADE_ID_CID),
     CONSTRAINT `fk_BAIRRO_CIDADE`
     FOREIGN KEY (`CIDADE_ID_CID`)
     REFERENCES `CIDADE` (`ID_CID`)
@@ -237,29 +238,6 @@ criar_tabela_casa_descrição = '''CREATE TABLE `IMOVEL_DESC` (
 conn.cursor().execute(criar_tabela_casa_descrição)
 conn.commit()
 
-criar_tabela_financeiro = '''CREATE TABLE `FINANCEIRO` (
-    `ID_FIN` INT NOT NULL AUTO_INCREMENT,
-    `HONORARIOS_CORR` REAL NULL,
-    `PORCENTAGEM_CORR` REAL NULL,
-    `HONORARIOS_IMOB` REAL NULL,
-    `PORCENTAGEM_IMOB` REAL NULL,
-    `ID_CORR_FIN` INT NOT NULL,
-    `ID_IMOB_FIN` INT NOT NULL,
-    PRIMARY KEY (`ID_FIN`,`ID_CORR_FIN`,`ID_IMOB_FIN`),
-    CONSTRAINT `fk_FINANCEIRO_CORRETORES`
-        FOREIGN KEY (`ID_CORR_FIN`)
-        REFERENCES `CORRETORES` (`ID_CORR`)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    CONSTRAINT `fk_FINANCEIRO_IMOVEIS`
-        FOREIGN KEY (`ID_IMOB_FIN`)
-        REFERENCES `IMOVEIS` (`ID_IMOB`)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE)
-    ENGINE = InnoDB;
-'''
-conn.cursor().execute(criar_tabela_financeiro)
-conn.commit()
 
 id_auto_increment_start_1000 = '''ALTER TABLE IMOVEIS AUTO_INCREMENT=1000;
     ALTER TABLE CORRETORES AUTO_INCREMENT=1000;
