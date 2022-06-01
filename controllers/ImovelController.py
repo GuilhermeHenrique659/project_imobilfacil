@@ -16,9 +16,8 @@ class ImovelController():
     @server.loggin_required
     def novo_imovel(self):
         lista_cidades = dao.cidade.lista()
-        lista_bairro = dao.bairro.lista()
         return render_template('novo_imovel.html',
-                            cidades=lista_cidades, bairros=lista_bairro)
+                            cidades=lista_cidades)
 
     @server.loggin_required
     def criar_imovel(self):
@@ -49,9 +48,8 @@ class ImovelController():
     def editar_imovel(self, id):
         Imovel = dao.imovel.busca_imob_id(id)
         lista_cidades = dao.cidade.lista()
-        lista_bairro = dao.bairro.lista()
         return render_template('editar_imovel.html', imovel=Imovel,
-                               cidades=lista_cidades, bairros=lista_bairro)
+                               cidades=lista_cidades)
 
     @server.loggin_required
     def atualiza_imovel(self):

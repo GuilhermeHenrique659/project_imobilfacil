@@ -500,9 +500,10 @@
           </div>
           <div class="col-6">
             <div class="form-group">
-            <label for="infoarea">Informações adcionais</label>
-            <textarea class="form-control" name="infoarea" id="infoarea" cols="60" rows="5">{{imovel._info_area}}</textarea>
-          </div>
+              <label for="infoarea">Informações adcionais</label>
+              <textarea class="form-control" name="infoarea" id="infoarea" cols="60"
+                rows="5">{{imovel._info_area}}</textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -550,15 +551,12 @@
 
         </div>
         <br>
-        <div class="input-group">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="search_barr" placeholder="Busque pelo bairros" aria-label="search"
+            disabled>
           <label class="input-group-text" for="bairros">Bairros</label>
           <select class="form-select" id="bairros" name="bairros" required>
-            <option value="{{ imovel._bairro._id_bairro }}" selected>{{ imovel._bairro._bairro_nome }}</option>
-            {% for bairro in bairros %}
-
-            <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
-              {{bairro._bairro_cid_nome}}</option>
-            {% endfor %}
+            <option value="" selected>Nenhum bairro encontrado</option>
           </select>
           <div class="invalid-feedback">
             Por favor insira um bairro.
@@ -757,7 +755,8 @@
         <br>
         <div class="form-group">
           <label for="valor">Valor do imovel</label>
-          <input type="text" id="valor" name="valor" class="form-control" required value="{{ imovel._valor_imovel|round|int }}">
+          <input type="text" id="valor" name="valor" class="form-control" required
+            value="{{ imovel._valor_imovel|round|int }}">
           <div class="invalid-feedback">
             Por favor insira um valor.
           </div>

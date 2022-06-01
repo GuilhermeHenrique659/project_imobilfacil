@@ -1,4 +1,4 @@
-from flask import  request, redirect, render_template, session, flash,url_for
+from flask import  jsonify, request, redirect, render_template, session, flash,url_for
 from models import Cidade,Bairro
 from daofactory import dao
 from config import server
@@ -15,6 +15,12 @@ class OthersController:
             flash("Cidade já cadastrada")
             return redirect(previous)
         return redirect(previous)
+
+    @server.loggin_required
+    def procura_bairro(self):
+        bairro_data = request.get_json()
+        lista_bairro = dao.bairro.lista("%"+bairro_data['bairro_nome']+"%",bairro_data['cid_id'])
+        return jsonify([bairro.__dict__ for bairro in lista_bairro]),200
 
     @server.loggin_required
     def novo_bairro(self):

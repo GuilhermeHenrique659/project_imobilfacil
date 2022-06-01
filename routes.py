@@ -13,6 +13,7 @@ class Routes:
 #bairro
         server.app.add_url_rule('/novo_bairro', endpoint='novo_bairro', view_func=controllers.orthers.novo_bairro, methods=['POST'])
 
+        server.app.add_url_rule('/procura_bairro', endpoint='procura_bairro', view_func=controllers.orthers.procura_bairro,methods=['POST','GET'])
 #financerio
 
 #visualização do imovel

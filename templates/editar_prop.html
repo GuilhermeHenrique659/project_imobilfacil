@@ -211,15 +211,11 @@
 
         </div>
         <br>
-        <div class="input-group">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="search_barr" placeholder="Busque pelo bairros" aria-label="search" disabled>
           <label class="input-group-text" for="bairros">Bairros</label>
           <select class="form-select" id="bairros" name="bairros" required>
-            <option value="{{ proprietario._bairro._id_bairro}}" selected>{{ proprietario._bairro._bairro_nome}}</option>
-            {% for bairro in bairros %}
-
-            <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
-              {{bairro._bairro_cid_nome}}</option>
-            {% endfor %}
+            <option value="" selected>Nenhum bairro encontrado</option>
           </select>
           <div class="invalid-feedback">
             Por favor insira um bairro.

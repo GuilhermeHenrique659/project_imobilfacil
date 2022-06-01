@@ -286,13 +286,13 @@ class bairroDao:
         self.__db.connection.commit()
         del bairro
 
-    def lista(self):
+    def lista(self, bairro_nome, id_cid):
         cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_LISTA_BAIRRO)
+        cursor.execute(SQL_LISTA_BAIRRO,(bairro_nome,id_cid,))
         bairros = self.traduz_para_lista_bairros(cursor.fetchall())
         return bairros
 
     def traduz_para_lista_bairros(self, bairro_dictlist):
         def traduz_para_objct_bairro(bairro_dict):
-            return Bairro(bairro_dict['BAIRRO'],bairro_dict['CIDADE_ID_CID'], bairro_dict['ID_BAIRRO'], bairro_dict['CIDADE'])
+            return Bairro(bairro_dict['BAIRRO'],bairro_dict['CIDADE_ID_CID'], bairro_dict['ID_BAIRRO'])
         return list(map(traduz_para_objct_bairro, bairro_dictlist))

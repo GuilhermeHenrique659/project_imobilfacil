@@ -13,9 +13,8 @@ class IndexController():
         corretores = dao.corretor.listar()
         imoveis = dao.imovel.listar()
         cidades = dao.cidade.lista()
-        bairros = dao.bairro.lista()
         return render_template('lista.html',corretores=corretores, proprietarios = proprietarios,lista= imoveis,
-                                cidades = cidades, bairros=bairros )
+                                cidades = cidades )
 
     def login(self):
         proxima = request.args.get('proxima')

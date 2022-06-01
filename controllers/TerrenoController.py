@@ -14,12 +14,8 @@ class TerrenoController:
 
     @server.loggin_required
     def novo_terreno(self):
-        lista_bairro = dao.bairro.lista()
         lista_cidade = dao.cidade.lista()
-        lista_corretor = dao.corretor.listar()
-        lista_proprietario = dao.proprietario.listar()
-        return render_template('novo_terreno.html',proprietarios=lista_proprietario,
-                            corretores=lista_corretor,cidades=lista_cidade, bairros=lista_bairro)
+        return render_template('novo_terreno.html',cidades=lista_cidade)
 
     @server.loggin_required
     def criar_terreno(self):
@@ -41,12 +37,8 @@ class TerrenoController:
     @server.loggin_required
     def editar_terreno(self,id):
         terreno = dao.imovel.busca_imob_id(id)
-        lista_bairro = dao.bairro.lista()
         lista_cidade = dao.cidade.lista()
-        lista_corretor = dao.corretor.listar()
-        lista_proprietario = dao.proprietario.listar()
-        return render_template('editar_terreno.html',proprietarios=lista_proprietario,
-                            corretores=lista_corretor,cidades=lista_cidade, bairros=lista_bairro, terreno = terreno )
+        return render_template('editar_terreno.html',cidades=lista_cidade, terreno = terreno )
 
     @server.loggin_required
     def atualiza_terreno(self):
