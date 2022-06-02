@@ -1,7 +1,8 @@
 class Cidade:
-    def __init__(self, cidade_nome, id_cidade = None):
+    def __init__(self, cidade_nome, uf, id_cidade = None):
         self._id_cidade = id_cidade
         self._cidade_nome = cidade_nome
+        self._uf = uf
 
 class Bairro:
     def __init__(self, bairro_nome, id_cid, id_bairro = None, bairro_cidade_nome=None):
@@ -104,6 +105,12 @@ class Imovel:
         self._corretor = corretor
         self._desc = desc
 
+    def get_taxa(self):
+        return float(self._taxa.replace('%',''))
+
+    def get_valor_imovel(self):
+        return float(self._valor_imovel.replace('.',''))
+
 class Proprietario:
     def __init__(self, nome=None, cpf_cnpj=None, rg_insc_estadual=None, endereco=None, numero=None, cep=None,
                 celular=None, email=None, cidade=None, bairro=None, id = None, atividade = None,
@@ -163,40 +170,3 @@ class Corretores:
 
     def set_user(self,user):
         self._usuario = user
-
-
-class Financeiro:
-    def __init__(self, honorarios_corr, porcentagem_corr, honorarios_imob , porcentagem_imob,
-                 honorarios_total=None,valor_total=None, imob=None,corr=None,corr_id=None, id_fin=None):
-        self._honorarios_corr = honorarios_corr
-        self._porcentagem_corr = porcentagem_corr
-        self._honorarios_imob = honorarios_imob
-        self._porcentagem_imob = porcentagem_imob
-        self._imob = imob
-        self._corr = corr
-        self._corr_id = corr_id
-        self._id_fin = id_fin
-        self._valor_total = valor_total
-        self._honorarios_total = honorarios_total
-
-    @property
-    def honorarios_total(self):
-        return float(self._honorarios_total)
-
-    @property
-    def valor_total(self):
-        return float(self._valor_total)
-
-    def get_honorarios_corr(self):
-        return float(self._honorarios_corr)
-
-    def get_honorarios_imob(self):
-        return float(self._honorarios_imob)
-
-    def get_porcetagem_corr(self):
-        return float(self._porcentagem_corr/100)
-
-    def get_porcetagem_imob(self):
-        return float(self._porcentagem_imob/100)
-
-

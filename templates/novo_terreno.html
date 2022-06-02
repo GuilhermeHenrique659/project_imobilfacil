@@ -25,7 +25,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" name="previous" value="{{url_for('novo_terreno')}}" >
+          <input type="hidden" name="previous" value="{{url_for('novo_terreno')}}">
           <div class="form-group">
             <label for="cidade_bairro">Cidade</label>
             <select class="form-select" id="cidade_bairro" name="cidade_bairro" required>
@@ -64,11 +64,50 @@
         </div>
         <div class="modal-body">
           <input type="hidden" name="previous" value="{{url_for('novo_terreno')}}">
-          <div class="form-group">
-            <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" class="form-control" required>
-            <div class="invalid-feedback">
-              Por favor insira uma cidade.
+          <div class="row">
+            <div class="col-8">
+              <div class="form-group">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidade" name="cidade" class="form-control" required>
+                <div class="invalid-feedback">
+                  Por favor insira uma cidade.
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div>
+                <label for="uf">UF</label>
+                <select class="form-select" id="uf" name="uf" aria-label="Default select example">
+                  <option selected></option>
+                  <option value="ac">ac</option>
+                  <option value="al">al</option>
+                  <option value="ap">ap</option>
+                  <option value="am">am</option>
+                  <option value="ba">ba</option>
+                  <option value="ce">ce</option>
+                  <option value="df">df</option>
+                  <option value="es">es</option>
+                  <option value="go">go</option>
+                  <option value="ma">ma</option>
+                  <option value="mt">mt</option>
+                  <option value="ms">ms</option>
+                  <option value="mg">mg</option>
+                  <option value="pa">pa</option>
+                  <option value="pb">pb</option>
+                  <option value="pr">pr</option>
+                  <option value="pe">pe</option>
+                  <option value="pi">pi</option>
+                  <option value="rj">rj</option>
+                  <option value="rn">rn</option>
+                  <option value="rs">rs</option>
+                  <option value="ro">ro</option>
+                  <option value="rr">rr</option>
+                  <option value="sc">sc</option>
+                  <option value="sp">sp</option>
+                  <option value="se">se</option>
+                  <option value="to">to</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -84,8 +123,7 @@
 
 <br>
 <fieldset>
-  <form id="terreno" action="{{ url_for('criar_terreno') }}" method="post" class="needs-validation"
-  novalidate>
+  <form id="terreno" action="{{ url_for('criar_terreno') }}" method="post" class="needs-validation" novalidate>
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <a class="nav-link active" id="nav-area-tab" data-bs-toggle="tab" href="#nav-area" role="tab"
@@ -196,8 +234,10 @@
             </div>
           </div>
           <div class="col-6">
-            <label for="infoarea" class="form-label">Informações adcionais</label>
-            <textarea name="infoarea" id="infoarea" cols="60" rows="5"></textarea>
+            <div class="form-group">
+              <label for="inflocal">Informações adcionais</label>
+              <textarea class="form-control" name="infoarea" id="inflocal" cols="60" rows="5"></textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -244,15 +284,12 @@
 
         </div>
         <br>
-        <div class="input-group">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="search_barr" placeholder="Busque pelo bairros" aria-label="search"
+            disabled>
           <label class="input-group-text" for="bairros">Bairros</label>
           <select class="form-select" id="bairros" name="bairros" required>
-            <option value="" selected>Selecione um bairro</option>
-            {% for bairro in bairros %}
-
-            <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
-              {{bairro._bairro_cid_nome}}</option>
-            {% endfor %}
+            <option value="" selected>Nenhum bairro encontrado</option>
           </select>
           <div class="invalid-feedback">
             Por favor insira um bairro.
@@ -263,16 +300,18 @@
 
         </div>
         <br>
-        <label for="inflocal" class="form-label"></label>
-        <textarea name="inflocal" id="inflocal" cols="60" rows="5"></textarea>
+        <div class="form-group">
+          <label for="inflocal">Informações adcionais</label>
+          <textarea class="form-control" name="inflocal" id="inflocal" cols="60" rows="5"></textarea>
+        </div>
       </div>
       <br>
       <div class="tab-pane fade" id="nav-anuncio" role="tabpanel" aria-labelledby="nav-anuncio-tab">
         <div class="row">
           <div class="col-4">
-            <div class="input-group-checkbox">
-              <label for="placa" class="form-label">Fixar Placa: </label>
-              <input type="checkbox" name="placa" id="placa" value="1">
+            <div class="form-check">
+              <label for="placa" class="form-check-label">Fixar Placa</label>
+              <input type="checkbox" class="form-check-input" name="placa" id="placa" value="1">
             </div>
           </div>
           <div class="col-8">
@@ -329,12 +368,12 @@
           <div class="col-4">
             <div class="input-group-text">
               <label for="prop" class="form-label">Proprietario</label>
-              <input type="text" class="form-control" name="prop" id="prop" readonly
-                required>
+              <input type="text" class="form-control" name="prop" id="prop" readonly required>
             </div>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal" data-bs-target="#propModal">
+            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal"
+              data-bs-target="#propModal">
               Procurar Proprietario
             </button>
             <div class="modal fade" id="propModal" data-bs-backdrop="static" tabindex="-1"
@@ -369,7 +408,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="select-prop" data-bs-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-primary" id="select-prop"
+                      data-bs-dismiss="modal">Confirmar</button>
                   </div>
                 </div>
               </div>
@@ -391,12 +431,12 @@
           <div class="col-4">
             <div class="input-group-text">
               <label for="corr" class="form-label">Corretor</label>
-              <input type="text" class="form-control" name="corr" id="corr" readonly
-                required>
+              <input type="text" class="form-control" name="corr" id="corr" readonly required>
             </div>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal" data-bs-target="#corrModal">
+            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal"
+              data-bs-target="#corrModal">
               Procurar corretor
             </button>
             <div class="modal fade" id="corrModal" data-bs-backdrop="static" tabindex="-1"
@@ -431,7 +471,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="select-corr" data-bs-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-primary" id="select-corr"
+                      data-bs-dismiss="modal">Confirmar</button>
                   </div>
                 </div>
               </div>
@@ -471,18 +512,7 @@
   </form>
 </fieldset>
 <script src="{{ url_for('static', filename='js/storage_form_terreno.js')}}"></script>
-<script>
-  document.getElementById('porcentagem').addEventListener('keyup', (event) => {
-    console.log(event)
-    valorimovel = document.getElementById('valor').value.replace('.', '')
-    taxa = document.getElementById('porcentagem').value.replace('%', '')
-    valorvenda = parseInt(valorimovel) + (parseInt(valorimovel) * parseFloat(taxa / 100))
-    repasse = (parseInt(valorimovel) * parseFloat(taxa / 100))
-    console.log(valorvenda)
-    document.getElementById('valorvenda').value = valorvenda
-    document.getElementById('repasse').value = repasse
-  })
-</script>
+<script src="{{ url_for('static', filename='js/script.js')}}"></script>
 <script>
   document.querySelector('#select-prop').addEventListener('click', (e) => {
     prop_item = document.querySelector('.list-group-item.list-group-item-action.active').children.namedItem(
@@ -501,7 +531,7 @@
 
   async function search_prop_by_name() {
     let propname = document.querySelector('#prop_name').value
-    if(!propname){
+    if (!propname) {
       return null
     }
     const response = await fetch("{{url_for('find_prop_by_name')}}", {
@@ -553,11 +583,12 @@
     remove_propList(list)
     buildspinnerProp()
     const props_json = await search_prop_by_name()
-    if (props_json && props_json.length>0)
+    if (props_json && props_json.length > 0)
       make_prop_list(props_json)
     else {
       const prop_list_ul = document.querySelector('#list-prop')
-      prop_list_ul.innerHTML += `<a href="#" id="prop_item" class="list-group-item list-group-item-action">Proprietario nao encontrado</a>` 
+      prop_list_ul.innerHTML +=
+        `<a href="#" id="prop_item" class="list-group-item list-group-item-action">Proprietario nao encontrado</a>`
       hiddenspinnerProp()
     }
   }
@@ -574,7 +605,7 @@
 </script>
 <script>
   document.querySelector('#select-corr').addEventListener('click', (e) => {
-    prop_item = document.querySelector('.list-group-item.list-group-item-action.active').children.namedItem(
+    prop_item = document.querySelector('.corr.list-group-item.list-group-item-action.active').children.namedItem(
       'item_corr')
     prop_id = prop_item.children.namedItem('id_corr').textContent
     document.querySelector('#corr_id').value = prop_id
@@ -590,7 +621,7 @@
 
   async function search_corr_by_name() {
     let corrname = document.querySelector('#corr_name').value
-    if(!corrname){
+    if (!corrname) {
       return null
     }
     const response = await fetch("{{url_for('find_cor_by_name')}}", {
@@ -613,7 +644,7 @@
 
     corr_list.forEach((corr) => {
       corr_list_ul.innerHTML += `
-      <a class="list-group-item list-group-item-action" id="corr_item" data-bs-toggle="list" href="#list-corr" role="tab" aria-controls="list-corr">
+      <a class="corr list-group-item list-group-item-action" id="corr_item" data-bs-toggle="list" href="#list-corr" role="tab" aria-controls="list-corr">
         <div class='row' name='item_corr'>
           <div class='col-1' name='id_corr'>${corr._id_corr}</div>
           <div class='col-3' name='name_corr'>${corr._nome}</div>
@@ -646,7 +677,8 @@
       make_corr_list(corrs_json)
     else {
       const corr_list_ul = document.querySelector('#list-corr')
-      corr_list_ul.innerHTML += `<a href="#" id="corr_item" class="list-group-item list-group-item-action">Corretor nao encontrado</a>` 
+      corr_list_ul.innerHTML +=
+        `<a href="#" id="corr_item" class="list-group-item list-group-item-action">Corretor nao encontrado</a>`
       hiddenspinner()
     }
   }
@@ -654,7 +686,7 @@
 
 
 
-document.querySelector('#button-corr').addEventListener('click', async (event) => {
+  document.querySelector('#button-corr').addEventListener('click', async (event) => {
     handleSearchCorr()
   }, 5000)
   document.querySelector('#corr_name').addEventListener('keyup', async (evenv) => {
@@ -662,7 +694,7 @@ document.querySelector('#button-corr').addEventListener('click', async (event) =
     if (event.keyCode == ENTER_KEY_ID)
       handleSearchCorr()
 
-})
+  })
 </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 {% endblock %}

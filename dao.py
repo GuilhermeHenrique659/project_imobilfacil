@@ -1,6 +1,6 @@
 import MySQLdb
 from flask_mysqldb import MySQL
-from models import (Bairro, Cidade, Corretores, Financeiro, Imovel,
+from models import (Bairro, Cidade, Corretores, Imovel,
                     Proprietario, Descricao_imovel)
 from SQL import *
 
@@ -47,7 +47,7 @@ class ProprietarioDao:
         cursor.execute(SQL_PROP_POR_ID, (id,))
         prop_dict = cursor.fetchone()
         cidade = Cidade(prop_dict['CIDADE'], prop_dict['ID_CIDADE'])
-        bairro = Bairro(prop_dict['BAIRRO'],prop_dict['CIDADE_ID_CID'],prop_dict['bairro.ID_BAIRRO'],prop_dict['CIDADE'])
+        bairro = Bairro(prop_dict['BAIRRO'],prop_dict['CIDADE_ID_CID'],prop_dict['BAIRRO.ID_BAIRRO'],prop_dict['CIDADE'])
         proprietario = Proprietario(prop_dict['NOME'], prop_dict['CPF_CNPJ'], prop_dict['RG_INSC_ETAD'], prop_dict['ENDERECO'],
                                     prop_dict['NUMERO'],prop_dict['CEP'],prop_dict['CELULAR'],prop_dict['EMAIL'],cidade=cidade,bairro=bairro,
                                     id=prop_dict['ID_PROP'],atividade=prop_dict['ATIVIDADE'],telefone=prop_dict['TELEFONE'],
@@ -114,7 +114,7 @@ class CorretorDao:
         cursor.execute(SQL_BUSCA_CORR_POR_ID, (id,))
         corr_dict = cursor.fetchone()
         cidade = Cidade(corr_dict['CIDADE'], corr_dict['ID_CIDADE'])
-        bairro = Bairro(corr_dict['BAIRRO'],corr_dict['CIDADE_ID_CID'],corr_dict['bairro.ID_BAIRRO'],corr_dict['CIDADE'])
+        bairro = Bairro(corr_dict['BAIRRO'],corr_dict['CIDADE_ID_CID'],corr_dict['BAIRRO.ID_BAIRRO'],corr_dict['CIDADE'])
         corretor = Corretores(corr_dict['USUARIO'], corr_dict['EMAIL'], corr_dict['NOME'], corr_dict['CRECI'], corr_dict['CELULAR'],
                               corr_dict['CPF'], corr_dict['ENDERECO'], corr_dict['SENHA'],cidade,bairro,corr_dict['ID_CORR'])
         del cidade,bairro
@@ -168,15 +168,15 @@ class imovelDao:
                                             imovel._forma,imovel._ladodir,imovel._ladoesq,imovel._frente, imovel._fundo,imovel._m_total, imovel._topografia,
                                             imovel._area_util,imovel._area_contruida,imovel._edicula,imovel._info_area,imovel._tipo,imovel._subtipo,
                                             imovel._endereco, imovel._numero,imovel._cep, imovel._info_end, imovel._placa,imovel._data_placa, imovel._data_visita,
-                                            imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel._valor_imovel,imovel._valor_venda, 
-                                            imovel._taxa, imovel._repasse,imovel._imob_id))
+                                            imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel.get_valor_imovel(),imovel._valor_venda, 
+                                            imovel.get_taxa(), imovel._repasse,imovel._imob_id))
             else:
                 cursor.execute(SQL_CRIA_IMOVEL,(imovel._corretor,imovel._proprietario,imovel._cidade, imovel._bairro, imovel._categoria,
                                             imovel._forma,imovel._ladodir,imovel._ladoesq,imovel._frente, imovel._fundo,imovel._m_total, imovel._topografia,
                                             imovel._area_util,imovel._area_contruida,imovel._edicula,imovel._info_area,imovel._tipo,imovel._subtipo,
                                             imovel._endereco, imovel._numero,imovel._cep, imovel._info_end, imovel._placa,imovel._data_placa, imovel._data_visita,
-                                            imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel._valor_imovel,imovel._valor_venda, 
-                                            imovel._taxa, imovel._repasse))
+                                            imovel._data_ultvis,imovel._url,imovel._codigo,imovel._info_anun,imovel.get_valor_imovel(),imovel._valor_venda, 
+                                            imovel.get_taxa(), imovel._repasse))
         except MySQLdb.IntegrityError as error:
             return error
         self.__db.connection.commit()
@@ -195,9 +195,9 @@ class imovelDao:
         imob_dict = cursor.fetchone()
         cidade = Cidade(imob_dict['CIDADE'], imob_dict['ID_CID'])
 
-        bairro = Bairro(imob_dict['BAIRRO'], imob_dict['CIDADE_ID_CID'], imob_dict['bairro.ID_BAIRRO'], imob_dict['CIDADE'])
+        bairro = Bairro(imob_dict['BAIRRO'], imob_dict['CIDADE_ID_CID'], imob_dict['BAIRRO.ID_BAIRRO'], imob_dict['CIDADE'])
 
-        corretor = Corretores(imob_dict['USUARIO'],imob_dict['EMAIL'],imob_dict['corretores.NOME'],imob_dict['CRECI'],imob_dict['CELULAR'],
+        corretor = Corretores(imob_dict['USUARIO'],imob_dict['EMAIL'],imob_dict['CORRETORES.NOME'],imob_dict['CRECI'],imob_dict['CELULAR'],
                       imob_dict['CPF'],imob_dict['ENDERECO'],imob_dict['SENHA'],imob_dict['ID_CIDADE'],imob_dict['ID_BAIRRO'], imob_dict['ID_CORR'])
 
         proprietario = Proprietario(imob_dict['NOME'], imob_dict['CPF_CNPJ'], imob_dict['RG_INSC_ETAD'], imob_dict['ENDERECO'], imob_dict['TELEFONE'],
@@ -205,14 +205,13 @@ class imovelDao:
         
         
         descricao = Descricao_imovel( imob_dict['VAGAS'] ,imob_dict['BANHEIRO'] ,imob_dict['SUITE'] ,imob_dict['DORMITORIOS'] ,imob_dict['AREA_SERVICO'] ,imob_dict['COPA'] ,
-                        imob_dict['EDICULA'] ,imob_dict['LAREIRA'] ,imob_dict['PORTAO_ELEC'] ,imob_dict['HIDROMSG'] ,
+                        imob_dict['LAREIRA'] ,imob_dict['EDICULA'] ,imob_dict['PORTAO_ELEC'] ,imob_dict['HIDROMSG'] ,
                         imob_dict['PISO'] ,imob_dict['SACADA'] ,imob_dict['SALA_VIST'] ,imob_dict['SALA_ESTAR'] ,imob_dict['SOTAO'] ,imob_dict['AMARINHO'] ,
                         imob_dict['COZINHA'] ,imob_dict['ESCRITORIO'] ,imob_dict['LAVABO'] ,imob_dict['SALA_JANTAR'] ,imob_dict['VARANDA'] ,
                         imob_dict['CLARABOIA'] ,imob_dict['DEP_EMPREGADA'] ,imob_dict['GARAGE'] ,imob_dict['LIVING_ROOM'] ,imob_dict['QUINTAL'] ,
                         imob_dict['SALA_TV'] ,imob_dict['W_C_EMPREGADA'] ,imob_dict['CLOSET'] ,imob_dict['DESPENSA'] ,imob_dict['CHURRASQUEIRA'] ,
-                        imob_dict['PORTARIA_24H'] ,imob_dict['SALAO_FESTA'] ,imob_dict['JD_INVERNO'] ,imob_dict['QUADRA'] ,imob_dict['SAUNA'] ,
+                        imob_dict['PORTARIA_24H'] ,imob_dict['SALAO_FESTA'] ,imob_dict['JD_INVERNO'] ,imob_dict['QUADRA'] ,imob_dict['SAUNA'],
                         imob_dict['PISCINA'] ,imob_dict['ENTRADA_INDEP'] ,imob_dict['QUADRA_TENIS'] ,imob_dict['PLAYGROUND'] ,imob_dict['SALA_GINASTICA'],id_desc=imob_dict['ID_DESC'])
-
 
         imovel = Imovel(imob_dict['CATEGORIA'],imob_dict['FORMA'],imob_dict['LADO_ESQ'],imob_dict['LADO_DIR'],imob_dict['LADO_FRE'],imob_dict['LADO_FUN'],
                         imob_dict['TOTAL'],imob_dict['TOPOGRAFIA'],imob_dict['AREA_UTIL'],imob_dict['CONSTRUIDA'],imob_dict['EDICULA'],cidade,bairro,
@@ -246,63 +245,17 @@ class imovelDao:
                              proprietario=proprietario, imob_id=imob_dict['ID_IMOB'])
         return list(map(traduz_para_objct_imob, imob_dictlist))
 
-class financeiroDao:
-    def __init__(self, db):
-        self.__db = db
-    def salvar(self,finaceiro):
-        cursor = self.__db.connection.cursor()
-        if(finaceiro._id_fin):
-            cursor.execute(SQL_ATUALIZA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
-                                             finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._id_fin))
-        else:
-            cursor.execute(SQL_CRIA_FIN,(finaceiro.get_honorarios_corr(), finaceiro._porcentagem_corr, finaceiro.get_honorarios_imob(),
-                                         finaceiro._porcentagem_imob,finaceiro._corr,finaceiro._imob))
-        cursor._id = cursor.lastrowid
-        self.__db.connection.commit()
-        del finaceiro
-        return cursor._id
-
-    def pocurar(self, id):
-        cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_BUSCA_FIN_ID, (id,))
-        fin_dict = cursor.fetchone()
-        if fin_dict:
-            fin = Financeiro(fin_dict['HONORARIOS_CORR'],fin_dict['PORCENTAGEM_CORR'],
-                         fin_dict['HONORARIOS_IMOB'],fin_dict['PORCENTAGEM_IMOB'], id_fin=fin_dict['ID_FIN'])
-            return fin
-        else:
-            return None
-
-    def deletar(self,id):
-        self.__db.connection.cursor().execute(SQL_DELETA_FIN, (id,))
-        self.__db.connection.commit()
-
-    def lista(self):
-        cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_LISTA_FIN)
-        fin = self.traduz_para_lista_fin(cursor.fetchall())
-        return fin
-
-    def filtro(self,filtro):
-        cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_LISTA_FIN_CORR, (filtro,))
-        fin = self.traduz_para_lista_fin(cursor.fetchall())
-        return fin
-
-    def traduz_para_lista_fin(self,fin_dictlist):
-        def traduz_para_objeto_fin(fin_dict):
-            return Financeiro(fin_dict['HONORARIOS_CORR'],fin_dict['PORCENTAGEM_CORR'],fin_dict['HONORARIOS_IMOB'],fin_dict['PORCENTAGEM_IMOB'],
-                              fin_dict['HONORARIOS'],fin_dict['VALOR_VENDA'],fin_dict['ENDERECO_IMOVEL'],fin_dict['NOME'],corr_id=fin_dict['ID_CORR_FIN'],id_fin=fin_dict['ID_FIN'])
-        return list(map(traduz_para_objeto_fin, fin_dictlist))
-
 
 class ciadadeDao:
     def __init__(self, db):
         self.__db = db
 
-    def salvar(self, cidade):
+    def salvar(self, cidade:Cidade):
         cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_CRIA_CIDADE,(cidade._id_cidade,cidade._cidade_nome))
+        try:
+            cursor.execute(SQL_CRIA_CIDADE,(cidade._id_cidade,cidade._cidade_nome, cidade._uf))
+        except MySQLdb.IntegrityError as error:
+            raise Exception(error.args[1])
         cursor._id = cursor.lastrowid
         self.__db.connection.commit()
         del cidade
@@ -315,27 +268,31 @@ class ciadadeDao:
 
     def traduz_para_lista_cidade(self, cidade_dictlist):
         def traduz_para_objct_cidade(cidade_dict):
-                return Cidade(cidade_dict['CIDADE'],cidade_dict['ID_CID'])
+                return Cidade(cidade_dict['CIDADE'],cidade_dict['UF'],cidade_dict['ID_CID'])
         return list(map(traduz_para_objct_cidade, cidade_dictlist))
 
 class bairroDao:
     def __init__(self, db):
         self.__db = db
 
-    def salvar(self, bairro):
+    def salvar(self, bairro:Bairro):
         cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_CRIA_BAIRRO,(bairro._id_bairro,bairro._bairro_nome,bairro._id_cid))
+        try:
+            cursor.execute(SQL_CRIA_BAIRRO,(bairro._id_bairro,bairro._bairro_nome,bairro._id_cid))
+        except MySQLdb.IntegrityError as error:
+            print(error)
+            raise Exception(error.args[1])
         cursor._id = cursor.lastrowid
         self.__db.connection.commit()
         del bairro
 
-    def lista(self):
+    def lista(self, bairro_nome, id_cid):
         cursor = self.__db.connection.cursor()
-        cursor.execute(SQL_LISTA_BAIRRO)
+        cursor.execute(SQL_LISTA_BAIRRO,(bairro_nome,id_cid,))
         bairros = self.traduz_para_lista_bairros(cursor.fetchall())
         return bairros
 
     def traduz_para_lista_bairros(self, bairro_dictlist):
         def traduz_para_objct_bairro(bairro_dict):
-            return Bairro(bairro_dict['BAIRRO'],bairro_dict['CIDADE_ID_CID'], bairro_dict['ID_BAIRRO'], bairro_dict['CIDADE'])
+            return Bairro(bairro_dict['BAIRRO'],bairro_dict['CIDADE_ID_CID'], bairro_dict['ID_BAIRRO'])
         return list(map(traduz_para_objct_bairro, bairro_dictlist))

@@ -57,11 +57,50 @@
         </div>
         <div class="modal-body">
           <input type="hidden" name="previous" value="/editar_corretor/{{corretor._id_corr}}">
-          <div class="form-group">
-            <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" class="form-control" required>
-            <div class="invalid-feedback">
-              Por favor insira uma cidade.
+          <div class="row">
+            <div class="col-8">
+              <div class="form-group">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidade" name="cidade" class="form-control" required>
+                <div class="invalid-feedback">
+                  Por favor insira uma cidade.
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div>
+                <label for="uf">UF</label>
+                <select class="form-select" id="uf" name="uf" aria-label="Default select example">
+                  <option selected></option>
+                  <option value="ac">ac</option>
+                  <option value="al">al</option>
+                  <option value="ap">ap</option>
+                  <option value="am">am</option>
+                  <option value="ba">ba</option>
+                  <option value="ce">ce</option>
+                  <option value="df">df</option>
+                  <option value="es">es</option>
+                  <option value="go">go</option>
+                  <option value="ma">ma</option>
+                  <option value="mt">mt</option>
+                  <option value="ms">ms</option>
+                  <option value="mg">mg</option>
+                  <option value="pa">pa</option>
+                  <option value="pb">pb</option>
+                  <option value="pr">pr</option>
+                  <option value="pe">pe</option>
+                  <option value="pi">pi</option>
+                  <option value="rj">rj</option>
+                  <option value="rn">rn</option>
+                  <option value="rs">rs</option>
+                  <option value="ro">ro</option>
+                  <option value="rr">rr</option>
+                  <option value="sc">sc</option>
+                  <option value="sp">sp</option>
+                  <option value="se">se</option>
+                  <option value="to">to</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -147,15 +186,12 @@
     <br>
 
 
-    <div class="input-group">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" id="search_barr" placeholder="Busque pelo bairros" aria-label="search"
+        disabled>
       <label class="input-group-text" for="bairros">Bairros</label>
       <select class="form-select" id="bairros" name="bairros" required>
-        <option value="{{ corretor._bairro._id_bairro }}" selected>{{corretor._bairro._bairro_nome}}</option>
-        {% for bairro in bairros %}
-
-        <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
-          {{bairro._bairro_cid_nome}}</option>
-        {% endfor %}
+        <option value="{{corretor._bairro._id_bairro}}" selected>{{corretor._bairro._bairro_nome}}</option>
       </select>
       <div class="invalid-feedback">
         Por favor insira um bairro.

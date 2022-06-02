@@ -11,8 +11,7 @@ class ProprietarioController():
     @server.loggin_required
     def rota_proprietario(self):
         lista_cidades = dao.cidade.lista()
-        lista_bairro = dao.bairro.lista()
-        return render_template('novo_proprietario.html', cidades=lista_cidades, bairros=lista_bairro)
+        return render_template('novo_proprietario.html', cidades=lista_cidades)
 
     def take_message_error(self, error):
         error_message = error.lower().replace("duplicate entry",'').replace("for key",'no campo')
@@ -49,10 +48,8 @@ class ProprietarioController():
     @server.loggin_required
     def editar_proprietario(self,id):
         lista_cidades = dao.cidade.lista()
-        lista_bairro = dao.bairro.lista()
         proprietario = dao.proprietario.busca_por_id(id)
-        return render_template('editar_prop.html', proprietario=proprietario, cidades=lista_cidades,
-                               bairros=lista_bairro)
+        return render_template('editar_prop.html', proprietario=proprietario, cidades=lista_cidades)
 
     @server.loggin_required
     def atualizar_proprietario(self):

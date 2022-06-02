@@ -68,11 +68,50 @@
         <div class="modal-body">
           <input type="hidden" name="previous" value="/Proprietario">
 
-          <div class="form-group">
-            <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" class="form-control" required>
-            <div class="invalid-feedback">
-              Por favor insira uma cidade.
+          <div class="row">
+            <div class="col-8">
+              <div class="form-group">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidade" name="cidade" class="form-control" required>
+                <div class="invalid-feedback">
+                  Por favor insira uma cidade.
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div>
+                <label for="uf">UF</label>
+                <select class="form-select" id="uf" name="uf" aria-label="Default select example">
+                  <option selected></option>
+                  <option value="ac">ac</option>
+                  <option value="al">al</option>
+                  <option value="ap">ap</option>
+                  <option value="am">am</option>
+                  <option value="ba">ba</option>
+                  <option value="ce">ce</option>
+                  <option value="df">df</option>
+                  <option value="es">es</option>
+                  <option value="go">go</option>
+                  <option value="ma">ma</option>
+                  <option value="mt">mt</option>
+                  <option value="ms">ms</option>
+                  <option value="mg">mg</option>
+                  <option value="pa">pa</option>
+                  <option value="pb">pb</option>
+                  <option value="pr">pr</option>
+                  <option value="pe">pe</option>
+                  <option value="pi">pi</option>
+                  <option value="rj">rj</option>
+                  <option value="rn">rn</option>
+                  <option value="rs">rs</option>
+                  <option value="ro">ro</option>
+                  <option value="rr">rr</option>
+                  <option value="sc">sc</option>
+                  <option value="sp">sp</option>
+                  <option value="se">se</option>
+                  <option value="to">to</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -108,14 +147,14 @@
         <div class="row">
           <div class="col-4">
             <label for="cpf" class="form-label">CPF</label>
-            <input type="text" class="form-control" id="cpf" name="doc_federal" required value="{{ proprietario._cpf_cnpj }}">
+            <input type="text" class="form-control" id="cpf" name="doc_federal" value="{{ proprietario._cpf_cnpj }}">
             <div class="invalid-feedback">
               Por favor insira um cpf.
             </div>
           </div>
           <div class="col-4">
             <label for="rg" class="form-label">RG</label>
-            <input type=text class="form-control" id="rg" name="doc_estadual" required value="{{ proprietario._rg_insc_estadual }}">
+            <input type=text class="form-control" id="rg" name="doc_estadual" value="{{ proprietario._rg_insc_estadual }}">
             <div class="invalid-feedback">
               Por favor insira um rg.
             </div>
@@ -172,15 +211,11 @@
 
         </div>
         <br>
-        <div class="input-group">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="search_barr" placeholder="Busque pelo bairros" aria-label="search" disabled>
           <label class="input-group-text" for="bairros">Bairros</label>
           <select class="form-select" id="bairros" name="bairros" required>
-            <option value="{{ proprietario._bairro._id_bairro}}" selected>{{ proprietario._bairro._bairro_nome}}</option>
-            {% for bairro in bairros %}
-
-            <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
-              {{bairro._bairro_cid_nome}}</option>
-            {% endfor %}
+            <option value="{{proprietario._bairro._id_bairro}}" selected>{{proprietario._bairro._bairro_nome}}</option>
           </select>
           <div class="invalid-feedback">
             Por favor insira um bairro.
@@ -304,15 +339,11 @@
 
         </div>
         <br>
-        <div class="input-group">
-          <label class="input-group-text" for="bairros-jur">Bairros</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="search_barr-jur" placeholder="Busque pelo bairros" aria-label="search" disabled>
+          <label class="input-group-text" for="bairros">Bairros</label>
           <select class="form-select" id="bairros-jur" name="bairros" required>
-            <option value="{{ proprietario._bairro._id_bairro}}" selected>{{ proprietario._bairro._bairro_nome }}</option>
-            {% for bairro in bairros %}
-
-            <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
-              {{bairro._bairro_cid_nome}}</option>
-            {% endfor %}
+            <option value="{{proprietario._bairro._id_bairro}}" selected>{{proprietario._bairro._bairro_nome}}</option>
           </select>
           <div class="invalid-feedback">
             Por favor insira um bairro.
@@ -362,4 +393,61 @@
 </fieldset>
 
 <script src="{{url_for('static', filename='js/storage_form_prop.js')}}"></script>
+<script>
+  
+
+  const cidades_jur = document.querySelector('#cidades-jur')
+  cidades.addEventListener('change',()=>{
+    console.log(cidades.value)
+    if(cidades.value!=''){
+      document.querySelector('#search_barr-jur').removeAttribute('disabled')
+    }else{
+      document.querySelector('#search_barr-jur').setAttribute('disabled','')
+    }
+  })
+  const bairro_select_jur = document.querySelector("#bairros-jur")
+  const search_jur = document.querySelector('#search_barr-jur')
+  
+  async function search_bairro_jur(){
+      let cidade = cidades_jur.value
+      let bairro = search_jur.value
+      const response = await fetch("/procura_bairro",{
+        method: "POST",
+        body: JSON.stringify({
+          "cid_id": cidade,
+          "bairro_nome": bairro
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+      let bairro_reposense = await response.json()
+      return bairro_reposense
+  }
+  
+  function make_bairro_select_jur(bairro_list){
+        
+        bairro_list.forEach(bairro => {
+            bairro_select_jur.innerHTML += `<option value="${bairro._id_bairro}">${bairro._bairro_nome}</option>`
+        });
+  }
+  
+  function remove_selectOptionBairro_jur(list) {
+    for (item of list) {
+      item.remove()
+    }
+  }
+  
+  search.addEventListener('keyup', async ()=>{
+    ENTER_KEY_ID = 13
+    if (event.keyCode == ENTER_KEY_ID){
+      let option_to_remove = bairro_select_jur.children
+      console.log(bairro_select_jur.children)
+      await remove_selectOptionBairro_jur(option_to_remove)
+      let bairro_list = await search_bairro_jur()
+      if (bairro_list.length > 0)
+        make_bairro_select_jur(bairro_list)
+    }
+  })
+  </script>
 {% endblock %}

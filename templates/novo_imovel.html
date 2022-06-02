@@ -1,6 +1,5 @@
 {% extends "template.html" %}
 {% block conteudo %}
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="{{url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
 <script src="{{url_for('static', filename='jquery.mask.js') }}"></script>
 <script>
@@ -25,7 +24,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" name="previous" value="{{url_for('novo_terreno')}}">
+          <input type="hidden" name="previous" value="{{url_for('novo_imovel')}}">
           <div class="form-group">
             <label for="cidade_bairro">Cidade</label>
             <select class="form-select" id="cidade_bairro" name="cidade_bairro" required>
@@ -63,12 +62,51 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" name="previous" value="{{url_for('novo_terreno')}}">
-          <div class="form-group">
-            <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" class="form-control" required>
-            <div class="invalid-feedback">
-              Por favor insira uma cidade.
+          <input type="hidden" name="previous" value="{{url_for('novo_imovel')}}">
+          <div class="row">
+            <div class="col-8">
+              <div class="form-group">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidade" name="cidade" class="form-control" required>
+                <div class="invalid-feedback">
+                  Por favor insira uma cidade.
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div>
+                <label for="uf">UF</label>
+                <select class="form-select" id="uf" name="uf" aria-label="Default select example">
+                  <option selected></option>
+                  <option value="ac">ac</option>
+                  <option value="al">al</option>
+                  <option value="ap">ap</option>
+                  <option value="am">am</option>
+                  <option value="ba">ba</option>
+                  <option value="ce">ce</option>
+                  <option value="df">df</option>
+                  <option value="es">es</option>
+                  <option value="go">go</option>
+                  <option value="ma">ma</option>
+                  <option value="mt">mt</option>
+                  <option value="ms">ms</option>
+                  <option value="mg">mg</option>
+                  <option value="pa">pa</option>
+                  <option value="pb">pb</option>
+                  <option value="pr">pr</option>
+                  <option value="pe">pe</option>
+                  <option value="pi">pi</option>
+                  <option value="rj">rj</option>
+                  <option value="rn">rn</option>
+                  <option value="rs">rs</option>
+                  <option value="ro">ro</option>
+                  <option value="rr">rr</option>
+                  <option value="sc">sc</option>
+                  <option value="sp">sp</option>
+                  <option value="se">se</option>
+                  <option value="to">to</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -154,90 +192,164 @@
             <div class="row">
               <h4>Descrição</h4>
               <div class="col-3">
+                <div class="form-check">
+                  <label for="area_serve" class="form-check-label">Area de servico</label>
+                  <input type="checkbox" class="form-check-input" id="area_serve" name="area_serve" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="copa" class="form-check-label">Copa</label>
+                  <input type="checkbox" class="form-check-input" id="copa" name="copa" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="desc_edicula" class="form-check-label">Edicula</label>
+                  <input type="checkbox" class="form-check-input" id="desc_edicula" name="desc_edicula" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="lareira" class="form-check-label">Lareira</label>
+                  <input type="checkbox" class="form-check-input" id="lareira" name="lareira" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="portao_elec" class="form-check-label">Portao eletronico</label>
+                  <input type="checkbox" class="form-check-input" id="portao_elec" name="portao_elec" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="hidromsg" class="form-check-label">Hidromassagem</label>
+                  <input type="checkbox" class="form-check-input" id="hidromsg" name="hidromsg" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="piso" class="form-check-label">Piso</label>
+                  <input type="checkbox" class="form-check-input" id="piso" name="piso" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="sacada" class="form-check-label">Sacada</label>
+                  <input type="checkbox" class="form-check-input" id="sacada" name="sacada" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="sala_vist" class="form-check-label">Sala de Visita</label>
+                  <input type="checkbox" class="form-check-input" id="sala_vist" name="sala_vist" value="1">
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-check">
+                  <label for="sala_estar" class="form-check-label">Sala de estar</label>
+                  <input type="checkbox" class="form-check-input" id="sala_estar" name="sala_estar" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="sotao" class="form-check-label">Sotao</label>
+                  <input type="checkbox" class="form-check-input" id="sotao" name="sotao" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="amarinho" class="form-check-label">Amarinho</label>
+                  <input type="checkbox" class="form-check-input" id="amarinho" name="amarinho" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="cozinha" class="form-check-label">Cozinha</label>
+                  <input type="checkbox" class="form-check-input" id="cozinha" name="cozinha" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="escritorio" class="form-check-label">Escritorio</label>
+                  <input type="checkbox" class="form-check-input" id="escritorio" name="escritorio" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="lavabo" class="form-check-label">Lavabo</label>
+                  <input type="checkbox" class="form-check-input" id="lavabo" name="lavabo" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="sala_jantar" class="form-check-label">Sala de jantar</label>
+                  <input type="checkbox" class="form-check-input" id="sala_jantar" name="sala_jantar" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="varanda" class="form-check-label">Varanda</label>
+                  <input type="checkbox" class="form-check-input" id="varanda" name="varanda" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="claraboia" class="form-check-label">Claraboia</label>
+                  <input type="checkbox" class="form-check-input" id="claraboia" name="claraboia" value="1">
+                </div>
+              </div>
+              <div class="col-3">
 
-                <label for="area_serve" class="form-label">Area de servico</label>
-                <input type="number" class="form-control" id="area_serve" name="area_serve" value="0">
-                <label for="copa" class="form-label">Copa</label>
-                <input type="number" class="form-control" id="copa" name="copa" value="0">
-                <label for="desc_edicula" class="form-label">Edicula</label>
-                <input type="number" class="form-control" id="desc_edicula" name="desc_edicula" value="0">
-                <label for="lareira" class="form-label">Lareira</label>
-                <input type="number" class="form-control" id="lareira" name="lareira" value="0">
-                <label for="portao_elec" class="form-label">Portao eletronico</label>
-                <input type="number" class="form-control" id="portao_elec" name="portao_elec" value="0">
-                <label for="hidromsg" class="form-label">Hidromassagem</label>
-                <input type="number" class="form-control" id="hidromsg" name="hidromsg" value="0">
-                <label for="piso" class="form-label">Piso</label>
-                <input type="number" class="form-control" id="piso" name="piso" value="0">
-                <label for="sacada" class="form-label">Sacada</label>
-                <input type="number" class="form-control" id="sacada" name="sacada" value="0">
-                <label for="sala_vist" class="form-label">Sala de Visita</label>
-                <input type="number" class="form-control" id="sala_vist" name="sala_vist" value="0">
-              </div>
-              <div class="col-3">
-                <label for="sala_estar" class="form-label">Sala de estar</label>
-                <input type="number" class="form-control" id="sala_estar" name="sala_estar" value="0">
-                <label for="sotao" class="form-label">Sotao</label>
-                <input type="number" class="form-control" id="sotao" name="sotao" value="0">
-                <label for="amarinho" class="form-label">Amarinho</label>
-                <input type="number" class="form-control" id="amarinho" name="amarinho" value="0">
-                <label for="cozinha" class="form-label">Cozinha</label>
-                <input type="number" class="form-control" id="cozinha" name="cozinha" value="0">
-                <label for="escritorio" class="form-label">Escritorio</label>
-                <input type="number" class="form-control" id="escritorio" name="escritorio" value="0">
-                <label for="lavabo" class="form-label">Lavabo</label>
-                <input type="number" class="form-control" id="lavabo" name="lavabo" value="0">
-                <label for="sala_jantar" class="form-label">Sala de jantar</label>
-                <input type="number" class="form-control" id="sala_jantar" name="sala_jantar" value="0">
-                <label for="varanda" class="form-label">Varanda</label>
-                <input type="number" class="form-control" id="varanda" name="varanda" value="0">
-                <label for="claraboia" class="form-label">Claraboia</label>
-                <input type="number" class="form-control" id="claraboia" name="claraboia" value="0">
-              </div>
-              <div class="col-3">
-                <label for="dep_empregada" class="form-label">Dep. empregada</label>
-                <input type="number" class="form-control" id="dep_empregada" name="dep_empregada" value="0">
-                <label for="garage" class="form-label">Garage</label>
-                <input type="number" class="form-control" id="garage" name="garage" value="0">
-                <label for="living_room" class="form-label">Living room</label>
-                <input type="number" class="form-control" id="living_room" name="living_room" value="0">
-                <label for="quintal" class="form-label">Quintal</label>
-                <input type="number" class="form-control" id="quintal" name="quintal" value="0">
-                <label for="sala_tv" class="form-label">Sala tv</label>
-                <input type="number" class="form-control" id="sala_tv" name="sala_tv" value="0">
-                <label for="w_c_empregada" class="form-label">w.c. empregada</label>
-                <input type="number" class="form-control" id="w_c_empregada" name="w_c_empregada" value="0">
-                <label for="closet" class="form-label">Closet</label>
-                <input type="number" class="form-control" id="closet" name="closet" value="0">
-                <label for="despensa" class="form-label">Despensa</label>
-                <input type="number" class="form-control" id="despensa" name="despensa" value="0">
+                <div class="form-check">
+                  <label for="dep_empregada" class="form-check-label">Dep. empregada</label>
+                  <input type="checkbox" class="form-check-input" id="dep_empregada" name="dep_empregada" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="garage" class="form-check-label">Garage</label>
+                  <input type="checkbox" class="form-check-input" id="garage" name="garage" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="living_room" class="form-check-label">Living room</label>
+                  <input type="checkbox" class="form-check-input" id="living_room" name="living_room" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="quintal" class="form-check-label">Quintal</label>
+                  <input type="checkbox" class="form-check-input" id="quintal" name="quintal" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="sala_tv" class="form-check-label">Sala tv</label>
+                  <input type="checkbox" class="form-check-input" id="sala_tv" name="sala_tv" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="w_c_empregada" class="form-check-label">w.c. empregada</label>
+                  <input type="checkbox" class="form-check-input" id="w_c_empregada" name="w_c_empregada" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="closet" class="form-check-label">Closet</label>
+                  <input type="checkbox" class="form-check-input" id="closet" name="closet" value="1">
+                </div>
+                <div class="form-check">
+                  <label for="despensa" class="form-check-label">Despensa</label>
+                  <input type="checkbox" class="form-check-input" id="despensa" name="despensa" value="1">
+                </div>
               </div>
             </div>
           </div>
           <div class="col-4">
             <h4>Area Comum</h4>
-            <label for="churrasqueira" class="form-label">Churrasqueira</label>
-            <input type="number" class="form-control" id="churrasqueira" name="churrasqueira" value="0">
-            <label for="portaria_24h" class="form-label">Portaria 24 horas</label>
-            <input type="number" class="form-control" id="portaria_24h" name="portaria_24h" value="0">
-            <label for="salao_festa" class="form-label">Salao de Festa</label>
-            <input type="number" class="form-control" id="salao_festa" name="salao_festa" value="0">
-            <label for="jd_inverno" class="form-label">jd. de inverno</label>
-            <input type="number" class="form-control" id="jd_inverno" name="jd_inverno" value="0">
-            <label for="quadra" class="form-label">Quadra</label>
-            <input type="number" class="form-control" id="quadra" name="quadra" value="0">
-            <label for="sauna" class="form-label">Sauna</label>
-            <input type="number" class="form-control" id="sauna" name="sauna" value="0">
-            <label for="piscina" class="form-label">Piscina</label>
-            <input type="number" class="form-control" id="piscina" name="piscina" value="0">
-            <label for="entrada_ind" class="form-label">Entrada independente</label>
-            <input type="number" class="form-control" id="entrada_ind" name="entrada_ind" value="0">
-            <label for="quadra_tenis" class="form-label">Quadra de tenis</label>
-            <input type="number" class="form-control" id="quadra_tenis" name="quadra_tenis" value="0">
-            <label for="playground" class="form-label">Playground</label>
-            <input type="number" class="form-control" id="playground" name="playground" value="0">
-            <label for="sala_ginastica" class="form-label">Sala de ginastica</label>
-            <input type="number" class="form-control" id="sala_ginastica" name="sala_ginastica" value="0">
+            <div class="form-check">
+              <label for="churrasqueira" class="form-check-label">Churrasqueira</label>
+              <input type="checkbox" class="form-check-input" id="churrasqueira" name="churrasqueira" value="1">
+            </div>
+            <div class="form-check">
+              <label for="portaria_24h" class="form-check-label">Portaria 24 horas</label>
+              <input type="checkbox" class="form-check-input" id="portaria_24h" name="portaria_24h" value="1">
+            </div>
+            <div class="form-check">
+              <label for="salao_festa" class="form-check-label">Salao de Festa</label>
+              <input type="checkbox" class="form-check-input" id="salao_festa" name="salao_festa" value="1">
+            </div>
+            <div class="form-check">
+              <label for="jd_inverno" class="form-check-label">jd. de inverno</label>
+              <input type="checkbox" class="form-check-input" id="jd_inverno" name="jd_inverno" value="1">
+            </div>
+            <div class="form-check">
+              <label for="quadra" class="form-check-label">Quadra</label>
+              <input type="checkbox" class="form-check-input" id="quadra" name="quadra" value="1">
+            </div>
+            <div class="form-check">
+              <label for="sauna" class="form-check-label">Sauna</label>
+              <input type="checkbox" class="form-check-input" id="sauna" name="sauna" value="1">
+            </div>
+            <div class="form-check">
+              <label for="piscina" class="form-check-label">Piscina</label>
+              <input type="checkbox" class="form-check-input" id="piscina" name="piscina" value="1">
+            </div>
+            <div class="form-check">
+              <label for="entrada_ind" class="form-check-label">Entrada independente</label>
+              <input type="checkbox" class="form-check-input" id="entrada_ind" name="entrada_ind" value="1">
+            </div>
+            <div class="form-check">
+              <label for="quadra_tenis" class="form-check-label">Quadra de tenis</label>
+              <input type="checkbox" class="form-check-input" id="quadra_tenis" name="quadra_tenis" value="1">
+            </div>
+            <div class="form-check">
+              <label for="playground" class="form-check-label">Playground</label>
+              <input type="checkbox" class="form-check-input" id="playground" name="playground" value="1">
+            </div>
+            <div class="form-check">
+              <label for="sala_ginastica" class="form-check-label">Sala de ginastica</label>
+              <input type="checkbox" class="form-check-input" id="sala_ginastica" name="sala_ginastica" value="1">
+            </div>
           </div>
         </div>
       </div>
@@ -339,8 +451,10 @@
             </div>
           </div>
           <div class="col-6">
-            <label for="infoarea" class="form-label">Informações adcionais</label>
-            <textarea name="infoarea" id="infoarea" cols="60" rows="5"></textarea>
+            <div class="form-group">
+              <label for="infoarea">Informações adcionais</label>
+              <textarea class="form-control" name="infoarea" id="infoarea" cols="60" rows="5"></textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -375,7 +489,7 @@
           <select class="form-select" id="cidades" name="cidades" required>
             <option value="" selected>Selecione uma cidade</option>
             {% for cidade in cidades %}
-            <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}}</option>
+            <option value="{{ cidade._id_cidade }}">{{ cidade._cidade_nome}} / {{cidade._uf}}</option>
             {% endfor %}
           </select>
           <div class="invalid-feedback">
@@ -387,15 +501,11 @@
 
         </div>
         <br>
-        <div class="input-group">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="search_barr" placeholder="Busque pelo bairros" aria-label="search" disabled>
           <label class="input-group-text" for="bairros">Bairros</label>
           <select class="form-select" id="bairros" name="bairros" required>
-            <option value="" selected>Selecione um bairro</option>
-            {% for bairro in bairros %}
-
-            <option data-cid="{{bairro._id_cid}}" value="{{ bairro._id_bairro }}">{{bairro._bairro_nome}} /
-              {{bairro._bairro_cid_nome}}</option>
-            {% endfor %}
+            <option value="" selected>Nenhum bairro encontrado</option>
           </select>
           <div class="invalid-feedback">
             Por favor insira um bairro.
@@ -406,21 +516,23 @@
 
         </div>
         <br>
-        <label for="inflocal" class="form-label"></label>
-        <textarea name="inflocal" id="inflocal" cols="60" rows="5"></textarea>
+        <div class="form-group">
+          <label for="inflocal">Informações adcionais</label>
+          <textarea class="form-control" name="inflocal" id="inflocal" cols="60" rows="5"></textarea>
+        </div>
       </div>
       <br>
       <div class="tab-pane fade" id="nav-anuncio" role="tabpanel" aria-labelledby="nav-anuncio-tab">
         <div class="row">
           <div class="col-4">
-            <div class="input-group-checkbox">
-              <label for="placa" class="form-label">Fixar Placa: </label>
-              <input type="checkbox" name="placa" id="placa" value="1">
+            <div class="form-check">
+              <label for="placa" class="form-check-label">Fixar Placa</label>
+              <input type="checkbox" class="form-check-input" name="placa" id="placa" value="1">
             </div>
           </div>
           <div class="col-8">
             <div class="input-group">
-              <label for="url" class="form-label">URL</label>
+              <label for="url">URL</label>
               <input type="text" class="form-control" name="url" id="url">
             </div>
           </div>
@@ -445,12 +557,12 @@
           <br>
           <div class="col-6">
             <div class="input-group">
-              <label for="codanun" class="form-label">Codigo de anuncio</label>
+              <label for="codanun">Codigo de anuncio</label>
               <input type="text" class="form-control" name="codanun" id="codanun">
             </div>
             <br>
-            <div class="input-group">
-              <label for="infoanun" class="form-label">Info anuncio: </label>
+            <div class="form-group">
+              <label for="infoanun">Info anuncio</label>
               <textarea name="infoanun" class="form-control" id="infoanun" cols="60" rows="5"></textarea>
             </div>
           </div>
@@ -472,12 +584,12 @@
           <div class="col-4">
             <div class="input-group-text">
               <label for="prop" class="form-label">Proprietario</label>
-              <input type="text" class="form-control" name="prop" id="prop" readonly
-                required>
+              <input type="text" class="form-control" name="prop" id="prop" readonly required>
             </div>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal" data-bs-target="#propModal">
+            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal"
+              data-bs-target="#propModal">
               Procurar Proprietario
             </button>
             <div class="modal fade" id="propModal" data-bs-backdrop="static" tabindex="-1"
@@ -512,7 +624,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="select-prop" data-bs-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-primary" id="select-prop"
+                      data-bs-dismiss="modal">Confirmar</button>
                   </div>
                 </div>
               </div>
@@ -534,12 +647,12 @@
           <div class="col-4">
             <div class="input-group-text">
               <label for="corr" class="form-label">Corretor</label>
-              <input type="text" class="form-control" name="corr" id="corr" readonly
-                required>
+              <input type="text" class="form-control" name="corr" id="corr" readonly required>
             </div>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal" data-bs-target="#corrModal">
+            <button type="button" class="btn btn-primary" style="align-self: center;" data-bs-toggle="modal"
+              data-bs-target="#corrModal">
               Procurar corretor
             </button>
             <div class="modal fade" id="corrModal" data-bs-backdrop="static" tabindex="-1"
@@ -574,7 +687,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="select-corr" data-bs-dismiss="modal">Confirmar</button>
+                    <button type="button" class="btn btn-primary" id="select-corr"
+                      data-bs-dismiss="modal">Confirmar</button>
                   </div>
                 </div>
               </div>
@@ -614,18 +728,7 @@
   </form>
 </fieldset>
 <script src="{{ url_for('static', filename='js/storage_form_imovel.js')}}"></script>
-<script>
-  document.getElementById('porcentagem').addEventListener('keyup', (event) => {
-    console.log(event)
-    valorimovel = document.getElementById('valor').value.replace('.', '')
-    taxa = document.getElementById('porcentagem').value.replace('%', '')
-    valorvenda = parseInt(valorimovel) + (parseInt(valorimovel) * parseFloat(taxa / 100))
-    repasse = (parseInt(valorimovel) * parseFloat(taxa / 100))
-    console.log(valorvenda)
-    document.getElementById('valorvenda').value = valorvenda
-    document.getElementById('repasse').value = repasse
-  })
-</script>
+<script src="{{ url_for('static', filename='js/script.js')}}"></script>
 <script>
   document.querySelector('#select-prop').addEventListener('click', (e) => {
     prop_item = document.querySelector('.list-group-item.list-group-item-action.active').children.namedItem(
@@ -644,7 +747,7 @@
 
   async function search_prop_by_name() {
     let propname = document.querySelector('#prop_name').value
-    if(!propname){
+    if (!propname) {
       return null
     }
     const response = await fetch("{{url_for('find_prop_by_name')}}", {
@@ -696,11 +799,12 @@
     remove_propList(list)
     buildspinnerProp()
     const props_json = await search_prop_by_name()
-    if (props_json && props_json.length>0)
+    if (props_json && props_json.length > 0)
       make_prop_list(props_json)
     else {
       const prop_list_ul = document.querySelector('#list-prop')
-      prop_list_ul.innerHTML += `<a href="#" id="prop_item" class="list-group-item list-group-item-action">Proprietario nao encontrado</a>` 
+      prop_list_ul.innerHTML +=
+        `<a href="#" id="prop_item" class="list-group-item list-group-item-action">Proprietario nao encontrado</a>`
       hiddenspinnerProp()
     }
   }
@@ -717,11 +821,11 @@
 </script>
 <script>
   document.querySelector('#select-corr').addEventListener('click', (e) => {
-    prop_item = document.querySelector('.list-group-item.list-group-item-action.active').children.namedItem(
+    corr_item = document.querySelector('.corr.list-group-item.list-group-item-action.active').children.namedItem(
       'item_corr')
-    prop_id = prop_item.children.namedItem('id_corr').textContent
+    prop_id = corr_item.children.namedItem('id_corr').textContent
     document.querySelector('#corr_id').value = prop_id
-    corr = prop_item.children.namedItem('name_corr').textContent
+    corr = corr_item.children.namedItem('name_corr').textContent
     document.querySelector('#corr').value = corr
   })
 
@@ -733,7 +837,7 @@
 
   async function search_corr_by_name() {
     let corrname = document.querySelector('#corr_name').value
-    if(!corrname){
+    if (!corrname) {
       return null
     }
     const response = await fetch("{{url_for('find_cor_by_name')}}", {
@@ -756,7 +860,7 @@
 
     corr_list.forEach((corr) => {
       corr_list_ul.innerHTML += `
-      <a class="list-group-item list-group-item-action" id="corr_item" data-bs-toggle="list" href="#list-corr" role="tab" aria-controls="list-corr">
+      <a class="corr list-group-item list-group-item-action" id="corr_item" data-bs-toggle="list" href="#list-corr" role="tab" aria-controls="list-corr">
         <div class='row' name='item_corr'>
           <div class='col-1' name='id_corr'>${corr._id_corr}</div>
           <div class='col-3' name='name_corr'>${corr._nome}</div>
@@ -789,7 +893,8 @@
       make_corr_list(corrs_json)
     else {
       const corr_list_ul = document.querySelector('#list-corr')
-      corr_list_ul.innerHTML += `<a href="#" id="corr_item" class="list-group-item list-group-item-action">Corretor nao encontrado</a>` 
+      corr_list_ul.innerHTML +=
+        `<a href="#" id="corr_item" class="list-group-item list-group-item-action">Corretor nao encontrado</a>`
       hiddenspinner()
     }
   }
@@ -797,7 +902,7 @@
 
 
 
-document.querySelector('#button-corr').addEventListener('click', async (event) => {
+  document.querySelector('#button-corr').addEventListener('click', async (event) => {
     handleSearchCorr()
   }, 5000)
   document.querySelector('#corr_name').addEventListener('keyup', async (evenv) => {
@@ -805,7 +910,9 @@ document.querySelector('#button-corr').addEventListener('click', async (event) =
     if (event.keyCode == ENTER_KEY_ID)
       handleSearchCorr()
 
-})
+  })
 </script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+
+</script>
 {% endblock %}

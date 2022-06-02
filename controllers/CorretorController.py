@@ -14,8 +14,7 @@ class CorretorController():
         if 'usuario_logado' not in session or session['usuario_logado'] == None:
             return redirect('/login?proxima=novo_corretor.html')
         lista_cidades = dao.cidade.lista()
-        lista_bairro = dao.bairro.lista()
-        return render_template('novo_corretor.html', cidades=lista_cidades, bairros=lista_bairro)
+        return render_template('novo_corretor.html', cidades=lista_cidades)
 
     def take_message_error(self, error):
         error_message = error.lower().replace("duplicate entry",'').replace("for key",'no campo')
@@ -55,9 +54,8 @@ class CorretorController():
         if 'usuario_logado' not in session or session['usuario_logado'] == None:
             return redirect('/login?proxima=''')
         lista_cidades = dao.cidade.lista()
-        lista_bairro = dao.bairro.lista()
         corretor = dao.corretor.busca_por_id_edit(id)
-        return render_template('editar_corr.html', corretor=corretor, cidades=lista_cidades, bairros=lista_bairro)
+        return render_template('editar_corr.html', corretor=corretor, cidades=lista_cidades)
 
 
     @server.loggin_required
